@@ -7,7 +7,8 @@ from payment.yk import create_payment, check_payment
 
 from orders.models import Order
 
-@api_view(['GET'])
+
+@api_view(['POST'])
 def get_create_payment(reqeust, *args, **kwargs):
     """Get a redirect url"""
 
@@ -32,7 +33,7 @@ def get_create_payment(reqeust, *args, **kwargs):
     return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 def get_success_payment(request, *args, **kwargs):
     """Retrun payment success info"""
 
@@ -46,10 +47,9 @@ def get_success_payment(request, *args, **kwargs):
         if success:
             order = Order.objects.get() ## узнать как тянуть
             order.set_updates(serializer.data['id'])
-
+            # celery deley
             return Response(status=status.HTTP_200_OK)
 
-        else:
-            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 
