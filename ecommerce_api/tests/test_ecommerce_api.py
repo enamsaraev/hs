@@ -28,13 +28,3 @@ def test_retrieving_a_products_by_category_list(db, client, product_factory, pro
 
     assert len(response.data) == 5
 
-
-@pytest.mark.ecommerce
-def test_retrieving_a_product_card(db, client, product_factory, product_inventory_factory):
-    """Test retrieving a single product"""
-
-    product = product_inventory_factory.create(slug='fckn_slug', product=product_factory.create(slug='fckn'))
-
-    response = client.get(reverse('ecommerce:product_card', kwargs={'slug': 'fckn', 'product_slug': 'fckn_product'}))
-
-    assert response.data[0]['name'] == product.name

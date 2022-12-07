@@ -75,6 +75,6 @@ def test_check_coupon(client, set_coupons, code, count, status_code, msg):
     res = client.post(reverse('coupon:coupon_check'), data=response_data)
     current_coupon_after = Coupon.objects.get(code=code)
 
-    assert current_coupon_after.get_count() != count
+    assert current_coupon_after.get_count() != count or current_coupon_after.get_count() == 0
     assert res.status_code == status_code
     assert res.json()['msg'] == msg
