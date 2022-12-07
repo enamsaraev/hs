@@ -9,46 +9,35 @@ from orders.models import Order
 
 
 @api_view(['POST'])
-def get_create_payment(reqeust, *args, **kwargs):
+def get_create_payment(request, *args, **kwargs):
     """Get a redirect url"""
 
-    serializer = PaymentDataSerializer(data=reqeust.data)
+    payment_data = create_payment(
+        price=request.data['price'],
+        description=request.data['description']
+    )
 
-    if serializer.is_valid():
-        """Create payment"""
-
-        payment_data = create_payment(
-            price=serializer.data['price'],
-            description=serializer.data['description']
-        )
-
-        return Response(
-            {
-                'url': payment_data['confirmation']['confirmation_url'],
-                'id': payment_data['id']
-            },
-            status==status.HTTP_200_OK
-        )
-
-    return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    return Response(
+        {
+            'url': payment_data['confirmation']['confirmation_url'],
+            'id': payment_data['id']
+        },
+        status==status.HTTP_200_OK
+    )
 
 
 @api_view(['POST'])
 def get_success_payment(request, *args, **kwargs):
     """Retrun payment success info"""
+    """Check if payment is successful"""
 
-    serializer = PaymentIdSerializer(data=request.data)
+    success = check_payment(id=request.data['id'])
 
-    if serializer.is_valid():
-        """Check if payment is successful"""
-
-        success = check_payment(id=serializer.data['id'])
-
-        if success:
-            order = Order.objects.get() ## узнать как тянуть
-            order.set_updates(serializer.data['id'])
-            # celery deley
-            return Response(status=status.HTTP_200_OK)
+    if success:
+        order = Order.objects.get() ## узнать как тянуть
+        order.set_updates(request.data['id'])
+        # celery deley
+        return Response(status=status.HTTP_200_OK)
 
     return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     

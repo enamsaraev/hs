@@ -32,15 +32,12 @@ class OrderApiView(APIView):
         cart = get_cart_model(request)
         order = OrderComponent(cart)
 
-        serializer = OrderSerializer(data=request.data)
+        """Creating an order if serializer data is valid"""
 
-        if serializer.is_valid():
-            """Creating an order if serializer data is valid"""
-
-            result_order = order.processing_order(serializer.data) # создать неоплаченный заказ
-            #payment перебросить
-            if result_order:
-                cart.clear_all_cart()
-                return Response(cart.get_cart(), status=status.HTTP_201_CREATED)
+        result_order = order.processing_order(request.data) # создать неоплаченный заказ
+        #payment перебросить
+        if result_order:
+            cart.clear_all_cart()
+            return Response(cart.get_cart(), status=status.HTTP_201_CREATED)
         
         return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
