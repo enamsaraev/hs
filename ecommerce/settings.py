@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'ecommerce_api',
     'cart',
     'coupon_api',
-    'orders'
+    'orders',
+    'payment',
 ]
 
 MIDDLEWARE = [

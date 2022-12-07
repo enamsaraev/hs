@@ -79,6 +79,22 @@ class Order(models.Model):
         verbose_name=_("Общая стоимость заказа"),
         help_text=_("Сформирована автоматически")
     )
+    # payment_id = models.CharField(
+    #     max_length=255,
+    #     default='',
+    #     blank=True,
+    #     null=True
+    # )
+    # is_paid = models.BooleanField(
+    #     default=False
+    # )
+
+    def set_updates(self, payment_id):
+        """Set a paid order"""
+
+        self.is_paid = True
+        self.payment_id = payment_id
+        self.save(update_fields=['is_paid', 'payment_id'])
 
 
 class OrderItems(models.Model):
@@ -119,6 +135,7 @@ class OrderItems(models.Model):
         """Return total item cost"""
 
         return str(self.price * self.qunatity)
+
 
     def __str__(self) -> str:
         return self.order.name

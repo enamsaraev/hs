@@ -1,0 +1,2 @@
+SHOP_ID = ''
+SHOP_API_TOKEN = ''
