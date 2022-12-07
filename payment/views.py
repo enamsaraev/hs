@@ -14,8 +14,11 @@ def get_create_payment(request, *args, **kwargs):
 
     payment_data = create_payment(
         price=request.data['price'],
-        description=request.data['description']
+        description=request.data['description'],
     )
+
+    order = Order.objects.get(id=request.data['id'])
+    order.set_payment_id(payment_data['id'])
 
     return Response(
         {
@@ -34,8 +37,8 @@ def get_success_payment(request, *args, **kwargs):
     success = check_payment(id=request.data['id'])
 
     if success:
-        order = Order.objects.get() ## узнать как тянуть
-        order.set_updates(request.data['id'])
+        order = Order.objects.get(id=request.data['id'])
+        order.set_is_paid()
         # celery deley
         return Response(status=status.HTTP_200_OK)
 

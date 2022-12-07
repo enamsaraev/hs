@@ -20,7 +20,7 @@ class OrderComponent:
         if res:
             self.set_order_data(order)
 
-            return True
+            return True, order
 
     def set_order(self, data, coupon):
 
@@ -37,7 +37,7 @@ class OrderComponent:
             return True, order
 
         else:
-            return False
+            return False, None
 
     def set_order_data(self, order):
         """Creates all order items from the cart session""" 
