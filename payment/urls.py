@@ -1,8 +1,8 @@
 from django.urls import path
 
-from payment.views import some_func, blabla
+from payment.views import get_create_payment, get_success_payment
 
 urlpatterns = [
-    path('as/', some_func),
-    # path('bla/', blabla),
+    path('create/', get_create_payment),
+    path('success/', get_success_payment),
 ]

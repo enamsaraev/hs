@@ -1,11 +1,13 @@
 import json
 import time
 
-from yookassa import Configuration,Payment
+from yookassa import Configuration, Payment
+
+from payment import config
 
 
-# Configuration.account_id = config.SHOP_ID
-# Configuration.secret_key = config.SHOP_API_TOKEN
+Configuration.configure_auth_token('token-XXXXXXXX')
+#{"price": "4567.09", "description": "text"}
 
 
 def create_payment(price, description):
@@ -21,10 +23,28 @@ def create_payment(price, description):
     },
     "confirmation": {
         "type": "redirect",
-        "return_url": "урл редиректа"
+        "return_url": "/"
     },
     "capture": True,
-    "description": description
+    "description": description,
+    "receipt": {
+            "customer": {
+                "full_name": "Ivanov Ivan Ivanovich",
+                "email": "email@email.ru",
+                "phone": "79211234567",
+                "inn": "6321341814"
+            },
+            "items": [
+                {
+                    "description": "Переносное зарядное устройство Хувей",
+                    "quantity": "1.00",
+                    "amount": {
+                        "value": 1000,
+                        "currency": "RUB"
+                    },
+                }
+            ]
+    }
     })
 
     return json.loads(payment.json())
@@ -38,7 +58,7 @@ def check_payment(payment_id):
     while payment['status'] == 'pending':
         payment = json.loads((Payment.find_one(payment_id)).json())
         time.sleep(3)
-        
+
     if payment['status']=='succeeded':
         return True
 
