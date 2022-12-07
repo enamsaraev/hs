@@ -1,0 +1,30 @@
+[
+  {
+  "model": "core.category",
+  "pk": 1,
+  "fields": {
+    "name": "products",
+    "slug": "",
+    "parent": null,
+    "is_active": true,
+    "lft": 1,
+    "rght": 70,
+    "tree_id": 1,
+    "level": 0
+    }
+  },
+  {
+  "model": "core.category",
+  "pk": 2,
+  "fields": {
+      "name": "hats",
+      "slug": "hats",
+      "parent": 1,
+      "is_active": true,
+      "lft": 1,
+      "rght": 69,
+      "tree_id": 1,
+      "level": 1
+    }
+  }
+]

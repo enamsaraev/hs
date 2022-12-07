@@ -1,0 +1,24 @@
+[
+    {
+        "model": "coupon_api.coupon",
+        "pk": 1,
+        "fields": {
+            "code": "GTrDe56OPL",
+            "valid_from": "2022-11-20 22:14:18",
+            "valid_to": "2022-12-20 22:14:18",
+            "count": 10,
+            "discount": 20
+        }
+    },
+    {
+        "model": "coupon_api.coupon",
+        "pk": 2,
+        "fields": {
+            "code": "HU87TgbRR",
+            "valid_from": "2022-11-20 22:14:18",
+            "valid_to": "2022-12-20 22:14:18",
+            "count": 0,
+            "discount": 20
+        }
+    }
+]

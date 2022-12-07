@@ -1,0 +1,32 @@
+[
+    {
+        "model":  "core.size",
+        "id":  "1",
+        "fields": { 
+            "value": "M",
+            "is_active": "True",
+            "is_deleted": "False"
+        }  
+    },
+    {
+        "model":  "core.color",
+        "id":  "1",
+        "fields": { 
+            "value": "White",
+            "is_active": "True",
+            "is_deleted": "False"
+        }  
+    },
+    {
+        "model":  "core.variation",
+        "id":  "1",
+        "fields": { 
+            "product":  "1",
+            "size": "1",
+            "color": "1",
+            "count": "10",
+            "is_active": "True",
+            "is_deleted": "False"
+        }  
+    }
+]
