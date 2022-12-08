@@ -31,7 +31,7 @@ class CartApiView(APIView):
 
         cart = self.get_session_cart(request)
 
-        return Response({'cart': cart.get_cart(), 'total_price': cart.get_total_price()}, status=status.HTTP_200_OK)
+        return Response(cart.get_cart(), status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
         """Cart add or update"""
@@ -50,7 +50,7 @@ class CartApiView(APIView):
                 update=ser.data['update']
             )
 
-            return Response({'cart': cart.get_cart(), 'total_price': cart.get_total_price()}, status=status.HTTP_201_CREATED)
+            return Response(cart.get_cart(), status=status.HTTP_201_CREATED)
 
         return Response({'msg': 'Bad input data'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -62,4 +62,4 @@ class CartApiView(APIView):
         product = get_object_or_404(ProductInventory, slug=request.data['product_slug'])
         cart.delete(product)
 
-        return Response({'cart': cart.get_cart(), 'total_price': cart.get_total_price()}, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_200_OK)
