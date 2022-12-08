@@ -54,9 +54,9 @@ def test_cart_adding_a_product(client, get_token_in_headers, quantity, color, si
     res_data = res.json()
 
     assert res.status_code == 201
-    assert res_data['cart']['hoodie-black']['quantity'] == quantity
-    assert res_data['cart']['hoodie-black']['price'] == '97.00'
-    assert res_data['total_price']== str(Decimal('97.00') * quantity)
+    assert res_data['items']['hoodie-black']['quantity'] == quantity
+    assert res_data['items']['hoodie-black']['price'] == '97.00'
+    assert res_data['total']== str(Decimal('97.00') * quantity)
 
 
 @pytest.mark.cartapi

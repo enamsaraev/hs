@@ -43,10 +43,10 @@ class OrderComponent:
         """Creates all order items from the cart session""" 
 
         for item in self.cart:
-            var = Variation.objects.get(
-                product=ProductInventory.objects.get(slug=item),
-                size=Size.objects.get(value=self.cart[item]['size']),
-                color=Color.objects.get(value=self.cart[item]['color'])
+            var = Variation.objects.get_variation(
+                product_slug=item,
+                size=self.cart[item]['size'],
+                color=self.cart[item]['color']
             )
 
             var.set_minus_count(self.cart[item]['quantity'])

@@ -4,6 +4,22 @@ from django.utils.translation import gettext_lazy as _
 from mptt.models import MPTTModel, TreeForeignKey, TreeManyToManyField
 
 
+class VariationManager(models.Manager):
+    """Variation model manager"""
+
+    def get_queryset(self):
+        return super().get_queryset().all()
+
+    def get_variation(self, product_slug, size, color):
+        """"""
+        variation = self.get_queryset().get(
+            product=ProductInventory.objects.get(slug=product_slug),
+            size=Size.objects.get(value=size),
+            color=Color.objects.get(value=color)
+        )
+
+        return variation
+
 class Category(MPTTModel):
     """Category model"""
 
@@ -293,6 +309,9 @@ class Variation(models.Model):
         verbose_name=_('Выбрать, если вариация товара должна быть удалена'),
         help_text=_('Формат: обязательный')
     )
+
+    objects = VariationManager()
+
 
     class Meta:
         unique_together = ['color', 'size']

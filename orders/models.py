@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from core.models import Variation
+from core.models import ProductInventory, Variation, Size, Color
 from coupon_api.models import Coupon
 
 
