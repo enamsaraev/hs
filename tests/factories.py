@@ -68,6 +68,9 @@ class OrderFactory(factory.django.DjangoModelFactory):
     name = factory.Sequence(lambda n: 'order_name_{}'.format(n))
     email = factory.Sequence(lambda n: 'order_name_{}_@mail.com'.format(n))
     phone = factory.Sequence(lambda n: '8800_{}'.format(n))
+    coupon = None
+    coupon_discount = 0
+    total_price = 3000.09
     is_active = True
     is_deleted = False
 
