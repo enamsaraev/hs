@@ -1,8 +1,12 @@
 import pytest
 import requests
 
+from mixer.backend.django import mixer
 from decimal import Decimal
+from django.urls import reverse
+from rest_framework.test import APIClient
 
+from core.models import ProductInventory
 
 BASE_URL = 'http://127.0.0.1:8000'
 GET_ENPOINT = 'cart/'
@@ -13,23 +17,37 @@ DELETE_ENDPOINT = 'cart/delete/'
 pytestmark = [pytest.mark.django_db]
 
 
-@pytest.fixture(scope='session')
-def get_token_in_headers():
-    """Get a header values with token"""
+api = APIClient()
 
-    return {'TOKEN': 'sgdvls'}
+
+@pytest.fixture
+def get_hoodie_black_product():
+    """Retrieving a product"""
+
+    product = mixer.blend(
+        ProductInventory,
+        slug='hoodie-black',
+        retail_price=Decimal('97.00') 
+    )
+
+    return product
 
 
 @pytest.mark.cartapi
-def test_cart_initialize(get_token_in_headers):
+def test_cart_initialize():
     """Test cart initialize successfully"""
 
-    req = requests.Session()
-    req.headers.update(get_token_in_headers)
-
-    res = req.get(BASE_URL + '/' + GET_ENPOINT, headers=get_token_in_headers)
+    res = api.get(reverse('cart:return_cart'), HTTP_TOKEN='sgdvls')
 
     assert res.json() is not None
+
+
+@pytest.mark.cartapi
+def test_cart_initialize_without_headers():
+    """Test cart initialize successfully"""
+
+    unsucc_res = api.get(reverse('cart:return_cart'))
+    assert unsucc_res.status_code == 400
 
 
 @pytest.mark.cartapi
@@ -39,7 +57,7 @@ def test_cart_initialize(get_token_in_headers):
         (2, 'M', 'White', False),
     ]
 )
-def test_cart_adding_a_product(client, get_token_in_headers, quantity, color, size, update):
+def test_cart_adding_a_product(get_hoodie_black_product, quantity, color, size, update):
     """Test adding a single product to the cart session"""
 
     response_data = {
@@ -50,7 +68,7 @@ def test_cart_adding_a_product(client, get_token_in_headers, quantity, color, si
         'update': update,
     }
 
-    res = requests.post(BASE_URL + '/' + POST_ENDPOINT, data=response_data, headers=get_token_in_headers)
+    res = api.post(reverse('cart:add_or_update_cart'), HTTP_TOKEN='sgdvls', data=response_data)
     res_data = res.json()
 
     assert res.status_code == 201
@@ -66,7 +84,7 @@ def test_cart_adding_a_product(client, get_token_in_headers, quantity, color, si
         (2, 'M', 'White', False),
     ]
 )
-def test_removing_a_product_form_the_cart_session(get_token_in_headers, quantity, size, color, update):
+def test_removing_a_product_form_the_cart_session(get_hoodie_black_product, quantity, size, color, update):
     """Test a single product is removed from the cart successfully"""
 
     response_data = {
@@ -77,20 +95,11 @@ def test_removing_a_product_form_the_cart_session(get_token_in_headers, quantity
         'update': update,
     }
 
-    res = requests.post(BASE_URL + '/' + POST_ENDPOINT, headers=get_token_in_headers, data=response_data)
+    res = api.post(reverse('cart:add_or_update_cart'), HTTP_TOKEN='sgdvls', data=response_data)
     assert res.status_code == 201
 
-    del_res = requests.delete(BASE_URL + '/' + DELETE_ENDPOINT, headers=get_token_in_headers, data={'product_slug': response_data['product_slug']})
+    del_res = api.delete(reverse('cart:delete_cart_product'), HTTP_TOKEN='sgdvls', data={'product_slug': response_data['product_slug']})
     assert del_res.status_code == 200
-
-
-@pytest.mark.cartapi
-def test_cart_initialize_without_headers():
-    """Test cart initialize successfully"""
-
-    unsucc_res = requests.get(BASE_URL + '/' + GET_ENPOINT, headers=None)
-
-    assert unsucc_res.status_code == 400
 
 
 # {"product_slug": "hoodie-black", "quantity": "2", "size": "M", "color": "White", "update": "False"}

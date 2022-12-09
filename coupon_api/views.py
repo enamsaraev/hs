@@ -6,6 +6,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
+from cart.cart import Cart
 from coupon_api.models import Coupon
 
 
@@ -29,7 +30,10 @@ def check_coupon(request, *args, **kwargs):
 
     if coupon.get_count() == 0:
         return Response({'msg': 'Coupon is unavailable'}, status=status.HTTP_400_BAD_REQUEST)
-
+    
     coupon.set_minus_count()
+
+    cart = Cart(request)
+    cart.set_discount(coupon.discount)
 
     return Response({'msg': 'ok'}, status=status.HTTP_200_OK)

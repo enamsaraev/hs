@@ -1,12 +1,16 @@
-import json
-
 from decimal import Decimal
+
+from rest_framework.exceptions import ParseError
 
 
 class Cart:
-    def __init__(self, session, token):
-        self._token = token
-        self._session = session
+    def __init__(self, request):
+
+        if 'HTTP_TOKEN' not in request.META:
+            raise ParseError()
+
+        self._token = request.META.get('HTTP_TOKEN')
+        self._session = request.session
 
         cart = self._session.get(self._token)
 
@@ -55,8 +59,6 @@ class Cart:
     def set_discount(self, discount):
         """Rewrite total price by a discount"""
 
-        total_price = Decimal(self.cart['total'])
-        self.cart['total'] = str(total_price * (discount / 100))
         self.cart['discount'] = discount
 
         self.__save()
