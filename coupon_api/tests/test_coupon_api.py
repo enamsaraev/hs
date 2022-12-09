@@ -2,18 +2,19 @@ import pytest
 import requests
 
 from django.urls import reverse
-
 from freezegun import freeze_time
-
 from mixer.backend.django import mixer
-
 from coupon_api.models import Coupon
+from rest_framework.test import APIClient
 
 BASE_URL = 'http://127.0.0.1:8000'
 CHECK_ENPOINT = 'coupon/check/'
 
 
 pytestmark = [pytest.mark.django_db]
+
+
+api = APIClient()
 
 
 @pytest.fixture
@@ -62,19 +63,25 @@ def test_coupon_model_creation_successful(db, coupon_factory, code, valid_from, 
         ('HU87TgbRR', 0, 400, 'Coupon is unavailable'),
     ]
 )
-def test_check_coupon(client, set_coupons, code, count, status_code, msg):
+def test_check_coupon(set_coupons, code, count, status_code, msg):
     """Test check coupon"""
 
-    current_coupon_before = Coupon.objects.get(code=code)
     response_data = {
         'code': code
     }
 
-    assert current_coupon_before.get_count() == count
-
-    res = client.post(reverse('coupon:coupon_check'), data=response_data)
-    current_coupon_after = Coupon.objects.get(code=code)
-
-    assert current_coupon_after.get_count() != count or current_coupon_after.get_count() == 0
+    res = api.post(reverse('coupon:coupon_check'), HTTP_TOKEN='token', data=response_data)
     assert res.status_code == status_code
     assert res.json()['msg'] == msg
+
+    """IF DONT WORK TRY TO UPDATE COUPON.COUNT FIELD"""
+
+def test_coupon_set_minus_count():
+    """Test set minus count coupon method"""
+
+    coupon = mixer.blend(Coupon, code='abc', count=5)
+
+    coupon.set_minus_count()
+
+    coupon_after = Coupon.objects.get(code='abc')
+    assert coupon_after.get_count() == 4

@@ -15,15 +15,9 @@ class CartApiView(APIView):
 
     @staticmethod
     def get_session_cart(request):
-
-        if 'HTTP_TOKEN' not in request.META:
-            raise ParseError()
-
-        token = request.META.get('HTTP_TOKEN')
-        session = request.session
-
-        cart = Cart(session, token)
-
+        """Return session cart"""
+        
+        cart = Cart(request)
         return cart
 
     def get(self, request, *args, **kwargs):
@@ -41,7 +35,6 @@ class CartApiView(APIView):
 
         if ser.is_valid():  
             product = get_object_or_404(ProductInventory, slug=request.data['product_slug'])
-
             cart.add_or_update(
                 product,
                 quantity=ser.data['quantity'],
