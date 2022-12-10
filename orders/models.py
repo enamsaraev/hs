@@ -79,21 +79,9 @@ class Order(models.Model):
         verbose_name=_("Общая стоимость заказа"),
         help_text=_("Сформирована автоматически")
     )
-    payment_id = models.CharField(
-        max_length=255,
-        default='',
-        blank=True,
-        null=True
-    )
     is_paid = models.BooleanField(
         default=False
     )
-
-    def set_payment_id(self, payment_id):
-        """Set a paid order"""
-
-        self.payment_id = payment_id
-        self.save(update_fields=['payment_id'])
 
     def set_is_paid(self):
         """Set a paid order"""
