@@ -9,27 +9,13 @@ from orders.serializers import OrderSerializer
 from cart.cart import Cart
 
 
-def get_cart_model(request):
-    """Return a cart model for the order"""
-
-    if 'HTTP_TOKEN' not in request.META:
-            raise ParseError()
-
-    token = request.META.get('HTTP_TOKEN')
-    session = request.session
-
-    cart = Cart(session, token)
-
-    return cart
-
-
 class OrderApiView(APIView):
     """Class that creates an order model"""
 
     def post(self, request, *args, **kwargs):
         """Post view"""
 
-        cart = get_cart_model(request)
+        cart = Cart(request)
         order = OrderComponent(cart)
 
         """Creating an order if serializer data is valid"""

@@ -1,5 +1,5 @@
 from orders.models import Order, OrderItems
-from core.models import ProductInventory, Size, Color, Variation
+from core.models import Variation
 from coupon_api.models import Coupon
 
 
@@ -9,6 +9,7 @@ class OrderComponent:
         self.cart = cart
 
     def processing_order(self, data):
+        """Main function in creating order"""
 
         coupon = None
 
@@ -23,6 +24,7 @@ class OrderComponent:
             return True, order
 
     def set_order(self, data, coupon):
+        """Create order"""
 
         order = Order.objects.create(
             name=data['name'],
