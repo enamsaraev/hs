@@ -42,13 +42,3 @@ def test_order_model_set_is_paid(order_factory):
 
     order.set_is_paid()
     assert order.is_paid == True
-
-
-def test_order_model_set_payment_id(order_factory):
-    """Test order set_payment_id method"""  
-
-    order = order_factory.create()
-    assert order.payment_id == ''
-
-    order.set_payment_id('abc')
-    assert order.payment_id == 'abc'
