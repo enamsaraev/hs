@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from payment.serializers import PaymentDataSerializer, PaymentIdSerializer
+from payment.serializers import PaymentIdSerializer
 from payment.yk import create_payment, check_payment
 
 from orders.models import Order

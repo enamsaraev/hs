@@ -6,6 +6,7 @@ from faker import Faker
 from core import models
 from orders.models import Order
 from coupon_api.models import Coupon
+from payment.models import PaymentData
 
 
 fake = Faker()
@@ -90,8 +91,19 @@ class CouponFactory(factory.django.DjangoModelFactory):
     is_deleted = False
 
 
+class PaymentDataFactory(factory.django.DjangoModelFactory):
+    """Payment data model factory"""
+
+    class Meta:
+        model = PaymentData
+
+    payment_id = factory.Sequence(lambda n: 'coupon_code_{}'.format(n))
+    order = factory.SubFactory(OrderFactory)
+
+
 register(CategoryFactory)
 register(ProductFactory)
 register(ProductInventoryFactory)
 register(OrderFactory)
 register(CouponFactory)
+register(PaymentDataFactory)
