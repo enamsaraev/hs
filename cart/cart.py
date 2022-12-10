@@ -59,20 +59,28 @@ class Cart:
     def set_discount(self, discount):
         """Rewrite total price by a discount"""
 
-        self.cart['discount'] = discount
+        self.cart['discount'] = str(discount)
 
         self.__save()
 
     def get_total_price(self):
         """Retrieving a total cart price"""
         
-        self.cart['total'] = str(sum(
-            Decimal(self.cart['items'][item]['total_item_price']) for item in self.cart['items'].keys()
-        ))
+        if self.cart['discount'] != 0:
+            total_sum_without_duscount = sum(
+                Decimal(self.cart['items'][item]['total_item_price']) for item in self.cart['items'].keys()
+            )
+            self.cart['total'] = str(total_sum_without_duscount * int(self.cart['discount']) / 100)
+        
+        else:
+            self.cart['total'] = str(sum(
+                    Decimal(self.cart['items'][item]['total_item_price']) for item in self.cart['items'].keys()
+                ))
 
     def get_cart(self):
         """Retrieving a full product cart"""
-
+        
+        self.get_total_price()
         return self.cart
 
     def clear_all_cart(self):
