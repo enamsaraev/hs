@@ -1,6 +1,8 @@
 from dataclasses import dataclass
+
 from django.conf import settings
 from django.core.mail import send_mail
+from django.utils.functional import cached_property
 
 from mailing.models import EmailEntry
 
@@ -11,17 +13,18 @@ class Pigeon:
     message: str
     subject: str
 
+
     def __call__(self) -> None:
-        """Sen email when initialize"""
+        """Send email when initialize"""
 
         if self.is_sent_already:
             return
 
-        self.msg()
-        self.write_email_log()
+        self.__msg()
+        self.__write_email_log()
 
-    @property
-    def msg(self):
+
+    def __msg(self) -> None:
         """Sending email"""
 
         send_mail(
@@ -29,13 +32,9 @@ class Pigeon:
             message=self.message,
             from_email=settings.EMAIL_HOST_USER,
             recipient_list=[self.to],
-            fail_silently=True,
         )
 
-        return True
-
-    @property
-    def write_email_log(self) -> None:
+    def __write_email_log(self) -> None:
         """Logging sent email"""
 
         EmailEntry.objects.update_or_create(

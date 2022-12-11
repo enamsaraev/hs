@@ -16,7 +16,7 @@ def call(mocker):
 
 
 ARGS = dict(
-    to=['f@f213.in'],
+    to='test@mail.ru',
     message='msg',
     subject='Ebalo na nol',
 )

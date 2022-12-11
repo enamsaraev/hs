@@ -146,7 +146,7 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 
 """Email"""
-EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND ='django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST_USER = 'admin@mail.com'
 # #add your host of the email here in this case its Gmail so we are going to use Gmail host
 # EMAIL_HOST = 'smtp.gmail.com'
