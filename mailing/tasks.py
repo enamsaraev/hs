@@ -5,12 +5,11 @@ from mailing.pigeon import Pigeon
 
 
 @app.task
-def send_mail(to : str, message: str, subject: str, ctx=None):
+def send_mail(to : str, message: str, subject: str):
     """Async email sending"""
 
     Pigeon(
         to=to,
         message=message,
         subject=subject,
-        ctx=ctx
     )()
