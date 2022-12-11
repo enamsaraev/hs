@@ -10,7 +10,6 @@ from cart.serializers import CartDataSerializer
 
 from core.models import ProductInventory
 
-from cart.tasks import add
 
 class CartApiView(APIView):
     """Cart views"""
@@ -24,9 +23,8 @@ class CartApiView(APIView):
 
     def get(self, request, *args, **kwargs):
         """Cart retrieving"""
-        add.delay(2, 3)
-        cart = self.get_session_cart(request)
 
+        cart = self.get_session_cart(request)
         return Response(cart.get_cart(), status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):

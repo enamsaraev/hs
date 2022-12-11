@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'orders',
     'ecommerce_celery',
     'payment',
+    'mailing',
 ]
 
 MIDDLEWARE = [
@@ -143,3 +144,17 @@ CELERY_BROKER_URL = 'redis://localhost:6379'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379'  
 CELERY_ACCEPT_CONTENT = ['application/json']  
 CELERY_RESULT_SERIALIZER = 'json'
+
+"""Email"""
+EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST_USER = 'admin@mail.com'
+# #add your host of the email here in this case its Gmail so we are going to use Gmail host
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_USE_TLS = True
+# #add the port number of the email server
+# EMAIL_PORT = 587
+# #add your gamil here
+# EMAIL_HOST_USER = 'naincygupta100@gmail.com'
+# #add your password here
+# EMAIL_HOST_PASSWORD = '<your_app_password>'
+# DEFAULT_FROM_EMAIL='Celery <naincygupta100@gmail.com>'
