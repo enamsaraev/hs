@@ -23,7 +23,7 @@ class Cart:
 
         self.cart = cart
 
-    def add_or_update(self, product, quantity, size, color, update):
+    def add_or_update(self, product, quantity, size, color, update) -> None:
         """Add or update a product in the cart"""
 
         product_slug = product.slug
@@ -46,7 +46,7 @@ class Cart:
 
         self.__save()
 
-    def delete(self, product):
+    def delete(self, product) -> None:
         """Removing a single product from the cart"""
 
         product_slug = product.slug
@@ -56,14 +56,14 @@ class Cart:
 
         self.__save()
 
-    def set_discount(self, discount):
+    def set_discount(self, discount) -> None:
         """Rewrite total price by a discount"""
 
         self.cart['discount'] = str(discount)
 
         self.__save()
 
-    def get_total_price(self):
+    def get_total_price(self) -> None:
         """Retrieving a total cart price"""
         
         if self.cart['discount'] != 0:
@@ -77,19 +77,19 @@ class Cart:
                     Decimal(self.cart['items'][item]['total_item_price']) for item in self.cart['items'].keys()
                 ))
 
-    def get_cart(self):
+    def get_cart(self) -> dict:
         """Retrieving a full product cart"""
         
         self.get_total_price()
         return self.cart
 
-    def clear_all_cart(self):
+    def clear_all_cart(self) -> None:
         """Clearing all cart session data"""
 
         del self._session[self._token] 
         self._session.modified = True
 
-    def __save(self):
+    def __save(self) -> None:
         """Saving current cart session"""
 
         self._session[self._token] = self.cart

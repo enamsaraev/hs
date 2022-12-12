@@ -12,7 +12,7 @@ from cart.cart import Cart
 class OrderApiView(APIView):
     """Class that creates an order model"""
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs) -> Response:
         """Post view"""
 
         cart = Cart(request)

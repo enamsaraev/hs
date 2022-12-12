@@ -10,7 +10,7 @@ from payment.yk import create_payment, check_payment
 
 
 @api_view(['POST'])
-def get_create_payment(request, *args, **kwargs):
+def get_create_payment(request, *args, **kwargs) -> Response:
     """Get a redirect url"""
 
     payment_data = create_payment(
@@ -31,7 +31,7 @@ def get_create_payment(request, *args, **kwargs):
 
 
 @api_view(['POST'])
-def get_success_payment(request, *args, **kwargs):
+def get_success_payment(request, *args, **kwargs) -> Response:
     """Retrun payment success info"""
     """Check if payment is successful"""
 

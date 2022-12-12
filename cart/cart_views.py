@@ -16,19 +16,19 @@ class CartApiView(APIView):
     """Cart views"""
 
     @staticmethod
-    def get_session_cart(request):
+    def get_session_cart(request) -> Cart:
         """Return session cart"""
 
         cart = Cart(request)
         return cart
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs) -> Response:
         """Cart retrieving"""
        
         cart = self.get_session_cart(request)
         return Response(cart.get_cart(), status=status.HTTP_200_OK)
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs) -> Response:
         """Cart add or update"""
 
         cart = self.get_session_cart(request)
@@ -48,7 +48,7 @@ class CartApiView(APIView):
 
         return Response({'msg': 'Bad input data'}, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, *args, **kwargs):
+    def delete(self, request, *args, **kwargs) -> Response:
         """Cart delete product"""
 
         cart = self.get_session_cart(request)
