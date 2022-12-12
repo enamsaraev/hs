@@ -10,7 +10,7 @@ Configuration.configure_auth_token('token-XXXXXXXX')
 #{"price": "4567.09", "description": "text"}
 
 
-def create_payment(price, description):
+def create_payment(price, description) -> dict:
     """Create a payment"""
 
     payment = Payment.create({
@@ -50,7 +50,7 @@ def create_payment(price, description):
     return json.loads(payment.json())
 
 
-def check_payment(payment_id):
+def check_payment(payment_id) -> bool:
     """Check if payment status is success"""
 
     payment = json.loads((Payment.find_one(payment_id)).json())

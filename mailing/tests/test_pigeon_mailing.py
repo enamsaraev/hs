@@ -1,6 +1,10 @@
 import pytest
 
+from mixer.backend.django import mixer
+
+from orders.models import Order
 from mailing.tasks import send_mail
+
 
 pytestmark = [pytest.mark.django_db]
 
@@ -19,6 +23,7 @@ ARGS = dict(
     to='test@mail.ru',
     message='msg',
     subject='Ebalo na nol',
+    order=None
 )
 
 

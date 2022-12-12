@@ -11,7 +11,7 @@ from coupon_api.models import Coupon
 
 
 @api_view(['POST'])
-def check_coupon(request, *args, **kwargs):
+def check_coupon(request, *args, **kwargs) -> Response:
     """Check if coupon is valid"""
 
     coupon = None

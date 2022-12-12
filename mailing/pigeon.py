@@ -2,8 +2,8 @@ from dataclasses import dataclass
 
 from django.conf import settings
 from django.core.mail import send_mail
-from django.utils.functional import cached_property
 
+from orders.models import Order
 from mailing.models import EmailEntry
 
 
@@ -12,13 +12,14 @@ class Pigeon:
     to: str
     message: str
     subject: str
+    order: Order = None
 
 
     def __call__(self) -> None:
         """Send email when initialize"""
 
         if self.is_sent_already:
-            return
+            return 'Bad'
 
         self.__msg()
         self.__write_email_log()
@@ -39,12 +40,17 @@ class Pigeon:
 
         EmailEntry.objects.update_or_create(
             email=self.to,
-            message=self.message
+            message=self.message,
+            order = self.order
         )
 
     @property
     def is_sent_already(self) -> bool:
         """Check if mail is already sent"""
         
-        return EmailEntry.objects.filter(email=self.to, message=self.message).exists()
+        return EmailEntry.objects.filter(
+            email=self.to, 
+            message=self.message,
+            order=self.order
+        ).exists()
     
