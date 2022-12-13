@@ -21,14 +21,14 @@ def get_create_payment(request, *args, **kwargs) -> Response:
     )
 
     order = Order.objects.get(id=request.data['id'])
-    order.set_payment_id(payment_data['id'])
+    order.set_payment_id(request.data['id'])
 
     return Response(
         {
             'url': payment_data['confirmation']['confirmation_url'],
             'id': payment_data['id']
         },
-        status==status.HTTP_200_OK
+        status=status.HTTP_200_OK
     )
 
 

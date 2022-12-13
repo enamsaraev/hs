@@ -18,11 +18,13 @@ class Pigeon:
     def __call__(self) -> None:
         """Send email when initialize"""
 
-        if self.is_sent_already:
-            return 'Bad'
+        if self.__is_sent_already():
+            return False
 
         self.__msg()
         self.__write_email_log()
+
+        return True
 
 
     def __msg(self) -> None:
@@ -44,8 +46,7 @@ class Pigeon:
             order = self.order
         )
 
-    @property
-    def is_sent_already(self) -> bool:
+    def __is_sent_already(self) -> bool:
         """Check if mail is already sent"""
         
         return EmailEntry.objects.filter(
