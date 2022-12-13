@@ -20,9 +20,9 @@ class OrderApiView(APIView):
 
         """Creating an order if serializer data is valid"""
 
-        result_order, order = order.processing_order(request.data) # создать неоплаченный заказ
+        order = order.processing_order(request.data) # создать неоплаченный заказ
         #payment перебросить
-        if result_order:
+        if order:
             cart.clear_all_cart()
             return Response({'order_id': order.id}, status=status.HTTP_201_CREATED)
         
