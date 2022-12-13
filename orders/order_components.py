@@ -13,7 +13,7 @@ class OrderComponent:
 
         coupon = None
 
-        if len(data['code']) > 1:
+        if 'code' in data:
             coupon=Coupon.objects.get(code=data['code'])
             
         res, order = self.set_order(data, coupon)
@@ -36,10 +36,10 @@ class OrderComponent:
         )
 
         if order:
-            return True, order
+            return order
 
         else:
-            return False, None
+            return None
 
     def set_order_data(self, order):
         """Creates all order items from the cart session""" 

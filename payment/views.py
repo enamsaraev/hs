@@ -8,6 +8,8 @@ from payment.models import PaymentData
 from payment.serializers import PaymentIdSerializer
 from payment.yk import create_payment, check_payment
 
+from mailing.tasks import send_mail
+
 
 @api_view(['POST'])
 def get_create_payment(request, *args, **kwargs) -> Response:
@@ -43,7 +45,13 @@ def get_success_payment(request, *args, **kwargs) -> Response:
             payment_id=request.data['payment_id'],
             order=order
         )
-        # celery deley
+        
+        send_mail.delay(
+            to='test@mail.com',
+            message='message',
+            subject='subject',
+            order=order
+        )
         return Response(status=status.HTTP_200_OK)
 
     return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)

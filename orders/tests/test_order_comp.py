@@ -52,7 +52,7 @@ def test_class_order_set_order_component():
     """Test a part od an order creation post method"""
 
     coupon_model = None
-    order = OrderComponent({})
+    order_comp = OrderComponent({})
 
     data = {
         'name': 'FAck',
@@ -62,10 +62,9 @@ def test_class_order_set_order_component():
         'total_price': 5678.09
     }
 
-    bool, res = order.set_order(data, coupon_model)
+    order_comp.set_order(data, coupon_model)
     order = Order.objects.get(name=data['name'])
 
-    assert bool == True
     assert order.name == data['name']
     assert order.coupon == coupon_model
 
