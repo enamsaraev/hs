@@ -51,14 +51,14 @@ def test_msg_params(to, message, subject, create_order):
     assert pigeon.order == order
 
 
-def test_return_bad_if_mail_is_already_sent(return_order_for_mail, return_sent_mail):
+def test_return_bad_if_mail_is_already_sent(return_sent_mail):
     """Assert fAlse if mail is already sent"""
 
     pigeon = Pigeon(
         to='fcknuuu@mail.com', 
         message='message', 
         subject='subject',
-        order=return_order_for_mail,
+        order=None
     )()
 
     assert pigeon == False

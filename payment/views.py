@@ -5,8 +5,8 @@ from rest_framework.response import Response
 from orders.models import Order
 
 from payment.models import PaymentData
-from payment.serializers import PaymentIdSerializer
 from payment.yk import create_payment, check_payment
+from payment.tasks import check_payments_status
 
 from mailing.tasks import send_mail
 
@@ -20,8 +20,13 @@ def get_create_payment(request, *args, **kwargs) -> Response:
         description=request.data['description'],
     )
 
-    order = Order.objects.get(id=request.data['id'])
-    order.set_payment_id(request.data['id'])
+    # order = Order.objects.get(id=request.data['id'])
+    # order.set_payment_id(request.data['id'])
+
+    check_payments_status.delay(
+        payment_id=payment_data['id'],
+        order_id=int(request.data['id'])
+    )
 
     return Response(
         {
@@ -57,3 +62,4 @@ def get_success_payment(request, *args, **kwargs) -> Response:
     return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 
+# {"id": "12", "price": "194.00", "description": "text"}

@@ -51,7 +51,9 @@ def check_payment(payment_id) -> bool:
     if payment['status']=='succeeded':
         return True
 
-    else:
+    elif payment['status'] == 'canceled':
         return False
+
+    return False
 
 
