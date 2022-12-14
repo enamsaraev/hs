@@ -18,7 +18,7 @@ class Pigeon:
     def __call__(self) -> None:
         """Send email when initialize"""
 
-        if self.__is_sent_already():
+        if self.__is_sent_already:
             return False
 
         self.__msg()
@@ -43,7 +43,6 @@ class Pigeon:
         EmailEntry.objects.update_or_create(
             email=self.to,
             message=self.message,
-            order = self.order
         )
 
     def __is_sent_already(self) -> bool:
@@ -52,6 +51,5 @@ class Pigeon:
         return EmailEntry.objects.filter(
             email=self.to, 
             message=self.message,
-            order=self.order
         ).exists()
     
