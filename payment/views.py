@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from orders.models import Order
 
 from payment.serializers import OrderIdSerializer
-from payment.yk import create_payment, check_payment
+from payment.yk import create_payment
 from payment.tasks import check_payments_status
 
 from mailing.tasks import send_mail
@@ -43,11 +43,10 @@ def send_notification_mail_with_payed_order(request, *args, **kwargs) -> Respons
     
     if serializer.is_valid():
         order = Order.objects.get(id=serializer.data['id'])
-        order.set_is_paid()
         
         send_mail.delay(
             to='test@mail.com',
-            message='messageee',
+            message='Спасибо за покупку!',
             subject=f'BABYEVE Заказ №{order.id}',
             order_id=order.id
         )

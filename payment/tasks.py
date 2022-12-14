@@ -24,6 +24,8 @@ def check_payments_status(payment_id: str, order_id: int):
 
     if payment['status']=='succeeded':
         order = Order.objects.get(id=order_id)
+        order.set_is_paid()
+
         PaymentData.objects.create(
             payment_id=payment_id,
             order=order
@@ -31,6 +33,4 @@ def check_payments_status(payment_id: str, order_id: int):
         print('Done')
 
     elif payment['status'] == 'canceled':
-        return False
-
-    return False
+        print('Canceled')
