@@ -4,7 +4,7 @@ from rest_framework.response import Response
 
 from orders.models import Order
 
-from payment.models import PaymentData
+from payment.serializers import OrderIdSerializer
 from payment.yk import create_payment, check_payment
 from payment.tasks import check_payments_status
 
@@ -19,9 +19,6 @@ def get_create_payment(request, *args, **kwargs) -> Response:
         price=request.data['price'],
         description=request.data['description'],
     )
-
-    # order = Order.objects.get(id=request.data['id'])
-    # order.set_payment_id(request.data['id'])
 
     check_payments_status.delay(
         payment_id=payment_data['id'],
@@ -38,28 +35,26 @@ def get_create_payment(request, *args, **kwargs) -> Response:
 
 
 @api_view(['POST'])
-def get_success_payment(request, *args, **kwargs) -> Response:
+def send_notification_mail_with_payed_order(request, *args, **kwargs) -> Response:
     """Retrun payment success info"""
     """Check if payment is successful"""
 
-    success = check_payment(id=request.data['payment_id'])
-
-    if success:
-        order = Order.objects.get(id=request.data['order_id'])
-        PaymentData.objects.create(
-            payment_id=request.data['payment_id'],
-            order=order
-        )
+    serializer = OrderIdSerializer(data=request.data)
+    
+    if serializer.is_valid():
+        order = Order.objects.get(id=serializer.data['id'])
+        order.set_is_paid()
         
         send_mail.delay(
             to='test@mail.com',
-            message='message',
-            subject='subject',
-            order=order
+            message='messageee',
+            subject=f'BABYEVE Заказ №{order.id}',
+            order_id=order.id
         )
         return Response(status=status.HTTP_200_OK)
 
-    return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
+
     
 
 # {"id": "12", "price": "194.00", "description": "text"}

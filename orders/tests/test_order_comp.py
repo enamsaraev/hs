@@ -31,18 +31,24 @@ def set_cart_session_data():
     """Setting a session data"""
 
     cart = {
-        'first_item': {
-            'quantity': 2,
-            'price': '678.07',
-            'size': 'M',
-            'color': 'White'
+        "items": {
+            'first_item': {
+                'quantity': 2,
+                'price': '678.07',
+                'size': 'M',
+                'color': 'White',
+                'total_item_price': '1356.14'
+            },
+            'second_item': {
+                'quantity': 3,
+                'price': '7654.14',
+                'size': 'S',
+                'color': 'Black',
+                'total_item_price': '22962.42'
+            }
         },
-        'second_item': {
-            'quantity': 3,
-            'price': '7654.14',
-            'size': 'S',
-            'color': 'Black'
-        }
+        "total": "24318.56",
+        "discount": 0
     }
 
     return cart

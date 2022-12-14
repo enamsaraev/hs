@@ -26,14 +26,24 @@ ARGS = dict(
     order=None
 )
 
+@pytest.fixture
+def current_mail_args():
+    order = mixer.blend(Order)
+    return dict(
+        to='test@mail.ru',
+        message='msg',
+        subject='Ebalo na nol',
+        order_id=order.id
+    )
 
-def test_init(init):
-    send_mail(**ARGS)
 
-    init.assert_called_once_with(**ARGS)
+def test_init(init, current_mail_args):
+    send_mail(**current_mail_args)
+
+    init.assert_called_once_with(**current_mail_args)
 
 
-def test_call(call):
-    send_mail(**ARGS)
+def test_call(call, current_mail_args):
+    send_mail(**current_mail_args)
 
     call.assert_called_once()

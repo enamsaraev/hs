@@ -45,6 +45,7 @@ class OrderComponent:
         """Creates all order items from the cart session""" 
         
         cart = self.cart.get_cart()
+        
         for item in cart['items']:
             var = Variation.objects.get_variation(
                 product_slug=item,
@@ -58,7 +59,7 @@ class OrderComponent:
                 order=order,
                 product_variation=var,
                 price=var.product.retail_price,
-                qunatity=int(cart['items'][item]['quantity'])
+                qunatity=int(cart[item]['quantity'])
             )
 
 
