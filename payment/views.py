@@ -36,24 +36,18 @@ def get_create_payment(request, *args, **kwargs) -> Response:
 
 @api_view(['POST'])
 def send_notification_mail_with_payed_order(request, *args, **kwargs) -> Response:
-    """Retrun payment success info"""
-    """Check if payment is successful"""
-
-    serializer = OrderIdSerializer(data=request.data)
+    """Retrun payment success info
+       Check if payment is successful"""
     
-    if serializer.is_valid():
-        order = Order.objects.get(id=serializer.data['id'])
-        
-        send_mail.delay(
-            to='test@mail.com',
-            message='Спасибо за покупку!',
-            subject=f'BABYEVE Заказ №{order.id}',
-            order_id=order.id
-        )
-        return Response(status=status.HTTP_200_OK)
-
-    return Response(status=status.HTTP_400_BAD_REQUEST)
-
+    order = Order.objects.get(id=int(request.data['id']))
+    
+    send_mail.delay(
+        to='test@mail.com',
+        message='Спасибо за покупку!',
+        subject=f'BABYEVE Заказ №{order.id}',
+        order_id=order.id
+    )
+    return Response(status=status.HTTP_200_OK)
     
 
 # {"id": "12", "price": "194.00", "description": "text"}

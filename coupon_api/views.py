@@ -1,12 +1,10 @@
-from django.shortcuts import get_object_or_404, render
-from django.utils import timezone
-from django.core.exceptions import ObjectDoesNotExist
-
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from cart.cart import Cart
+
+from coupon_api.coupon import CouponHelper
 from coupon_api.models import Coupon
 
 
@@ -14,26 +12,16 @@ from coupon_api.models import Coupon
 def check_coupon(request, *args, **kwargs) -> Response:
     """Check if coupon is valid"""
 
-    coupon = None
-    time_now = timezone.now()
+    coupon = CouponHelper()
+    coupon_check = coupon.set_coupon(code=request.data['code'])
+    print(coupon_check)
+    if isinstance(coupon_check, int):
+        cart = Cart(request)
+        cart.set_discount(coupon.coupon.discount)
 
-    try:
-        coupon = Coupon.objects.get(
-            code__iexact=request.data['code'],
-            valid_from__lte=time_now,
-            valid_to__gte=time_now,
-            is_active=True
-        )
+        return Response({'msg': 'ok'}, status=status.HTTP_200_OK)
 
-    except ObjectDoesNotExist:
-        return Response({'msg': 'Coupon is expired'}, status=status.HTTP_404_NOT_FOUND)
+    return Response({'msg': 'None'}, status=status.HTTP_200_OK)
 
-    if coupon.get_count() == 0:
-        return Response({'msg': 'Coupon is unavailable'}, status=status.HTTP_400_BAD_REQUEST)
-    
-    coupon.set_minus_count()
 
-    cart = Cart(request)
-    cart.set_discount(coupon.discount)
-
-    return Response({'msg': 'ok'}, status=status.HTTP_200_OK)
+#{"code": "GTrDe56OPL"}
