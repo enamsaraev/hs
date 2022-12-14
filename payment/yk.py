@@ -1,5 +1,4 @@
 import json
-import time
 import uuid
 
 from yookassa import Configuration, Payment
@@ -39,21 +38,5 @@ def create_payment(price, description) -> dict:
     return json.loads(payment.json())
 
 
-def check_payment(payment_id) -> bool:
-    """Check if payment status is success"""
-
-    payment = json.loads((Payment.find_one(payment_id)).json())
-
-    while payment['status'] == 'pending':
-        payment = json.loads((Payment.find_one(payment_id)).json())
-        time.sleep(3)
-
-    if payment['status']=='succeeded':
-        return True
-
-    elif payment['status'] == 'canceled':
-        return False
-
-    return False
 
 

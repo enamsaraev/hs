@@ -59,7 +59,7 @@ class OrderComponent:
                 order=order,
                 product_variation=var,
                 price=var.product.retail_price,
-                qunatity=int(cart[item]['quantity'])
+                qunatity=int(cart['items'][item]['quantity'])
             )
 
 

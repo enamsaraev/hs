@@ -2,7 +2,7 @@ import pytest
 
 from rest_framework.test import APIClient
 
-from payment.yk import create_payment, check_payment
+from payment.yk import create_payment
 
 
 api = APIClient()
@@ -30,5 +30,5 @@ def test_purchasing_a_confirmation_yookassa_url():
 
 #     data = return_purchase_data
 #     res = check_payment(data['id'])
-
-#     assert res == True
+    
+#     assert res['status']

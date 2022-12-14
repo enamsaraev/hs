@@ -10,7 +10,6 @@ from cart.serializers import CartDataSerializer
 
 from core.models import ProductInventory
 
-from mailing.tasks import send_mail
 
 class CartApiView(APIView):
     """Cart views"""
