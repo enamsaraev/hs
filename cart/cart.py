@@ -22,6 +22,8 @@ class Cart:
             }
 
         self.cart = cart
+        self.discount = ''
+        self.discount_purchase = False
 
     def add_or_update(self, product, quantity, size, color, update) -> None:
         """Add or update a product in the cart"""
@@ -42,8 +44,6 @@ class Cart:
 
         self.cart['items'][product_slug]['total_item_price'] = str(Decimal(product.retail_price) * quantity)
 
-        self.get_total_price()
-
         self.__save()
 
     def delete(self, product) -> None:
@@ -56,31 +56,47 @@ class Cart:
 
         self.__save()
 
+    def __check_coupon(self) -> None:
+        """Check if coupon is purchased"""
+
+        if self.discount_purchase:
+            self.cart['discount'] = int(self.discount)
+
+            self.__save()
+        
     def set_discount(self, discount) -> None:
         """Rewrite total price by a discount"""
 
-        self.cart['discount'] = str(discount)
+        self.discount = str(discount)
+        self.discount_purchase = True
 
-        self.__save()
+    def __item_price_set_with_discount(self):
+        """Set item price with discount"""
 
-    def get_total_price(self) -> None:
+        if self.discount_purchase:
+            for item in self.cart['items']:
+                item_price = self.cart['items'][item]['total_item_price']
+                self.cart['items'][item]['total_item_price'] = str(Decimal(item_price) * (100-int(self.discount)) / 100)
+
+            self.__save()
+
+        self.discount_purchase = False
+
+    def __get_total_price(self) -> None:
         """Retrieving a total cart price"""
         
-        if self.cart['discount'] != 0:
-            total_sum_without_duscount = sum(
+        self.cart['total'] = str(sum(
                 Decimal(self.cart['items'][item]['total_item_price']) for item in self.cart['items'].keys()
-            )
-            self.cart['total'] = str(total_sum_without_duscount * int(self.cart['discount']) / 100)
-        
-        else:
-            self.cart['total'] = str(sum(
-                    Decimal(self.cart['items'][item]['total_item_price']) for item in self.cart['items'].keys()
-                ))
+            ))
 
     def get_cart(self) -> dict:
         """Retrieving a full product cart"""
         
-        self.get_total_price()
+        self.__check_coupon()
+        self.__item_price_set_with_discount()
+        self.__get_total_price()
+        self.__save()
+
         return self.cart
 
     def clear_all_cart(self) -> None:
