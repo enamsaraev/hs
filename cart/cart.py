@@ -1,3 +1,4 @@
+import json
 from decimal import Decimal
 
 from rest_framework.exceptions import ParseError
@@ -17,34 +18,34 @@ class Cart:
         if not cart:
             cart = self._session[self._token] = {
                 'items': {},
-                'total': 0,
-                'discount': 0
+                'total': '',
+                'discount': {'code': '', 'percent': 0, 'purchased': False}
             }
 
         self.cart = cart
-        self.discount = ''
-        self.discount_purchase = False
 
     def add_or_update(self, product, quantity, size, color, update) -> None:
         """Add or update a product in the cart"""
 
         product_slug = product.slug
+        product_price = product.retail_price
 
-        if update:
+        if update and product_slug in self.cart:
+            
             self.cart['items'][product_slug]['quantity'] = quantity
             self.cart['items'][product_slug]['size'] = size
             self.cart['items'][product_slug]['color'] = color
-        else:
+
+        if product_slug not in self.cart:
             self.cart['items'][product_slug] = {
                 'size': size,
                 'color': color,
                 'quantity': quantity,
-                'price': str(product.retail_price),
+                'price': str(product_price),
             }
 
-        self.cart['items'][product_slug]['total_item_price'] = str(Decimal(product.retail_price) * quantity)
-
         self.__save()
+        self.__item_price_set(product_slug, product_price, quantity)
 
     def delete(self, product) -> None:
         """Removing a single product from the cart"""
@@ -56,44 +57,48 @@ class Cart:
 
         self.__save()
 
-    def __check_coupon(self) -> None:
-        """Check if coupon is purchased"""
-
-        if self.discount_purchase:
-            self.cart['discount'] = int(self.discount)
-
-            self.__save()
-        
-    def set_discount(self, discount) -> None:
+    def set_discount(self, code: str, discount: int) -> None:
         """Rewrite total price by a discount"""
 
-        self.discount = str(discount)
-        self.discount_purchase = True
+        self.cart['discount']['code'] = code
+        self.cart['discount']['percent'] = discount
+        self.cart['discount']['purchased'] = True
+
+        self.__save()
+
+    def __check_coupon(self) -> None:
+        """Check if coupon is purchased"""
+        
+        if self.cart['discount']['purchased']:
+            self.__item_price_set_with_discount()
+
+    def __item_price_set(self, product_slug, product_price, quantity):
+        """Set item price"""
+        
+        self.cart['items'][product_slug]['total_item_price'] = str(Decimal(product_price) * quantity)
+        self.__save()
 
     def __item_price_set_with_discount(self):
         """Set item price with discount"""
 
-        if self.discount_purchase:
-            for item in self.cart['items']:
-                item_price = self.cart['items'][item]['total_item_price']
-                self.cart['items'][item]['total_item_price'] = str(Decimal(item_price) * (100-int(self.discount)) / 100)
-
-            self.__save()
-
-        self.discount_purchase = False
+        for item in self.cart['items'].keys():
+            item_price = Decimal(self.cart['items'][item]['total_item_price'])
+            self.cart['items'][item]['total_item_price'] = str(item_price * (100-self.cart['discount']['percent']) / 100)
+        
+        self.cart['discount']['purchased'] = False
+        self.__save()
 
     def __get_total_price(self) -> None:
         """Retrieving a total cart price"""
-        
+
         self.cart['total'] = str(sum(
-                Decimal(self.cart['items'][item]['total_item_price']) for item in self.cart['items'].keys()
-            ))
+            Decimal(self.cart['items'][item]['total_item_price']) for item in self.cart['items'].keys()
+        ))
 
     def get_cart(self) -> dict:
         """Retrieving a full product cart"""
         
         self.__check_coupon()
-        self.__item_price_set_with_discount()
         self.__get_total_price()
         self.__save()
 

@@ -60,7 +60,7 @@ def test_coupon_model_creation_successful(db, coupon_factory, code, valid_from, 
     'code, count, status_code, msg',
     [ 
         ('GTrDe56OPL', 20, 200, 'ok'),
-        ('HU87TgbRR', 0, 400, 'Coupon is unavailable'),
+        ('HU87TgbRR', 0, 400, 'None'),
     ]
 )
 def test_check_coupon(set_coupons, code, count, status_code, msg):
@@ -71,6 +71,7 @@ def test_check_coupon(set_coupons, code, count, status_code, msg):
     }
 
     res = api.post(reverse('coupon:coupon_check'), HTTP_TOKEN='token', data=response_data)
+
     assert res.status_code == status_code
     assert res.json()['msg'] == msg
 

@@ -1,5 +1,5 @@
 import pytest
-import requests
+import json
 
 from mixer.backend.django import mixer
 from decimal import Decimal
@@ -74,7 +74,7 @@ def test_cart_adding_a_product(get_hoodie_black_product, quantity, color, size, 
     assert res.status_code == 201
     assert res_data['items']['hoodie-black']['quantity'] == quantity
     assert res_data['items']['hoodie-black']['price'] == '97.00'
-    assert res_data['total']== str(Decimal('97.00') * quantity)
+    assert res_data['total'] == str(Decimal('97.00') * quantity)
 
 
 @pytest.mark.cartapi

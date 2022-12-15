@@ -12,16 +12,18 @@ from coupon_api.models import Coupon
 def check_coupon(request, *args, **kwargs) -> Response:
     """Check if coupon is valid"""
 
+    code = request.data['code']
+
     coupon = CouponHelper()
-    coupon_check = coupon.set_coupon(code=request.data['code'])
-    print(coupon_check)
-    if isinstance(coupon_check, int):
+    discount = coupon.set_coupon(code=code)
+
+    if isinstance(discount, int):
         cart = Cart(request)
-        cart.set_discount(coupon.coupon.discount)
+        cart.set_discount(code, discount)
 
         return Response({'msg': 'ok'}, status=status.HTTP_200_OK)
 
-    return Response({'msg': 'None'}, status=status.HTTP_200_OK)
+    return Response({'msg': 'None'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 #{"code": "GTrDe56OPL"}
