@@ -21,14 +21,13 @@ class CouponHelper:
                 valid_to__gte=time_now,
                 is_active=True
             )
-            print(self.coupon)
 
         except ObjectDoesNotExist:
-            return 'None'
+            return None, None
 
-        return self.__return_discount()
+        return self.__return_discount(code)
 
-    def __return_discount(self):
+    def __return_discount(self, code):
         """Return coupon discount"""
         if self.coupon.get_count() == 0:
             return 'Expired'

@@ -89,7 +89,7 @@ def test_class_order_set_order_data_component(set_cart_session_data, set_var):
     res = OrderItems.objects.all()[0:2]
 
     var_after = Variation.objects.last()
-    assert var_after.count == var_before.count - set_cart_session_data['second_item']['quantity']
+    assert var_after.count == var_before.count - set_cart_session_data['items']['second_item']['quantity']
 
     assert res[0].product_variation == Variation.objects.get(size=Size.objects.get(value='M'))
     assert res[1].product_variation == Variation.objects.get(size=Size.objects.get(value='S'))

@@ -6,6 +6,7 @@ from rest_framework.test import APIRequestFactory
 
 from cart.cart import Cart
 from core.models import ProductInventory
+from coupon_api.models import Coupon
 
 
 BASE_URL = 'http://127.0.0.1:8000'
@@ -47,8 +48,12 @@ def return_request(db):
                 "total_item_price": "500.00"
             }
         },
-        'total': 694.00,
-        'discount': 0
+        'total': '694.00',
+        'discount': {
+            "code": "",
+            "percent": 0,
+            "purchased": False
+        }
     }
     request.session.save()
 
@@ -105,10 +110,13 @@ def test_cart_delete_component(return_cart):
 def test_cart_set_discount_component(return_cart):
     """Test set_discoumt cart method"""
 
+    coupon = mixer.blend(Coupon, discount=20)
     cart = return_cart
-    cart.set_discount(20)
+    cart.set_discount(coupon.code, coupon.discount)
 
-    assert cart.get_cart()['discount'] == '20'
+    assert cart.get_cart()['discount']['code'] == coupon.code
+    assert cart.get_cart()['discount']['percent'] == coupon.discount
+    assert cart.get_cart()['discount']['purchased'] == False
 
 def test_cart_get_total_price(return_cart):
     """Test get_total_price cart method"""
