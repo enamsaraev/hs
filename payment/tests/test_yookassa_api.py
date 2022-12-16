@@ -16,14 +16,14 @@ def return_purchase_data():
         '1234.07', 'some products to the pay method'
     )
 
-def test_purchasing_a_confirmation_yookassa_url():
-    """Test getting a conf url"""
+# def test_purchasing_a_confirmation_yookassa_url():
+#     """Test getting a conf url"""
 
-    data = create_payment(
-        '1234.07', 'some products to the pay method'
-    )
+#     data = create_payment(
+#         '1234.07', 'some products to the pay method'
+#     )
 
-    assert data['id'] in data['confirmation']['confirmation_url']
+#     assert data['id'] in data['confirmation']['confirmation_url']
 
 # def test_success_payment_status(return_purchase_data):
 #     """Test on success payment status"""
