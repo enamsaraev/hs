@@ -15,7 +15,8 @@ pytestmark = [pytest.mark.django_db]
 
 @pytest.fixture
 def return_order_for_mail():
-    """"""
+    """Return order model"""
+
     return mixer.blend(Order)
 
 @pytest.fixture
@@ -45,7 +46,7 @@ def test_msg_params(return_order_for_mail, to, message, subject):
 
 
 def test_return_bad_if_mail_is_already_sent(return_order_for_mail, return_sent_mail):
-    """Assert fAlse if mail is already sent"""
+    """Assert false if mail is already sent"""
 
     pigeon = Pigeon(
         to='fcknuuu@mail.com', 

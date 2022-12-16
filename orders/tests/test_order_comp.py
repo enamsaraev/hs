@@ -1,11 +1,13 @@
 import pytest
 
 from mixer.backend.django import mixer
+from django.contrib.sessions.middleware import SessionMiddleware
+from rest_framework.test import APIRequestFactory
 
-from coupon_api.models import Coupon
 from core.models import ProductInventory, Size, Color, Variation
 from orders.models import Order, OrderItems
 from orders.order_components import OrderComponent
+from cart.cart import Cart
 
 
 pytestmark = [pytest.mark.django_db]
@@ -27,38 +29,56 @@ def set_var():
 
 
 @pytest.fixture
-def set_cart_session_data():
-    """Setting a session data"""
+def set_cart_session_data(db):
+    """Retrieving a cart with some session data"""
 
-    cart = {
-        "items": {
-            'first_item': {
-                'quantity': 2,
-                'price': '678.07',
-                'size': 'M',
-                'color': 'White',
-                'total_item_price': '1356.14'
+    fct = APIRequestFactory()
+
+    token_headers = {'HTTP_TOKEN': 'token'}
+    request = fct.get(
+        'http://127.0.0.1:8000/cart/', 
+        **token_headers,
+    )
+
+    middleware = SessionMiddleware(lambda x: None)
+    middleware.process_request(request)
+
+    request.session['token'] = {
+        'items': {
+            "first_item": {
+                "size": "M",
+                "color": "White",
+                "quantity": 2,
+                "price": "678.07",
+                "total_item_price": "1356.14"
             },
-            'second_item': {
-                'quantity': 3,
-                'price': '7654.14',
-                'size': 'S',
-                'color': 'Black',
-                'total_item_price': '22962.42'
+            "second_item": {
+                "size": "S",
+                "color": "Black",
+                "quantity": 5,
+                "price": "7654.14",
+                "total_item_price": "38270.70"
             }
         },
-        "total": "24318.56",
-        "discount": 0
+        'total': '39626.84',
+        'discount': {
+            "code": "",
+            "percent": 0,
+            "purchased": False
+        }
     }
+    request.session.save()
 
-    return cart
+    return request
 
 
-def test_class_order_set_order_component():
+def test_class_order_set_order_component(set_cart_session_data):
     """Test a part od an order creation post method"""
 
+    cart = Cart(set_cart_session_data)
+
     coupon_model = None
-    order_comp = OrderComponent({})
+    order_comp = OrderComponent(cart)
 
     data = {
         'name': 'FAck',
@@ -78,7 +98,9 @@ def test_class_order_set_order_component():
 def test_class_order_set_order_data_component(set_cart_session_data, set_var):
     """Test a part of an order creation post method"""
     
-    order = OrderComponent(set_cart_session_data)
+    cart = Cart(set_cart_session_data)
+
+    order = OrderComponent(cart)
     current_order_model = mixer.blend(Order)
 
     var_before = Variation.objects.last()
@@ -89,7 +111,7 @@ def test_class_order_set_order_data_component(set_cart_session_data, set_var):
     res = OrderItems.objects.all()[0:2]
 
     var_after = Variation.objects.last()
-    assert var_after.count == var_before.count - set_cart_session_data['items']['second_item']['quantity']
+    assert var_after.count == var_before.count - cart.get_cart()['items']['second_item']['quantity']
 
     assert res[0].product_variation == Variation.objects.get(size=Size.objects.get(value='M'))
     assert res[1].product_variation == Variation.objects.get(size=Size.objects.get(value='S'))
