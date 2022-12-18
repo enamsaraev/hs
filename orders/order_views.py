@@ -23,7 +23,6 @@ class OrderApiView(APIView):
         order = order.processing_order(request.data) # создать неоплаченный заказ
         #payment перебросить
         if order:
-            cart.clear_all_cart()
             return Response({'order_id': order.id}, status=status.HTTP_201_CREATED)
         
         return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)

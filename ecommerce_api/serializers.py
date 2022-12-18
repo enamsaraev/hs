@@ -43,7 +43,7 @@ class VariationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Variation
-        fields = ('color', 'size')
+        fields = ('color', 'size', 'count')
 
 
 class ProductInventoryCardSerializer(serializers.ModelSerializer):

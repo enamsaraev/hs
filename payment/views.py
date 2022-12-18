@@ -4,7 +4,8 @@ from rest_framework.response import Response
 
 from orders.models import Order
 
-from payment.serializers import OrderIdSerializer
+from cart.cart import Cart
+
 from payment.yk import create_payment
 from payment.tasks import check_payments_status
 
@@ -28,7 +29,7 @@ def get_create_payment(request, *args, **kwargs) -> Response:
     return Response(
         {
             'url': payment_data['confirmation']['confirmation_url'],
-            'id': payment_data['id']
+            'id': payment_data['id'] #??????
         },
         status=status.HTTP_200_OK
     )
@@ -40,6 +41,7 @@ def send_notification_mail_with_payed_order(request, *args, **kwargs) -> Respons
        Check if payment is successful"""
     
     order = Order.objects.get(id=int(request.data['id']))
+    cart = Cart(request)
     
     send_mail.delay(
         to='test@mail.com',
