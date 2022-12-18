@@ -26,7 +26,6 @@ class Pigeon:
 
         return True
 
-
     def __msg(self) -> None:
         """Sending email"""
 
