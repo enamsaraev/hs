@@ -14,7 +14,7 @@ class VariationManager(models.Manager):
         """"""
         variation = self.get_queryset().get(
             product=ProductInventory.objects.get(slug=product_slug),
-            size=Size.objects.get(value=size),
+            size=Size.objects.get(value=size, is_deleted=False),
             color=Color.objects.get(value=color)
         )
 
