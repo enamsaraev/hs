@@ -4,12 +4,11 @@ import json
 import time 
 
 from yookassa import Payment
-
 from celery import shared_task
 
 from orders.models import Order
-from payment.models import PaymentData
 
+from payment.models import PaymentData
 
 
 @shared_task
