@@ -25,9 +25,9 @@ class CouponHelper:
         except ObjectDoesNotExist:
             return None, None
 
-        return self.__return_discount(code)
+        return self.__return_discount()
 
-    def __return_discount(self, code):
+    def __return_discount(self):
         """Return coupon discount"""
         if self.coupon.get_count() == 0:
             return 'Expired'

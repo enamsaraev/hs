@@ -8,7 +8,7 @@ class OrderComponent:
 
         self.cart = cart
 
-    def processing_order(self, data):
+    def processing_order(self, data: dict):
         """Main function in creating order"""
 
         coupon = None
@@ -23,7 +23,7 @@ class OrderComponent:
 
             return order
 
-    def set_order(self, data, coupon):
+    def set_order(self, data: dict, coupon: object):
         """Create order"""
 
         order = Order.objects.create(
@@ -41,7 +41,7 @@ class OrderComponent:
         else:
             return None
 
-    def set_order_data(self, order):
+    def set_order_data(self, order: object):
         """Creates all order items from the cart session""" 
         
         cart = self.cart.get_cart()

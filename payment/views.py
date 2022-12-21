@@ -31,7 +31,7 @@ def send_notification_mail_with_payed_order(request, *args, **kwargs) -> Respons
     return Response(status=status.HTTP_200_OK)
     
 
-def get_create_payment(price, description, order_id) -> Response:
+def get_create_payment(price: str, description: str, order_id: int) -> dict:
     """Get a redirect url"""
 
     payment_data = create_payment(
@@ -41,7 +41,7 @@ def get_create_payment(price, description, order_id) -> Response:
 
     check_payments_status.delay(
         payment_id=payment_data['id'],
-        order_id=int(order_id)
+        order_id=order_id
     )
 
     return payment_data

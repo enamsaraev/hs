@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from core.models import Category, Product, ProductInventory, Variation, Size, Color
+from core.models import Category, Product, ProductInventory, Media, Variation, Size, Color
 
 
 class VariationInline(admin.StackedInline):
@@ -8,6 +8,14 @@ class VariationInline(admin.StackedInline):
 
     model = Variation
     extra = 3
+
+
+class MediaInline(admin.StackedInline):
+    """Inline variations"""
+
+    model = Media
+    extra = 3
+
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -29,7 +37,7 @@ class ProductInventoryAdmin(admin.ModelAdmin):
     list_filter = ('is_deleted', 'is_active',)
     search_fields = ('name',)
 
-    inlines = [VariationInline]
+    inlines = [MediaInline, VariationInline]
 
 
 @admin.register(Size)
@@ -52,5 +60,7 @@ class VariationAdmin(admin.ModelAdmin):
     list_filter = ('is_deleted', 'is_active',)
     search_fields = ('product',)
     
+
+# admin.site.register(Media)
 
 

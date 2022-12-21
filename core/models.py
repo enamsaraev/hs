@@ -114,6 +114,14 @@ class Product(models.Model):
 class Media(models.Model):
     """Media imges for the product"""
 
+    product = models.ForeignKey(
+        'ProductInventory',
+        related_name = 'medias',
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        default=None
+    )
     img = models.ImageField(upload_to='img/')
     is_default = models.BooleanField(
         default=False,
@@ -181,13 +189,6 @@ class ProductInventory(models.Model):
                 "max_length": _("Цена товара должна быть между 0 и 99999.99."),
             },
         },
-    )
-    media = models.ManyToManyField(
-        'Media',
-        blank=True,
-        null=True,
-        verbose_name=_('Фото товара'),
-        help_text=_('Связана с Медиа')
     )
     description = models.TextField(
         unique=False,
