@@ -19,7 +19,7 @@ Configuration.account_id = 967176
 Configuration.secret_key = 'test_wE6Q6Zb5FGPWrfJRlg1ynZaj66RKdeYf52CyOzyJ_KE'
 
 
-def create_payment(price, description) -> dict:
+def create_payment(price: str, description: str) -> dict:
     """Create a payment"""
 
     payment = Payment.create({

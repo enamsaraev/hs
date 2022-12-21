@@ -24,7 +24,7 @@ class Cart:
 
         self.cart = cart
 
-    def add_or_update(self, product, quantity, size, color, update) -> None:
+    def add_or_update(self, product: object, quantity: int, size: str, color: str, update: bool) -> None:
         """Add or update a product in the cart"""
 
         product_slug = product.slug
@@ -47,7 +47,7 @@ class Cart:
         self.__save()
         self.__item_price_set(product_slug, product_price, quantity)
 
-    def delete(self, product) -> None:
+    def delete(self, product: object) -> None:
         """Removing a single product from the cart"""
 
         product_slug = product.slug
@@ -72,7 +72,7 @@ class Cart:
         if self.cart['discount']['purchased']:
             self.__item_price_set_with_discount()
 
-    def __item_price_set(self, product_slug, product_price, quantity):
+    def __item_price_set(self, product_slug: str, product_price: Decimal, quantity: int):
         """Set item price"""
         
         self.cart['items'][product_slug]['total_item_price'] = str(Decimal(product_price) * quantity)

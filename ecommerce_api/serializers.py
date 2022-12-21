@@ -46,19 +46,30 @@ class VariationSerializer(serializers.ModelSerializer):
         fields = ('color', 'size', 'count')
 
 
+class MediaSerializer(serializers.ModelSerializer):
+    """Media serializer"""
+
+    class Meta:
+        model = models.Media
+        fields = ('img',)
+
+
 class ProductInventoryCardSerializer(serializers.ModelSerializer):
     """Product inventory card serializer"""
 
     variations = VariationSerializer(many=True)
+    medias = MediaSerializer(many=True)
 
     class Meta:
         model = models.ProductInventory
-        fields = ('name', 'retail_price', 'description', 'variations',)
+        fields = ('name', 'retail_price', 'description', 'variations', 'medias')
 
 
 class ProductInventorySerializer(serializers.ModelSerializer):
     """Product inventory list serializer"""
 
+    medias = MediaSerializer(many=True, read_only=True)
+
     class Meta:
         model = models.ProductInventory
-        fields = ('name', 'retail_price', 'description',)
+        fields = ('name', 'retail_price', 'description', 'medias')
