@@ -3,8 +3,6 @@ import uuid
 
 from yookassa import Configuration, Payment
 
-from payment import config
-
 
 # Configuration.configure_auth_token('token-XXXXXXXX')
 #{"price": "4567.09", "description": "text"}
