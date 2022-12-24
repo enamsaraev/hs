@@ -23,7 +23,7 @@ def return_order_for_mail():
 def return_sent_mail(return_order_for_mail):
     """Set an alredy sent mail"""
 
-    return mixer.blend(
+    mixer.blend(
         EmailEntry, 
         to='fcknuuu@mail.com',
         message='message',
@@ -55,7 +55,7 @@ def test_return_bad_if_mail_is_already_sent(return_order_for_mail, return_sent_m
         order_id=return_order_for_mail.id
     )()
 
-    assert pigeon == None
+    assert not pigeon
 
 
 

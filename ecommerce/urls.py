@@ -19,12 +19,12 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('orders/', include('orders.urls')),
-    path('cart/', include('cart.urls')),
-    path('shop/', include('ecommerce_api.urls')),
-    path('coupon/', include('coupon_api.urls')),
-    path('payment/', include('payment.urls')),
+    path('api/admin/', admin.site.urls),
+    path('api/orders/', include('orders.urls')),
+    path('api/cart/', include('cart.urls')),
+    path('api/shop/', include('ecommerce_api.urls')),
+    path('api/coupon/', include('coupon_api.urls')),
+    path('api/payment/', include('payment.urls')),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
