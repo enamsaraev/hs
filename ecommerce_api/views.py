@@ -8,8 +8,8 @@ from ecommerce_api import serializers
 class CatalogList(ListAPIView):
     """Retrieving a list of categories"""
 
-    serializer_class = serializers.CategorySerializer
-    queryset = models.Category.objects.filter(is_active=True)
+    serializer_class = serializers.ProductSerializer
+    queryset = models.Product.objects.filter(is_active=True)
 
 
 class ProductList(ListAPIView):
