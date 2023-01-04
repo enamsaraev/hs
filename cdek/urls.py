@@ -6,5 +6,5 @@ from cdek.views import get_offices_list
 app_name = 'cdek'
 
 urlpatterns = [
-    path('offices/', get_offices_list, name='cdek-city-offices'),
+    path('prices/', get_offices_list, name='cdek-calculate-prices'),
 ]
