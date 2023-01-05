@@ -7,8 +7,8 @@ def get_create_payment(
         price: str, description: str, order_id: int, 
         to: str, message: str
     ) -> dict:
-    """Get a redirect url"""
 
+    """Get a redirect url"""
     payment_data = create_payment(
         price=price,
         description=description,

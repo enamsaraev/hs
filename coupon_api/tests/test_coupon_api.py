@@ -21,8 +21,8 @@ api = APIClient()
 def set_coupons():
     """Create a coupon model"""
 
-    mixer.blend(Coupon, code='GTrDe56OPL', valid_from='2022-11-20 22:14:18', valid_to='2022-12-29 22:14:18', count=20)
-    mixer.blend(Coupon, code='HU87TgbRR', valid_from='2022-11-20 22:14:18', valid_to='2022-12-29 22:14:18', count=0)
+    mixer.blend(Coupon, code='GTrDe56OPL', valid_from='2022-11-20 22:14:18', valid_to='2023-03-03 22:14:18', count=20)
+    mixer.blend(Coupon, code='HU87TgbRR', valid_from='2022-11-20 22:14:18', valid_to='2023-03-03 22:14:18', count=0)
 
 
 @freeze_time('2021-11-24')
@@ -75,7 +75,7 @@ def test_check_coupon(set_coupons, code, count, status_code, msg):
     assert res.status_code == status_code
     assert res.json()['msg'] == msg
 
-    """IF DONT WORK TRY TO UPDATE COUPON.COUNT FIELD"""
+    """IF DOESNT WORK TRY TO UPDATE COUPON.COUNT FIELD"""
 
 def test_coupon_set_minus_count():
     """Test set minus count coupon method"""

@@ -10,9 +10,8 @@ from ecommerce_celery.celery import app
 from mailing.pigeon import Pigeon
 
 
-@shared_task
-def send_mail(payment_id: str, to: str, message: str, subject: str, order_id: int):
-    """Async email sending"""
+def check_succed_payment_retr(payment_id: str):
+    """"""
 
     payment = json.loads((Payment.find_one(payment_id)).json())
 
@@ -21,6 +20,15 @@ def send_mail(payment_id: str, to: str, message: str, subject: str, order_id: in
         time.sleep(3)
 
     if payment['status']=='succeeded':
+        return True
+
+    return False
+
+@shared_task
+def send_mail(payment_id: str, to: str, message: str, subject: str, order_id: int):
+    """Async email sending"""
+
+    if check_succed_payment_retr(payment_id):
 
         Pigeon(
             to=to,
