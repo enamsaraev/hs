@@ -1,9 +1,8 @@
 from django.shortcuts import get_object_or_404
 
-from rest_framework import status, serializers
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.exceptions import ParseError
 
 from cart.cart import Cart
 from cart.serializers import CartDataSerializer

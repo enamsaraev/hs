@@ -1,18 +1,30 @@
 from __future__ import absolute_import, unicode_literals
 
+import json, time
+
+from yookassa import Payment
+from celery import shared_task
+
 from ecommerce_celery.celery import app
 
-from orders.models import Order
 from mailing.pigeon import Pigeon
 
 
-@app.task
-def send_mail(to: str, message: str, subject: str, order_id: int):
+@shared_task
+def send_mail(payment_id: str, to: str, message: str, subject: str, order_id: int):
     """Async email sending"""
 
-    Pigeon(
-        to=to,
-        message=message,
-        subject=subject,
-        order_id=order_id,
-    )()
+    payment = json.loads((Payment.find_one(payment_id)).json())
+
+    while payment['status'] == 'pending':
+        payment = json.loads((Payment.find_one(payment_id)).json())
+        time.sleep(3)
+
+    if payment['status']=='succeeded':
+
+        Pigeon(
+            to=to,
+            message=message,
+            subject=subject,
+            order_id=order_id,
+        )()
