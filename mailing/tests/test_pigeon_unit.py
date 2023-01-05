@@ -23,12 +23,7 @@ def return_order_for_mail():
 def return_sent_mail(return_order_for_mail):
     """Set an alredy sent mail"""
 
-    mixer.blend(
-        EmailEntry, 
-        to='fcknuuu@mail.com',
-        message='message',
-        order=return_order_for_mail,
-    )
+    return mixer.blend(EmailEntry, order=mixer.blend(Order))
 
 @pytest.mark.parametrize(('to, message, subject'), [ 
     ('fcknu@mail.com', 'message', 'subject')
@@ -49,13 +44,13 @@ def test_return_bad_if_mail_is_already_sent(return_order_for_mail, return_sent_m
     """Assert false if mail is already sent"""
 
     pigeon = Pigeon(
-        to='fcknuuu@mail.com', 
-        message='message', 
+        to=return_sent_mail.email, 
+        message=return_sent_mail.message, 
         subject='subject',
-        order_id=return_order_for_mail.id
+        order_id=return_sent_mail.order.id
     )()
 
-    assert not pigeon
+    assert pigeon == None
 
 
 

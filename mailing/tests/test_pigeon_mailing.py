@@ -1,9 +1,11 @@
 import pytest
 
+from unittest.mock import patch
+
 from mixer.backend.django import mixer
 
 from orders.models import Order
-from mailing.tasks import send_mail
+from mailing.tasks import check_succed_payment_retr, send_mail
 
 
 pytestmark = [pytest.mark.django_db]
@@ -19,31 +21,40 @@ def call(mocker):
     return mocker.patch('mailing.tasks.Pigeon.__call__')
 
 
-ARGS = dict(
-    to='test@mail.ru',
-    message='msg',
-    subject='Ebalo na nol',
-    order=None
-)
-
 @pytest.fixture
-def current_mail_args():
-    order = mixer.blend(Order)
-    return dict(
+def current_order_args():
+    return mixer.blend(Order)
+    
+
+@patch('mailing.tasks.check_succed_payment_retr')
+def test_init(mock_fn, init, current_order_args):
+    mock_fn.return_value = True
+    send_mail(
+        payment_id='hfdhfd67',
         to='test@mail.ru',
         message='msg',
         subject='Ebalo na nol',
-        order_id=order.id
+        order_id=current_order_args.id
+    )
+
+    init.assert_called_once_with(
+        to='test@mail.ru',
+        message='msg',
+        subject='Ebalo na nol',
+        order_id=current_order_args.id
     )
 
 
-def test_init(init, current_mail_args):
-    send_mail(**current_mail_args)
-
-    init.assert_called_once_with(**current_mail_args)
-
-
-def test_call(call, current_mail_args):
-    send_mail(**current_mail_args)
+@patch('mailing.tasks.check_succed_payment_retr')
+def test_call(mock_fn, call, current_order_args):
+    
+    mock_fn.return_value = True
+    send_mail(
+        payment_id='hfdhfd67',
+        to='test@mail.ru',
+        message='msg',
+        subject='Ebalo na nol',
+        order_id=current_order_args.id
+        )
 
     call.assert_called_once()

@@ -36,12 +36,11 @@ def auth_cdek_and_get_amount(to_location: str):
             "grant_type": "client_credentials",
             "client_id": "EMscd6r9JnFiQ3bLoyjJY6eM78JrJceI",
             "client_secret": "PjLZkKBHEiLK3YsjtNrt3TGNG0ahs3kG"
-        }
+        },
     )
     if auth.status_code == 200:
         token = auth.json().get('access_token')
         return get_calculate_total_amount(to_location, token)
+        
 
-    else:
-        return str(auth.status_code)
 

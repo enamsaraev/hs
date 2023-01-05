@@ -40,4 +40,4 @@ class OrderApiView(APIView):
 
             )
         
-        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
