@@ -1,11 +1,12 @@
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.exceptions import ParseError
+
+from django.http import HttpResponseRedirect
 
 from mailing.helpers import MsgHelper
 from cart.cart import Cart
-from payment.views import get_create_payment
+from payment.helpers import get_create_payment
 
 from orders.order_components import OrderComponent
 
@@ -28,13 +29,15 @@ class OrderApiView(APIView):
             payment_data = get_create_payment(
                 price=request.data['total_price'],
                 description=msg,
-                order_id=order.id
+                order_id=order.id,
+                to=order.email,
+                message=msg,
             )
             return Response(
                 {
                     'url': payment_data['confirmation']['confirmation_url'],
                 },
-                status=status.HTTP_200_OK
+
             )
         
         return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)

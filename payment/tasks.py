@@ -2,6 +2,9 @@ from __future__ import absolute_import, unicode_literals
 
 import json
 import time 
+import requests
+
+from django.urls import reverse
 
 from yookassa import Payment
 from celery import shared_task
@@ -30,6 +33,7 @@ def check_payments_status(payment_id: str, order_id: int):
             order=order
         )
         print('Done')
+        
 
     elif payment['status'] == 'canceled':
         print('Canceled')

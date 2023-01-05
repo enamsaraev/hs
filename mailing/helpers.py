@@ -20,5 +20,4 @@ class MsgHelper:
             variatiion_info = f'{product.name}: размер {size}, цвет {color}'  
             lst.append(variatiion_info)
         
-        print(lst)
         return ' '.join(lst)
