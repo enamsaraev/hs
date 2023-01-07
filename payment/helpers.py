@@ -25,6 +25,8 @@ def send_a_mail_wia_created_payment(
         payment_id: str, to: str, message: str, order_id: int,
     ) -> None:
     
+    # msg = 
+
     send_mail.delay(
         payment_id=payment_id,
         to=to,
