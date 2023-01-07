@@ -13,7 +13,7 @@ class Order(models.Model):
         null=False, 
         unique=False, 
         blank=False, 
-        verbose_name=_('Имя товара'),
+        verbose_name=_('Имя покупателя'),
         help_text=_('Формат: обязательный, максимальная длина - 255'),
     )
     email = models.EmailField(
@@ -21,7 +21,7 @@ class Order(models.Model):
         null=False, 
         unique=False, 
         blank=False, 
-        verbose_name=_('Имя товара'),
+        verbose_name=_('Почта покупателя'),
         help_text=_('Формат: обязательный, максимальная длина - 255'),
     )
     phone = models.CharField(
@@ -29,16 +29,9 @@ class Order(models.Model):
         null=False, 
         unique=False, 
         blank=False, 
-        verbose_name=_('Имя товара'),
+        verbose_name=_('Номер покупателя'),
         help_text=_('Формат: обязательный, максимальная длина - 255'),
     )
-    # variation = models.ManyToManyField(
-    #     Variation,
-    #     blank=True,
-    #     null=True,
-    #     verbose_name=_('Тип продукта'),
-    #     help_text=_('Связан с категорий Продукты')
-    # )
     created_at = models.DateTimeField(
         auto_now_add=True, 
         editable=True,
@@ -96,23 +89,31 @@ class OrderItems(models.Model):
     order = models.ForeignKey(
         Order,
         related_name='items',
-        on_delete=models.PROTECT
+        on_delete=models.PROTECT,
+        verbose_name=_("Текущий заказ"),
+        help_text=_("Сформирован автоматически")
     )
     product_variation = models.ForeignKey(
         Variation,
         related_name='current_order',
-        on_delete=models.PROTECT
+        on_delete=models.PROTECT,
+        verbose_name=_("Вариации товара в текущем заказе"),
+        help_text=_("Сформированы автоматически")
     )
     price = models.DecimalField(
         max_digits=7,
         decimal_places=2,
         null=False,
-        blank=False
+        blank=False,
+        verbose_name=_("Cтоимость товара в текущем заказе"),
+        help_text=_("Сформирована автоматически")
     )
     qunatity = models.PositiveIntegerField(
         default=1,
         null=False,
-        blank=False
+        blank=False,
+        verbose_name=_("Общее количество товара в текущем заказе"),
+        help_text=_("Сформировано автоматически")
     )
     created_at = models.DateTimeField(
         auto_now_add=True, 
@@ -121,7 +122,9 @@ class OrderItems(models.Model):
         help_text=_("Определяется автоматически, возможно редактирование")
     )
     id_deleted = models.BooleanField(
-        default=False
+        default=False,
+        verbose_name=_('Выбрать, если вариация товара в заказе должна быть удалена'),
+        help_text=_('Формат: обязательный'),
     )
 
     def get_total_cost(self):

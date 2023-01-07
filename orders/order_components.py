@@ -21,7 +21,7 @@ class OrderComponent:
         if order:
             self.set_order_data(order)
 
-            return order
+        return order
 
     def set_order(self, data: dict, coupon: object):
         """Create order"""

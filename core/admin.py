@@ -56,11 +56,17 @@ class ColorAdmin(admin.ModelAdmin):
 
 @admin.register(Variation)
 class VariationAdmin(admin.ModelAdmin):
-    list_display = ('product', 'size', 'color')
+    list_display = ('get_product_name', 'size', 'color')
     list_filter = ('is_deleted', 'is_active',)
     search_fields = ('product',)
-    
 
-# admin.site.register(Media)
+    def get_form(self, request, obj=None, **kwargs):
+        form = super(VariationAdmin, self).get_form(request, obj, **kwargs)
+        form.base_fields['product'].label_from_instance = lambda inst: "{}".format(inst.name)
+        return form
+
+    def get_product_name(self, obj):
+        return obj.product.name
+    
 
 

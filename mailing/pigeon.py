@@ -12,7 +12,7 @@ class Pigeon:
     to: str
     message: str
     subject: str
-    order_id: int
+    order_id: int = None
 
 
     def __call__(self) -> None:
@@ -54,3 +54,20 @@ class Pigeon:
             order=Order.objects.get(id=self.order_id)
         ).exists()
     
+
+@dataclass
+class PigeonAutomaticly:
+    to: str
+    message: str
+    subject: str
+
+
+    def __call__(self) -> None:
+        """Sending email"""
+
+        send_mail(
+            subject= self.subject,
+            message=self.message,
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[self.to],
+        )

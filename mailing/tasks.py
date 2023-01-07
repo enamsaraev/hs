@@ -7,7 +7,7 @@ from celery import shared_task
 
 from ecommerce_celery.celery import app
 
-from mailing.pigeon import Pigeon
+from mailing.pigeon import Pigeon, PigeonAutomaticly
 
 
 def check_succed_payment_retr(payment_id: str):
@@ -28,7 +28,7 @@ def check_succed_payment_retr(payment_id: str):
 @shared_task
 def send_mail(payment_id: str, to: str, message: str, subject: str, order_id: int):
     """Async email sending"""
-
+    
     if check_succed_payment_retr(payment_id):
         
         Pigeon(
@@ -40,3 +40,14 @@ def send_mail(payment_id: str, to: str, message: str, subject: str, order_id: in
 
     else:
         print('Mail fucked')
+
+
+@shared_task
+def send_mail_wia_admin_automaticly(to: str, message: str, subject: str):
+    """Async email sending wia admin panel"""
+        
+    PigeonAutomaticly(
+        to=to,
+        message=message,
+        subject=subject,
+    )()
