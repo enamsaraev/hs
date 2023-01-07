@@ -24,15 +24,19 @@ def check_succed_payment_retr(payment_id: str):
 
     return False
 
+
 @shared_task
 def send_mail(payment_id: str, to: str, message: str, subject: str, order_id: int):
     """Async email sending"""
 
     if check_succed_payment_retr(payment_id):
-
+        
         Pigeon(
             to=to,
             message=message,
             subject=subject,
             order_id=order_id,
         )()
+
+    else:
+        print('Mail fucked')
