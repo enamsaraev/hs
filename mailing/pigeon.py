@@ -18,7 +18,7 @@ class Pigeon:
     def __call__(self) -> None:
         """Send email when initialize"""
 
-        if not self.__is_sent_already():
+        if not self.__is_sent_already:
             return
 
         self.__msg()

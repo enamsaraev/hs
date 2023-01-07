@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect
 
 from mailing.helpers import MsgHelper
 from cart.cart import Cart
-from payment.helpers import get_create_payment
+from payment.helpers import get_create_payment, send_a_mail_wia_created_payment
 
 from orders.order_components import OrderComponent
 
@@ -29,9 +29,13 @@ class OrderApiView(APIView):
             payment_data = get_create_payment(
                 price=request.data['total_price'],
                 description=msg,
-                order_id=order.id,
+                order_id=order.id
+            )
+            send_a_mail_wia_created_payment(
+                payment_id=payment_data['id'],
                 to=order.email,
                 message=msg,
+                order_id=order.id,
             )
             return Response(
                 {
