@@ -23,7 +23,7 @@ def return_order_for_mail():
 def return_sent_mail(return_order_for_mail):
     """Set an alredy sent mail"""
 
-    return mixer.blend(EmailEntry, order=mixer.blend(Order))
+    return mixer.blend(EmailEntry, order=return_order_for_mail)
 
 @pytest.mark.parametrize(('to, message, subject'), [ 
     ('fcknu@mail.com', 'message', 'subject')
@@ -40,7 +40,7 @@ def test_msg_params(return_order_for_mail, to, message, subject):
     assert pigeon.order_id == return_order_for_mail.id
 
 
-def test_return_bad_if_mail_is_already_sent(return_order_for_mail, return_sent_mail):
+def test_return_bad_if_mail_is_already_sent(return_sent_mail):
     """Assert false if mail is already sent"""
 
     pigeon = Pigeon(

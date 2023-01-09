@@ -1,5 +1,7 @@
 import json
+
 from decimal import Decimal
+from django.shortcuts import get_object_or_404
 
 from rest_framework.exceptions import ParseError
 
@@ -47,10 +49,8 @@ class Cart:
         self.__save()
         self.__item_price_set(product_slug, product_price, quantity)
 
-    def delete(self, product: object) -> None:
+    def delete(self, product_slug: str) -> None:
         """Removing a single product from the cart"""
-
-        product_slug = product.slug
 
         if product_slug in self.cart['items']:
             del self.cart['items'][product_slug]

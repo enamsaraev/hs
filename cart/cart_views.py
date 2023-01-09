@@ -50,8 +50,6 @@ class CartApiView(APIView):
         """Cart delete product"""
 
         cart = self.get_session_cart(request)
-
-        product = get_object_or_404(ProductInventory, slug=request.data['product_slug'])
-        cart.delete(product)
+        cart.delete(request.data['product_slug'])
 
         return Response(status=status.HTTP_200_OK)
