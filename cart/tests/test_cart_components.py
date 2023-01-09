@@ -103,7 +103,7 @@ def test_cart_delete_component(return_cart):
     product = mixer.blend(ProductInventory, slug='item')
 
     cart = return_cart
-    cart.delete(product)
+    cart.delete(product.slug)
 
     assert 'item' not in cart.get_cart()['items']
 
