@@ -56,7 +56,7 @@ class ColorAdmin(admin.ModelAdmin):
 
 @admin.register(Variation)
 class VariationAdmin(admin.ModelAdmin):
-    list_display = ('get_product_name', 'size', 'color')
+    list_display = ('get_product_name',)
     list_filter = ('is_deleted', 'is_active',)
     search_fields = ('product',)
 
