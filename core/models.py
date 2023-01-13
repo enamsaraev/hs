@@ -284,13 +284,11 @@ class Variation(models.Model):
         on_delete=models.PROTECT, 
         related_name="variations"
     )
-    size = models.ForeignKey(
-        Size, 
-        on_delete=models.CASCADE
+    size = models.ManyToManyField(
+        Size
     )
-    color = models.ForeignKey(
-        Color, 
-        on_delete=models.CASCADE
+    color = models.ManyToManyField(
+        Color
     )
     count = models.PositiveIntegerField(
         default=0,
@@ -312,11 +310,7 @@ class Variation(models.Model):
     )
 
     objects = VariationManager()
-
-
-    class Meta:
-        unique_together = ['color', 'size']
-        ordering = ['size']
+    
 
     def set_minus_count(self, qunatity):
         """Minus count"""
