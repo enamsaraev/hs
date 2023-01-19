@@ -19,33 +19,6 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = ('name', 'slug')
 
 
-class SizeSerializer(serializers.ModelSerializer):
-    """Size serializer"""
-
-    class Meta:
-        model = models.Size
-        fields = ('value',)
-
-
-class ColorSerializer(serializers.ModelSerializer):
-    """Size serializer"""
-
-    class Meta:
-        model = models.Color
-        fields = ('value',)
-
-
-class VariationSerializer(serializers.ModelSerializer):
-    """Variation serializer"""
-
-    color = ColorSerializer()
-    size = SizeSerializer()
-
-    class Meta:
-        model = models.Variation
-        fields = ('color', 'size', 'count')
-
-
 class MediaSerializer(serializers.ModelSerializer):
     """Media serializer"""
 
@@ -54,22 +27,45 @@ class MediaSerializer(serializers.ModelSerializer):
         fields = ('img',)
 
 
-class ProductInventoryCardSerializer(serializers.ModelSerializer):
-    """Product inventory card serializer"""
-
-    variations = VariationSerializer(many=True)
-    medias = MediaSerializer(many=True)
-
-    class Meta:
-        model = models.ProductInventory
-        fields = ('name', 'retail_price', 'description', 'variations', 'medias')
-
-
 class ProductInventorySerializer(serializers.ModelSerializer):
     """Product inventory list serializer"""
 
-    medias = MediaSerializer(many=True, read_only=True)
+    class Meta:
+        model = models.ProductInventory
+        fields = ('name', 'retail_price', 'description')
+    
+
+class ListedSer(serializers.RelatedField):
+
+    def to_representation(self, value):
+        return value.value
+
+# class ProductInventoryCardSerializer(serializers.ModelSerializer):
+
+#     color = ListedSer(many=True, read_only=True)
+#     size = ListedSer(many=True, read_only=True)
+#     name = serializers.CharField(source='product.name')
+#     retail_price = serializers.CharField(source='product.retail_price')
+
+#     class Meta:
+#         model = models.Variation
+#         fields = ('name', 'retail_price', 'color', 'size', 'count',)
+
+
+class ProductInventorySerializerTest(serializers.ModelSerializer):
+
+    medias = serializers.StringRelatedField(many=True)
 
     class Meta:
         model = models.ProductInventory
-        fields = ('name', 'retail_price', 'description', 'medias')
+        fields = ('name', 'retail_price', 'medias',)
+
+
+class VariationSerializerTest(serializers.ModelSerializer):
+
+    color = serializers.StringRelatedField(many=True)
+    size = serializers.StringRelatedField(many=True)
+
+    class Meta:
+        model = models.Variation
+        fields = ('color', 'size', 'count',)
