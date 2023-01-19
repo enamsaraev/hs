@@ -15,6 +15,7 @@ Deprecated==1.2.13
 distro==1.8.0
 Django==4.1.2
 django-cors-headers==3.13.0
+django-debug-toolbar==3.8.1
 django-js-asset==2.0.0
 django-mptt==0.14.0
 djangorestframework==3.14.0

@@ -7,14 +7,14 @@ class VariationInline(admin.StackedInline):
     """Inline variations"""
 
     model = Variation
-    extra = 3
+    extra = 1
 
 
 class MediaInline(admin.StackedInline):
     """Inline variations"""
 
     model = Media
-    extra = 3
+    extra = 1
 
 
 @admin.register(Category)
@@ -58,7 +58,7 @@ class ColorAdmin(admin.ModelAdmin):
 class VariationAdmin(admin.ModelAdmin):
     list_display = ('get_product_name',)
     list_filter = ('is_deleted', 'is_active',)
-    search_fields = ('product',)
+    search_fields = ('product.name',)
 
     def get_form(self, request, obj=None, **kwargs):
         form = super(VariationAdmin, self).get_form(request, obj, **kwargs)

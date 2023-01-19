@@ -138,6 +138,9 @@ class Media(models.Model):
         help_text=_('Формат: обязательный')
     )
 
+    def __str__(self) -> str:
+        return self.img.url
+
 class ProductInventory(models.Model):
     """Some product model"""
 
