@@ -36,5 +36,5 @@ def test_product_cart_retrieving_images(db, client, product_factory, product_inv
     product_inventory_factory.create(product=product_factory.create(slug='fckn'), slug='aboba')
     response = client.get(reverse('ecommerce:product_card', kwargs={'slug': 'fckn', 'product_slug': 'aboba'}))
 
-    assert 'medias' in response.data[0]
+    assert 'medias' in response.data['product']
 

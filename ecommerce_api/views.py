@@ -1,9 +1,7 @@
-import json
-
-from rest_framework.generics import ListAPIView, RetrieveAPIView
-from rest_framework.exceptions import NotFound
+from rest_framework.generics import ListAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
 
 from core import models
 from ecommerce_api import serializers
