@@ -124,27 +124,27 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LOGGING = {
-    'version': 1,
-    'filters': {
-        'require_debug_true': {
-            '()': 'django.utils.log.RequireDebugTrue',
-        }
-    },
-    'handlers': {
-        'console': {
-            'level': 'DEBUG',
-            'filters': ['require_debug_true'],
-            'class': 'logging.StreamHandler',
-        }
-    },
-    'loggers': {
-        'django.db.backends': {
-            'level': 'DEBUG',
-            'handlers': ['console'],
-        }
-    }
-}
+# LOGGING = {
+#     'version': 1,
+#     'filters': {
+#         'require_debug_true': {
+#             '()': 'django.utils.log.RequireDebugTrue',
+#         }
+#     },
+#     'handlers': {
+#         'console': {
+#             'level': 'DEBUG',
+#             'filters': ['require_debug_true'],
+#             'class': 'logging.StreamHandler',
+#         }
+#     },
+#     'loggers': {
+#         'django.db.backends': {
+#             'level': 'DEBUG',
+#             'handlers': ['console'],
+#         }
+#     }
+# }
 
 
 # Internationalization
@@ -175,14 +175,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 """Celery"""
-CELERY_BROKER_URL = 'redis://localhost:6379'  
-CELERY_RESULT_BACKEND = 'redis://localhost:6379'  
-CELERY_ACCEPT_CONTENT = ['application/json']  
-CELERY_RESULT_SERIALIZER = 'json'
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL") 
+CELERY_RESULT_BACKEND = os.environ.get("CELERY_RESULT_BACKEND")
+CELERY_ACCEPT_CONTENT = [os.environ.get("CELERY_ACCEPT_CONTENT")]  
+CELERY_RESULT_SERIALIZER = os.environ.get("CELERY_RESULT_SERIALIZER")
 
 """Email"""
-EMAIL_BACKEND ='django.core.mail.backends.console.EmailBackend'
-EMAIL_HOST_USER = 'admin@mail.com'
+EMAIL_BACKEND =os.environ.get("EMAIL_BACKEND")
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 # #add your host of the email here in this case its Gmail so we are going to use Gmail host
 # EMAIL_HOST = 'smtp.gmail.com'
 # EMAIL_USE_TLS = True
