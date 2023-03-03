@@ -3,15 +3,7 @@ from rest_framework import serializers
 from core import models
 
 
-class CategorySerializer(serializers.ModelSerializer):
-    """Catalog serializer"""
-
-    class Meta:
-        model = models.Category
-        fields = ('name', 'slug',)
-
-
-class ProductSerializer(serializers.ModelSerializer):
+class CatalogSerializer(serializers.ModelSerializer):
     """Product serializer"""
 
     class Meta:
@@ -24,48 +16,35 @@ class MediaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Media
-        fields = ('img',)
+        fields = ('img', 'is_default',)
 
 
 class ProductInventorySerializer(serializers.ModelSerializer):
-    """Product inventory list serializer"""
+
+    # medias = serializers.StringRelatedField(many=True)
+    medias = MediaSerializer(many=True)
+    parent_slug = serializers.StringRelatedField(source='product.slug')
 
     class Meta:
         model = models.ProductInventory
-        fields = ('name', 'retail_price', 'description')
+        fields = ('id', 'name', 'slug', 'parent_slug', 'retail_price', 'description', 'medias',)
+
     
-
-class ListedSer(serializers.RelatedField):
-
-    def to_representation(self, value):
-        return value.value
-
-# class ProductInventoryCardSerializer(serializers.ModelSerializer):
-
-#     color = ListedSer(many=True, read_only=True)
-#     size = ListedSer(many=True, read_only=True)
-#     name = serializers.CharField(source='product.name')
-#     retail_price = serializers.CharField(source='product.retail_price')
-
-#     class Meta:
-#         model = models.Variation
-#         fields = ('name', 'retail_price', 'color', 'size', 'count',)
-
-
-class ProductInventorySerializerTest(serializers.ModelSerializer):
-
-    medias = serializers.StringRelatedField(many=True)
+class ProductSerializer(serializers.ModelSerializer):
+    
+    product_inventory = ProductInventorySerializer(many=True)
 
     class Meta:
-        model = models.ProductInventory
-        fields = ('name', 'retail_price', 'medias',)
+        model = models.Product
+        fields = ('slug', 'product_inventory')
 
 
-class VariationSerializerTest(serializers.ModelSerializer):
+class VariationDetailSerializer(serializers.ModelSerializer):
 
-    color = serializers.StringRelatedField(many=True)
+    description = serializers.StringRelatedField(source='product.description')
     size = serializers.StringRelatedField(many=True)
+    color = serializers.StringRelatedField(many=True)
 
     class Meta:
         model = models.Variation
-        fields = ('color', 'size', 'count',)
+        fields = ('id', 'color', 'size', 'count', 'description')

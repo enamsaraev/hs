@@ -8,6 +8,7 @@ class VariationInline(admin.StackedInline):
 
     model = Variation
     extra = 1
+    filter_horizontal = ('size', 'color',)
 
 
 class MediaInline(admin.StackedInline):
@@ -17,25 +18,20 @@ class MediaInline(admin.StackedInline):
     extra = 1
 
 
-@admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'slug',)
-    list_filter = ('is_deleted', 'is_active',)
-    search_fields = ('name',)
-
-
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'slug',)
-    list_filter = ('is_deleted', 'is_active',)
+    list_display = ('name',)
+    list_filter = ('is_deleted',)
     search_fields = ('name',)
+    prepopulated_fields = {'slug': ('name',)}
 
 
 @admin.register(ProductInventory)
 class ProductInventoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'slug',)
-    list_filter = ('is_deleted', 'is_active',)
+    list_display = ('name',)
+    list_filter = ('is_deleted',)
     search_fields = ('name',)
+    prepopulated_fields = {'slug': ('name',)}
 
     inlines = [MediaInline, VariationInline]
 
@@ -43,21 +39,21 @@ class ProductInventoryAdmin(admin.ModelAdmin):
 @admin.register(Size)
 class SizeAdmin(admin.ModelAdmin):
     list_display = ('value',)
-    list_filter = ('is_deleted', 'is_active',)
+    list_filter = ('is_deleted',)
     search_fields = ('value',)
 
 
 @admin.register(Color)
 class ColorAdmin(admin.ModelAdmin):
     list_display = ('value',)
-    list_filter = ('is_deleted', 'is_active',)
+    list_filter = ('is_deleted',)
     search_fields = ('value',)
 
 
 @admin.register(Variation)
 class VariationAdmin(admin.ModelAdmin):
     list_display = ('get_product_name',)
-    list_filter = ('is_deleted', 'is_active',)
+    list_filter = ('is_deleted',)
     search_fields = ('product.name',)
 
     def get_form(self, request, obj=None, **kwargs):

@@ -8,12 +8,10 @@ app_name = 'ecommerce'
 
 
 router = SimpleRouter()
-router.register('clothes', views.ProductInventoryViewSet)
+router.register('clothes', views.ProductInventoryViewSet, basename='clothes')
 
 
 urlpatterns = [
-    # path('catalog/', views.CatalogList.as_view(), name='catalog'),
-    # path('<slug:slug>/', views.ProductList.as_view(), name='products'),
-    # path('<slug:slug>/<slug:product_slug>/', views.ProductInventoryView.as_view(), name='product_card'),
+    path('catalog/', views.CatalogList.as_view(), name='catalog'),
 ]
 urlpatterns += router.urls

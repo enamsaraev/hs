@@ -1,7 +1,4 @@
-import json
-
 from decimal import Decimal
-from django.shortcuts import get_object_or_404
 
 from rest_framework.exceptions import ParseError
 
@@ -29,17 +26,23 @@ class Cart:
     def add_or_update(self, product: object, quantity: int, size: str, color: str, update: bool) -> None:
         """Add or update a product in the cart"""
 
-        product_slug = product.slug
+        product_slug = f'{product.slug}/size/color'
+        slug = product.slug
+        product_name = product.name
         product_price = product.retail_price
 
         if update and product_slug in self.cart:
             
+            self.cart['items'][product_slug]['name'] = product_name
+            self.cart['items'][product_slug]['slug'] = slug
             self.cart['items'][product_slug]['quantity'] = quantity
             self.cart['items'][product_slug]['size'] = size
             self.cart['items'][product_slug]['color'] = color
 
         if product_slug not in self.cart:
             self.cart['items'][product_slug] = {
+                'name': slug,
+                'slug': product_slug,
                 'size': size,
                 'color': color,
                 'quantity': quantity,
