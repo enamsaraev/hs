@@ -73,4 +73,29 @@ class ProductInventoryView(APIView):
         )
 
 
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.permissions import IsAuthenticated
 
+from django_filters.rest_framework import DjangoFilterBackend
+
+
+class ProductInventoryViewSet(ModelViewSet):
+    """MVS for the prod inv model"""
+
+    queryset = models.ProductInventory.objects.prefetch_related('medias')
+    serializer_class = serializers.ProductInventorySerializerTest
+    filter_backends = (DjangoFilterBackend, OrderingFilter, SearchFilter,)
+    permission_classes = (AllowAny,)
+    filterset_fields = ('product__slug',)
+    search_fields = ('name',)
+    ordering_fields = ('retail_price', 'name',)
+
+
+    def retrieve(self, request, *args, **kwargs):
+
+        queryset = models.ProductInventory.objects.prefetch_related('size', 'color', 'medias')
+
+        serializer = serializers.VariationSerializerTest(queryset)
+
+        return Response(serializer.data)
