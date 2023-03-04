@@ -33,14 +33,14 @@ def return_request(db):
 
     request.session['token'] = {
         'items': {
-            "hoodie-black": {
+            "hoodie-black/M/White": {
                 "size": "M",
                 "color": "White",
                 "quantity": 2,
                 "price": "97.00",
                 "total_item_price": "194.00"
             },
-            "item": {
+            "item/S/Black": {
                 "size": "S",
                 "color": "Pink",
                 "quantity": 5,
@@ -95,7 +95,7 @@ def test_cart_adding_a_product(return_cart, product, quantity, color, size, upda
         color=color,
         update=update
     )
-    assert 'hod' in cart.get_cart()['items']
+    assert f'hod/{size}/{color}' in cart.get_cart()['items']
 
 def test_cart_delete_component(return_cart):
     """Test cart delete method"""
