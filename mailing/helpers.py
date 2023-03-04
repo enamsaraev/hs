@@ -13,7 +13,7 @@ class MsgHelper:
         lst = []
 
         for item in self.cart['items'].keys():
-            product = ProductInventory.objects.get(slug=item)
+            product = ProductInventory.objects.get(slug=item.split('/')[0])
             size = self.cart['items'][item]['size']
             color = self.cart['items'][item]['color']
 

@@ -134,19 +134,19 @@ LOGGING = {
             '()': 'django.utils.log.RequireDebugTrue',
         }
     },
-    'handlers': {
-        'console': {
-            'level': 'DEBUG',
-            'filters': ['require_debug_true'],
-            'class': 'logging.StreamHandler',
-        }
-    },
-    'loggers': {
-        'django.db.backends': {
-            'level': 'DEBUG',
-            'handlers': ['console'],
-        }
-    }
+    # 'handlers': {
+    #     'console': {
+    #         'level': 'DEBUG',
+    #         'filters': ['require_debug_true'],
+    #         'class': 'logging.StreamHandler',
+    #     }
+    # },
+    # 'loggers': {
+    #     'django.db.backends': {
+    #         'level': 'DEBUG',
+    #         'handlers': ['console'],
+    #     }
+    # }
 }
 
 

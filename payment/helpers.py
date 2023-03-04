@@ -6,7 +6,7 @@ from mailing.tasks import send_mail
 def get_create_payment(
         price: str, description: str, order_id: int
     ) -> dict:
-
+    
     """Get a redirect url"""
     payment_data = create_payment(
         price=price,
@@ -24,8 +24,6 @@ def get_create_payment(
 def send_a_mail_wia_created_payment(
         payment_id: str, to: str, message: str, order_id: int,
     ) -> None:
-    
-    # msg = 
 
     send_mail.delay(
         payment_id=payment_id,
