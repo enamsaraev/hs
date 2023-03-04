@@ -48,7 +48,7 @@ class OrderComponent:
         
         for item in cart['items']:
             var = Variation.objects.get_variation(
-                product_slug=item,
+                product_slug=item.split('/')[0],
                 size=cart['items'][item]['size'],
                 color=cart['items'][item]['color'],
             )

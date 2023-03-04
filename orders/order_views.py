@@ -45,3 +45,6 @@ class OrderApiView(APIView):
             )
         
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+# {"name": "name", "email": "email@mail.com", "phone": "12345", "coupon_discount": "0", "total_price": "194.00"}
