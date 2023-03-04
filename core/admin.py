@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from core.models import Category, Product, ProductInventory, Media, Variation, Size, Color
+from core.models import Product, ProductInventory, Media, Variation, Size, Color
 
 
 class VariationInline(admin.StackedInline):
