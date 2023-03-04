@@ -72,8 +72,8 @@ def test_cart_adding_a_product(get_hoodie_black_product, quantity, color, size, 
     res_data = res.json()
 
     assert res.status_code == 201
-    assert res_data['items']['hoodie-black']['quantity'] == quantity
-    assert res_data['items']['hoodie-black']['price'] == '97.00'
+    assert res_data['items'][f'hoodie-black/{size}/{color}']['quantity'] == quantity
+    assert res_data['items'][f'hoodie-black/{size}/{color}']['price'] == '97.00'
     assert res_data['total'] == str(Decimal('97.00') * quantity)
 
 
@@ -98,7 +98,7 @@ def test_removing_a_product_form_the_cart_session(get_hoodie_black_product, quan
     res = api.post(reverse('cart:add_or_update_cart'), HTTP_TOKEN='sgdvls', data=response_data)
     assert res.status_code == 201
 
-    del_res = api.delete(reverse('cart:delete_cart_product'), HTTP_TOKEN='sgdvls', data={'product_slug': response_data['product_slug']})
+    del_res = api.delete(reverse('cart:delete_cart_product'), HTTP_TOKEN='sgdvls', data={'product_slug': f"{response_data['product_slug']}/{response_data['size']}/{response_data['color']}"})
     assert del_res.status_code == 200
 
 

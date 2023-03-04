@@ -32,7 +32,7 @@ def test_product_insert_data(db, category_factory, product_factory, name, slug):
     """Test product model creation with insert data"""
 
     category = category_factory.create(name='some_cat_name', slug='some_cat_slug')
-    product = product_factory.create(category=[category], name=name, slug=slug)
+    product = product_factory.create(name=name, slug=slug)
 
     assert product.name == name
     assert product.slug == slug

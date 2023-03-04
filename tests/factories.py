@@ -31,17 +31,7 @@ class ProductFactory(factory.django.DjangoModelFactory):
     name = factory.Sequence(lambda n: 'prod_name_{}'.format(n))
     slug = factory.Sequence(lambda n: 'prod_slug_{}'.format(n))
     description = fake.text()
-    is_active = True
     is_deleted = False
-
-    @factory.post_generation
-    def category(self, create, extracted, **kwargs):
-        if not create or not extracted:
-            return
-
-        if extracted:
-            for category in extracted:
-                self.category.add(category)
 
 
 class ProductInventoryFactory(factory.django.DjangoModelFactory):
@@ -56,7 +46,6 @@ class ProductInventoryFactory(factory.django.DjangoModelFactory):
     store_price = 92
     retail_price = 97
     description = fake.text()
-    is_active = True
     is_deleted = False
 
 
@@ -87,7 +76,6 @@ class CouponFactory(factory.django.DjangoModelFactory):
     valid_to = '2022-12-24 22:14:18'
     count = 10
     discount = 30
-    is_active = True
     is_deleted = False
 
 
