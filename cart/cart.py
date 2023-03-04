@@ -41,8 +41,8 @@ class Cart:
 
         if product_slug not in self.cart:
             self.cart['items'][product_slug] = {
-                'name': slug,
-                'slug': product_slug,
+                'name': product_name,
+                'slug': slug,
                 'size': size,
                 'color': color,
                 'quantity': quantity,
