@@ -26,7 +26,7 @@ class Cart:
     def add_or_update(self, product: object, quantity: int, size: str, color: str, update: bool) -> None:
         """Add or update a product in the cart"""
 
-        product_slug = f'{product.slug}/size/color'
+        product_slug = f'{product.slug}/{size}/{color}'
         slug = product.slug
         product_name = product.name
         product_price = product.retail_price
