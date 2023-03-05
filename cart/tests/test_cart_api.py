@@ -103,5 +103,5 @@ def test_removing_a_product_form_the_cart_session(get_hoodie_black_product, quan
 
 
 # {"product_slug": "hoodie-black", "quantity": "2", "size": "M", "color": "White", "update": "False"}
-# {"name": "name", "email": "email@mail.com", "phone": "12345", "coupon_discount": "0", "total_price": "194.00"}
+# {"name": "name", "email": "enamsaraev@bk.ru", "phone": "12345", "coupon_discount": "0", "total_price": "194.00"}
 # 5555555555554477
