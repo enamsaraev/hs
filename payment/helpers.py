@@ -27,7 +27,7 @@ def send_a_mail_wia_created_payment(
 
     send_mail.delay(
         payment_id=payment_id,
-        to=to,
+        to=[to],
         message=message,
         subject=f'BABYEVE Заказ №{order_id}',
         order_id=order_id

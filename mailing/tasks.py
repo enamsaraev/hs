@@ -1,6 +1,7 @@
 from __future__ import absolute_import, unicode_literals
 
 import json, time
+from typing import List
 
 from yookassa import Payment
 from celery import shared_task
@@ -26,14 +27,14 @@ def check_succed_payment_retr(payment_id: str):
 
 
 @shared_task
-def send_mail(payment_id: str, to: str, message: str, subject: str, order_id: int):
+def send_mail(payment_id: str, to: List[str], message: str, subject: str, order_id: int):
     """Async email sending"""
     
     if check_succed_payment_retr(payment_id):
         
         Pigeon(
             to=to,
-            message=message,
+            text=message,
             subject=subject,
             order_id=order_id,
         )()
