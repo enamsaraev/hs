@@ -89,7 +89,7 @@ class Pigeon:
         """Mark as sent"""
     
         EmailEntry.objects.create(
-            email=self.to,
+            email=', '.join(self.to),
             from_email=os.environ.get('EMAIL_HOST_USER'),
             subject= self.subject,
             text=self.text,
