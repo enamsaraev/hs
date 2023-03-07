@@ -28,9 +28,10 @@ class EmailSendAutomaticlyAdmin(admin.ModelAdmin):
             return
 
         send_mail_wia_admin_automaticly.delay(
-            to=obj.recipient,
+            to=[obj.recipient],
             message=obj.text,
             subject=obj.subject,
+            template_name=obj.template_name,
         )
 
         super().save_model(request, obj, form, change)

@@ -8,32 +8,32 @@ class EmailEntry(models.Model):
 
     email = models.EmailField(
         max_length=200,
-        verbose_name='Mail recipient',
-        help_text='Required, type an email address',
+        verbose_name=_('Получать сообщения'),
+        help_text=_('Обязательный, принимать ТОЛЬКО имейл'),
     )
     from_email = models.EmailField(
         max_length=200,
-        verbose_name='Current sender',
-        help_text='Required, type an email address',
+        verbose_name=_('Отправитель сообщения'),
+        help_text=('Обязательный, по дефолту хранит хоста от почты'),
         default=''
     )
     subject = models.CharField(
         max_length=255,
-        verbose_name='Email header subject',
-        help_text='Required, type something',
+        verbose_name=_('Тема сообщения'),
+        help_text=_('Обязательный, принимает текст'),
     )
     text = models.TextField(
         blank=True,
         null=True,
-        verbose_name='Email text input',
-        help_text='Required if needed, type some text',
+        verbose_name=_('Текст письма'),
+        help_text=_('Обязательный, принимает текст'),
     )
     template_name = models.CharField(
         max_length=255,
         blank=True,
         null=True,
-        verbose_name='Email template',
-        help_text='Required if needed, type file name',
+        verbose_name=_('Имя шаблона письма'),
+        help_text=_('Название шаблона'),
     )
     is_sent = models.BooleanField(
         default=True
@@ -44,9 +44,13 @@ class EmailEntry(models.Model):
         on_delete=models.PROTECT,
         null=True,
         blank=True,
-        verbose_name=_("Текущий заказ клиента"),
-        help_text=_("Формат: обязательный"),
+        verbose_name=_('Текущий заказ клиента'),
+        help_text=_('Формат: обязательный'),
     )
+
+    class Meta:
+        verbose_name = 'Отправленный имейл при оформлении заказа'
+        verbose_name_plural = 'Отправленные имейлы при оформлении заказа'
 
     def __str__(self):
         return self.email
@@ -68,12 +72,23 @@ class EmailSendAutomaticly(models.Model):
         verbose_name=_("Текст смс для отправки почты покупателю"),
         help_text=_("Формат: обязательный"),
     )
+    template_name = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        verbose_name=_('Имя шаблона письма'),
+        help_text=_('Название шаблона'),
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     is_deleted = models.BooleanField(
         default=False,
         verbose_name=_("Нажать, если нужно удалить шаблон"),
         help_text=_("Формат: обязательный"),
     )
+
+    class Meta:
+        verbose_name = 'Отправить имейл рассылку'
+        verbose_name_plural = 'Отправить имейл рассылку'
 
     def __str__(self) -> str:
         return self.recipient
