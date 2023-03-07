@@ -20,16 +20,16 @@ class OrderApiView(APIView):
 
         cart = Cart(request)
         msg = MsgHelper(cart.get_cart())()
-        order = OrderComponent(cart)
 
         """Creating an order if serializer data is valid"""
-        order = order.processing_order(request.data) # создать неоплаченный заказ
+        order = OrderComponent(cart).processing_order(request.data) # создать неоплаченный заказ
 
         if order:
             payment_data = get_create_payment(
                 price=request.data['total_price'],
                 description=msg,
-                order_id=order.id
+                order_id=order.id,
+                cart=cart.get_cart(),
             )
             send_a_mail_wia_created_payment(
                 payment_id=payment_data['id'],

@@ -4,7 +4,7 @@ from mailing.tasks import send_mail
 
 
 def get_create_payment(
-        price: str, description: str, order_id: int
+        price: str, description: str, order_id: int, cart: dict
     ) -> dict:
     
     """Get a redirect url"""
@@ -15,7 +15,8 @@ def get_create_payment(
 
     check_payments_status.delay(
         payment_id=payment_data['id'],
-        order_id=order_id
+        order_id=order_id,
+        cart=cart
     )
 
     return payment_data

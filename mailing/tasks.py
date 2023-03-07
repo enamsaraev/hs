@@ -37,18 +37,19 @@ def send_mail(payment_id: str, to: List[str], message: str, subject: str, order_
             text=message,
             subject=subject,
             order_id=order_id,
-        )()
+        ).call_pigeon()
 
     else:
         print('Mail fucked')
 
 
 @shared_task
-def send_mail_wia_admin_automaticly(to: str, message: str, subject: str):
+def send_mail_wia_admin_automaticly(to: List[str], message: str, subject: str, template_name: str):
     """Async email sending wia admin panel"""
-        
+       
     PigeonAutomaticly(
         to=to,
-        message=message,
+        text=message,
         subject=subject,
-    )()
+        template_name=template_name,
+    ).call_pigeon()

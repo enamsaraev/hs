@@ -17,34 +17,33 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-@dataclass
-class Pigeon:
-    to: List[str]
-    text: str
-    subject: str
-    template_name: str = None
-    order_id: int = None
+class PigeonFather:
+    def __init__(
+            self,
+            to: List[str],
+            text: str,
+            subject: str,
+            template_name: str = None,
+    ) -> None:
+        
+        self.to = to
+        self.text = text
+        self.subject = subject
+        self.template_name = template_name
 
-
-    def __call__(self) -> None:
+    def call_pigeon(self) -> None:
         """Send email when initialize"""
-
-        em = self._prepare_email()
-
-        self._send(em)
-        self._mark_mail_as_sent()
-
-        return True
+        pass
 
     def send_mail(self) -> None:
         """Sending email msg to list of users"""
         
-        em = self._prepare_email()
+        em = self._repare_email()
 
-        self._send(em)
-        self._mark_mail_as_sent()
+        self.send(em)
+        self.mark_mail_as_sent()
 
-    def _send(self, em: str) -> None:
+    def send(self, em: str) -> None:
         """Login via gmain and sending email"""
 
         context = ssl.create_default_context()
@@ -56,7 +55,7 @@ class Pigeon:
             )
             server.sendmail(os.environ.get('EMAIL_HOST_USER'), self.to, em)
 
-    def _prepare_email(self) -> str:
+    def prepare_email(self) -> str:
         """Create email message"""
 
         em = MIMEMultipart()
@@ -65,7 +64,7 @@ class Pigeon:
         em['Subject'] = self.subject
 
         if self.template_name:
-            tmpl = self._read_html_file()
+            tmpl = self.read_html_file()
             em.attach(MIMEText(tmpl, 'html'))
 
         if self.text:
@@ -73,7 +72,7 @@ class Pigeon:
 
         return em.as_string()
 
-    def _read_html_file(self) -> str:
+    def read_html_file(self) -> str:
         """Return text from html"""
 
         try:
@@ -85,7 +84,34 @@ class Pigeon:
         except IOError as _ex:
             print(f'Ur fucked with {_ex}')
 
-    def _mark_mail_as_sent(self) -> None:
+
+class Pigeon(PigeonFather):
+    def __init__(
+            self,
+            to: List[str],
+            text: str,
+            subject: str,
+            template_name: str = None,
+            order_id: int = None,
+    ) -> None:
+        
+        self.to = to
+        self.text = text
+        self.subject = subject
+        self.template_name = template_name
+        self.order_id = order_id
+
+    def call_pigeon(self) -> None:
+        """Send email when initialize"""
+
+        em = self.prepare_email()
+
+        self.send(em)
+        self.mark_mail_as_sent()
+
+        return True
+
+    def mark_mail_as_sent(self) -> None:
         """Mark as sent"""
     
         EmailEntry.objects.create(
@@ -99,19 +125,24 @@ class Pigeon:
         )
     
 
-@dataclass
-class PigeonAutomaticly:
-    to: str
-    message: str
-    subject: str
+class PigeonAutomaticly(PigeonFather):
+    def __init__(
+            self,
+            to: List[str],
+            text: str,
+            subject: str,
+            template_name: str = None,
+    ) -> None:
+        
+        self.to = to
+        self.text = text
+        self.subject = subject
+        self.template_name = template_name
 
+    def call_pigeon(self) -> None:
+        """Send email when initialize"""
 
-    def __call__(self) -> None:
-        """Sending email"""
+        em = self.prepare_email()
+        self.send(em)
 
-        send_mail(
-            subject= self.subject,
-            message=self.message,
-            from_email=settings.EMAIL_HOST_USER,
-            recipient_list=[self.to],
-        )
+        return True

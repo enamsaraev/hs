@@ -1,3 +1,5 @@
+from dataclasses import dataclass
+
 from orders.models import Order, OrderItems
 from core.models import Variation
 from coupon_api.models import Coupon
@@ -18,9 +20,6 @@ class OrderComponent:
             
         order = self.set_order(data, coupon)
 
-        if order:
-            self.set_order_data(order)
-
         return order
 
     def set_order(self, data: dict, coupon: object):
@@ -40,26 +39,31 @@ class OrderComponent:
 
         else:
             return None
+        
 
-    def set_order_data(self, order: object):
+@dataclass
+class OrderSetCount:
+    cart: dict
+    order_id: int
+
+    def __call__(self):
         """Creates all order items from the cart session""" 
+        order = Order.objects.get(id=self.order_id)
         
-        cart = self.cart.get_cart()
-        
-        for item in cart['items']:
+        for item in self.cart['items']:
             var = Variation.objects.get_variation(
                 product_slug=item.split('/')[0],
-                size=cart['items'][item]['size'],
-                color=cart['items'][item]['color'],
+                size=self.cart['items'][item]['size'],
+                color=self.cart['items'][item]['color'],
             )
 
-            var.set_minus_count(cart['items'][item]['quantity'])
+            var.set_minus_count(self.cart['items'][item]['quantity'])
 
             OrderItems.objects.create(
                 order=order,
                 product_variation=var,
                 price=var.product.retail_price,
-                qunatity=int(cart['items'][item]['quantity'])
+                qunatity=int(self.cart['items'][item]['quantity'])
             )
 
 
