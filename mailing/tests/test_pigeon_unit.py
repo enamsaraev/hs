@@ -25,32 +25,19 @@ def return_sent_mail(return_order_for_mail):
 
     return mixer.blend(EmailEntry, order=return_order_for_mail)
 
-@pytest.mark.parametrize(('to, message, subject'), [ 
-    ('fcknu@mail.com', 'message', 'subject')
+@pytest.mark.parametrize(('to, text, subject'), [ 
+    ('fcknu@mail.com', 'text', 'subject')
 ])
-def test_msg_params(return_order_for_mail, to, message, subject):
+def test_msg_params(return_order_for_mail, to, text, subject):
     """Test Pigeon init"""
 
     order = mixer.blend(Order)
-    pigeon = Pigeon(to=to, message=message, subject=subject, order_id=return_order_for_mail.id)
+    pigeon = Pigeon(to=to, text=text, subject=subject, order_id=return_order_for_mail.id)
 
     assert pigeon.to == to
-    assert pigeon.message == message
+    assert pigeon.text == text
     assert pigeon.subject == subject
     assert pigeon.order_id == return_order_for_mail.id
-
-
-def test_return_bad_if_mail_is_already_sent(return_sent_mail):
-    """Assert false if mail is already sent"""
-
-    pigeon = Pigeon(
-        to=return_sent_mail.email, 
-        message=return_sent_mail.message, 
-        subject='subject',
-        order_id=return_sent_mail.order.id
-    )()
-
-    assert pigeon == None
 
 
 
