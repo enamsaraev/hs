@@ -10,7 +10,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 
 from orders.models import Order
-from mailing.models import EmailEntry
+from mailing.models import EmailEntry, EmailSendTemplate
 
 
 from dotenv import load_dotenv
@@ -65,24 +65,29 @@ class PigeonFather:
 
         if self.template_name:
             tmpl = self.read_html_file()
-            em.attach(MIMEText(tmpl, 'html'))
+
+            if tmpl is not None:
+                em.attach(MIMEText(tmpl, 'html'))
+            else:
+                return
 
         if self.text:
             em.attach(MIMEText(self.text, 'plain'))
 
         return em.as_string()
 
-    def read_html_file(self) -> str:
+    def read_html_file(self) -> str or None:
         """Return text from html"""
 
         try:
-            with open('/Users/kkk_kkkkkkk/Documents/email_sender/email_sender/mailing/templates/h.html') as f:
-                tmpl = f.read()
-
-            return tmpl
+            template_object = EmailSendTemplate.objects.get(
+                name=self.template_name
+            )
         
-        except IOError as _ex:
-            print(f'Ur fucked with {_ex}')
+        except:
+            return None
+
+        return template_object.html_template
 
 
 class Pigeon(PigeonFather):

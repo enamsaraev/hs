@@ -3,6 +3,21 @@ from django.utils.translation import gettext_lazy as _
 
 from orders.models import Order
 
+
+class EmailSendTemplate(models.Model):
+    """HTML email templates"""
+
+    name = models.CharField(
+        max_length=255,
+        verbose_name=_('Имя шаблона'),
+        help_text=_('Обязательный, принимает текст'),
+    )
+    html_template = models.TextField(
+        verbose_name=_('HTML код сообщения'),
+        help_text=_('Обязательный, принимает html code'),
+    )
+
+
 class EmailEntry(models.Model):
     """Email logging"""
 
@@ -28,8 +43,7 @@ class EmailEntry(models.Model):
         verbose_name=_('Текст письма'),
         help_text=_('Обязательный, принимает текст'),
     )
-    template_name = models.CharField(
-        max_length=255,
+    template_name = models.TextField(
         blank=True,
         null=True,
         verbose_name=_('Имя шаблона письма'),
@@ -72,8 +86,7 @@ class EmailSendAutomaticly(models.Model):
         verbose_name=_("Текст смс для отправки почты покупателю"),
         help_text=_("Формат: обязательный"),
     )
-    template_name = models.CharField(
-        max_length=255,
+    template_name = models.TextField(
         blank=True,
         null=True,
         verbose_name=_('Имя шаблона письма'),
@@ -85,7 +98,10 @@ class EmailSendAutomaticly(models.Model):
         verbose_name=_("Нажать, если нужно удалить шаблон"),
         help_text=_("Формат: обязательный"),
     )
-
+    deliered = models.BooleanField(
+        default=False,
+        verbose_name=_("Галочка стоит, если имейл доставлен"),
+    )
     class Meta:
         verbose_name = 'Отправить имейл рассылку'
         verbose_name_plural = 'Отправить имейл рассылку'

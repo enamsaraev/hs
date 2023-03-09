@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from mailing.models import EmailEntry, EmailSendAutomaticly
+from mailing.models import EmailEntry, EmailSendAutomaticly, EmailSendTemplate
 from mailing.tasks import send_mail_wia_admin_automaticly
 
 
@@ -16,24 +16,29 @@ class EmailEntryAdmin(admin.ModelAdmin):
 class EmailSendAutomaticlyAdmin(admin.ModelAdmin):
     """Order admin model"""
 
-    list_display = ('recipient', 'subject',)
-    search_fields = ('recipient', 'subject',)
+    list_display = ('recipient', 'subject', 'created_at')
+    search_fields = ('recipient', 'subject', 'created_at')
 
     def save_model(self, request, obj, form, change) -> None:
         if not obj.recipient:
             return
         if not obj.subject:
             return
-        if not obj.text:
-            return
+
+        super().save_model(request, obj, form, change)
 
         send_mail_wia_admin_automaticly.delay(
+            email_id=obj.id,
             to=[obj.recipient],
             message=obj.text,
             subject=obj.subject,
             template_name=obj.template_name,
         )
 
-        super().save_model(request, obj, form, change)
 
-        
+@admin.register(EmailSendTemplate)
+class EmailEntryAdmin(admin.ModelAdmin):
+    """Order admin model"""
+
+    list_display = ('name',)
+    search_fields = ('name',)

@@ -6,7 +6,7 @@ from rest_framework.test import APIRequestFactory
 
 from core.models import ProductInventory, Size, Color, Variation
 from orders.models import Order, OrderItems
-from orders.order_components import OrderComponent
+from orders.order_components import OrderComponent, OrderSetCount
 from cart.cart import Cart
 
 
@@ -95,7 +95,7 @@ def test_class_order_set_order_component(set_cart_session_data):
     assert order.coupon == coupon_model
 
 
-def test_class_order_set_order_data_component(set_cart_session_data, set_var):
+def test_dataclass_order_set_count_data(set_cart_session_data, set_var):
     """Test a part of an order creation post method"""
     
     cart = Cart(set_cart_session_data)
@@ -106,12 +106,12 @@ def test_class_order_set_order_data_component(set_cart_session_data, set_var):
     var_before = Variation.objects.last()
     assert var_before.count == var_before.count
 
-    order.set_order_data(current_order_model)
+    OrderSetCount(cart.get_cart(), current_order_model.id)
 
     res = OrderItems.objects.all()[0:2]
 
     var_after = Variation.objects.last()
-    assert var_after.count == var_before.count - cart.get_cart()['items']['second_item']['quantity']
+    assert var_after.count == var_before.count - cart.get_cart()['items']['second_item/S/Black']['quantity']
 
     assert res[0].product_variation == Variation.objects.get(size=Size.objects.get(value='M'))
     assert res[1].product_variation == Variation.objects.get(size=Size.objects.get(value='S'))
