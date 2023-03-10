@@ -45,14 +45,14 @@ def set_cart_session_data(db):
 
     request.session['token'] = {
         'items': {
-            "first_item": {
+            "first_item/M/White": {
                 "size": "M",
                 "color": "White",
                 "quantity": 2,
                 "price": "678.07",
                 "total_item_price": "1356.14"
             },
-            "second_item": {
+            "second_item/S/Black": {
                 "size": "S",
                 "color": "Black",
                 "quantity": 5,

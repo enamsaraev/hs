@@ -9,11 +9,11 @@ from celery import shared_task
 from ecommerce_celery.celery import app
 
 from mailing.pigeon import Pigeon, PigeonAutomaticly
-from mailing.models import EmailSendAutomaticly
+from mailing.models import EmailSendAutomaticly, EmailSendTemplate
 
 
 def check_succed_payment_retr(payment_id: str):
-    """"""
+    """Checking if order is paid"""
 
     payment = json.loads((Payment.find_one(payment_id)).json())
 
@@ -45,14 +45,14 @@ def send_mail(payment_id: str, to: List[str], message: str, subject: str, order_
 
 
 @shared_task
-def send_mail_wia_admin_automaticly(email_id: int, to: List[str], message: str, subject: str, template_name: str):
+def send_mail_wia_admin_automaticly(email_id: int, to: List[str], message: str, subject: str, template: str):
     """Async email sending wia admin panel"""
        
     PigeonAutomaticly(
         to=to,
         text=message,
         subject=subject,
-        template_name=template_name,
+        template_name=template,
     ).call_pigeon()
 
     automatic_email = EmailSendAutomaticly.objects.get(id=email_id)

@@ -5,7 +5,6 @@ from rest_framework.response import Response
 from cart.cart import Cart
 
 from coupon_api.coupon import CouponHelper
-from coupon_api.models import Coupon
 
 
 @api_view(['POST'])
