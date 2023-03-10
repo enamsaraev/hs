@@ -17,6 +17,12 @@ class EmailSendTemplate(models.Model):
         help_text=_('Обязательный, принимает html code'),
     )
 
+    class Meta:
+        verbose_name = 'Шаблоны кастомных имейлов'
+
+    def __str__(self) -> str:
+        return self.name
+
 
 class EmailEntry(models.Model):
     """Email logging"""
@@ -86,7 +92,10 @@ class EmailSendAutomaticly(models.Model):
         verbose_name=_("Текст смс для отправки почты покупателю"),
         help_text=_("Формат: обязательный"),
     )
-    template_name = models.TextField(
+    template = models.ForeignKey(
+        EmailSendTemplate,
+        related_name='auto_emails',
+        on_delete=models.SET_NULL,
         blank=True,
         null=True,
         verbose_name=_('Имя шаблона письма'),

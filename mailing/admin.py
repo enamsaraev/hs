@@ -11,6 +11,11 @@ class EmailEntryAdmin(admin.ModelAdmin):
     list_display = ('email',)
     search_fields = ('email',)
 
+    def get_form(self, request, obj=None, **kwargs):
+        form = super(EmailEntryAdmin, self).get_form(request, obj, **kwargs)
+        form.base_fields['order'].label_from_instance = lambda inst: "{}".format(inst.name)
+        return form
+
 
 @admin.register(EmailSendAutomaticly)
 class EmailSendAutomaticlyAdmin(admin.ModelAdmin):
@@ -32,12 +37,12 @@ class EmailSendAutomaticlyAdmin(admin.ModelAdmin):
             to=[obj.recipient],
             message=obj.text,
             subject=obj.subject,
-            template_name=obj.template_name,
+            template=obj.template.name,
         )
 
 
 @admin.register(EmailSendTemplate)
-class EmailEntryAdmin(admin.ModelAdmin):
+class EmailSendTemplateAdmin(admin.ModelAdmin):
     """Order admin model"""
 
     list_display = ('name',)
