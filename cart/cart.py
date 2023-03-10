@@ -72,7 +72,9 @@ class Cart:
     def __check_coupon(self) -> None:
         """Check if coupon is purchased"""
         
-        if self.cart['discount']['purchased']:
+        if not self.cart['discount']['purchased']:
+            self.__get_total_price()
+        else:
             self.__item_price_set_with_discount()
 
     def __item_price_set(self, product_slug: str, product_price: Decimal, quantity: int):
@@ -88,9 +90,6 @@ class Cart:
             item_price = Decimal(self.cart['items'][item]['total_item_price'])
             self.cart['items'][item]['total_item_price'] = str(item_price * (100-self.cart['discount']['percent']) / 100)
         
-        self.cart['discount']['purchased'] = False
-        self.__save()
-
     def __get_total_price(self) -> None:
         """Retrieving a total cart price"""
 
@@ -103,7 +102,6 @@ class Cart:
         
         self.__check_coupon()
         self.__get_total_price()
-        self.__save()
 
         return self.cart
 
