@@ -63,18 +63,17 @@ class Cart:
     def set_discount(self, code: str, discount: int) -> None:
         """Rewrite total price by a discount"""
 
-        self.cart['discount']['code'] = code
-        self.cart['discount']['percent'] = discount
-        self.cart['discount']['purchased'] = True
+        if not self.cart['discount']['purchased']:
+            self.cart['discount']['code'] = code
+            self.cart['discount']['percent'] = discount
+            self.cart['discount']['purchased'] = True
 
-        self.__save()
+            self.__save()
 
     def __check_coupon(self) -> None:
         """Check if coupon is purchased"""
         
-        if not self.cart['discount']['purchased']:
-            self.__get_total_price()
-        else:
+        if self.cart['discount']['purchased']:
             self.__item_price_set_with_discount()
 
     def __item_price_set(self, product_slug: str, product_price: Decimal, quantity: int):
@@ -89,7 +88,7 @@ class Cart:
         for item in self.cart['items'].keys():
             item_price = Decimal(self.cart['items'][item]['total_item_price'])
             self.cart['items'][item]['total_item_price'] = str(item_price * (100-self.cart['discount']['percent']) / 100)
-        
+
     def __get_total_price(self) -> None:
         """Retrieving a total cart price"""
 
