@@ -112,7 +112,6 @@ class Product(models.Model):
         help_text=_('Формат: обязательный')
     )
 
-
     class Meta:
         verbose_name = 'Вид товара'
         verbose_name_plural = 'Виды товаров'

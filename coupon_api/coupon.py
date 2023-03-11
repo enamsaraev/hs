@@ -19,7 +19,8 @@ class CouponHelper:
                 code__iexact=code,
                 valid_from__lte=time_now,
                 valid_to__gte=time_now,
-                is_active=True
+                is_active=True,
+                is_deleted=False,           
             )
 
         except ObjectDoesNotExist:

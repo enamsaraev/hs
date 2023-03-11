@@ -20,13 +20,11 @@ pytestmark = [pytest.mark.django_db]
 def test_order_model_creation_successful(order_factory, name, email, phone, coupon_discount, total_price):
     """Test successful order model creation"""
 
-    order = order_factory.create(
+    order = mixer.blend(
+        'orders.Order',
         name=name,
         email=email,
-        phone=phone,
-        coupon=mixer.blend('coupon_api.Coupon'),
-        coupon_discount=coupon_discount,
-        total_price=total_price
+        phone=phone
     )
 
     assert order.name == name
@@ -37,7 +35,7 @@ def test_order_model_creation_successful(order_factory, name, email, phone, coup
 def test_order_model_set_is_paid(order_factory):
     """Test order set_is_paid method"""
 
-    order = order_factory.create()
+    order = mixer.blend('orders.Order')
     assert order.is_paid == False
 
     order.set_is_paid()

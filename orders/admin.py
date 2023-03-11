@@ -14,7 +14,7 @@ class OrderAdmin(admin.ModelAdmin):
     """Order admin model"""
 
     list_display = ('id', 'email',)
-    list_filter = ('is_deleted', 'is_active',)
+    list_filter = ('is_deleted',)
     search_fields = ('email',)
     inlines = [
         ProductItemsInline

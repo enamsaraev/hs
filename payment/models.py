@@ -24,3 +24,10 @@ class PaymentData(models.Model):
     is_deleted = models.BooleanField(
         default=False
     )
+
+    class Meta:
+        verbose_name = 'ID заказа'
+        verbose_name_plural = 'ID заказов'
+
+    def __str__(self) -> str:
+        return self.payment_id
