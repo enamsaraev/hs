@@ -14,15 +14,17 @@ class OrderComponent:
         """Main function in creating order"""
 
         coupon = None
+        discount = 0
 
         if 'code' in data:
             coupon=Coupon.objects.get(code=data['code'])
-            
-        order = self.set_order(data, coupon)
+            discount = coupon.discount
+
+        order = self.set_order(data, coupon, discount)
 
         return order
 
-    def set_order(self, data: dict, coupon: object):
+    def set_order(self, data: dict, coupon: object, discount: int = 0):
         """Create order"""
 
         order = Order.objects.create(
@@ -30,7 +32,7 @@ class OrderComponent:
             email=data['email'],
             phone=data['phone'],
             coupon=coupon,
-            coupon_discount=data['coupon_discount'],
+            coupon_discount=discount,
             total_price=data['total_price']
         )
 

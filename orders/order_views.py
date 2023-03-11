@@ -37,6 +37,7 @@ class OrderApiView(APIView):
                 message=msg,
                 order_id=order.id,
             )
+            cart.clear_all_cart()
             return Response(
                 {
                     'url': payment_data['confirmation']['confirmation_url'],

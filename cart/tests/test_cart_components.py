@@ -49,11 +49,7 @@ def return_request(db):
             }
         },
         'total': '694.00',
-        'discount': {
-            "code": "",
-            "percent": 0,
-            "purchased": False
-        }
+        'discount': {}
     }
     request.session.save()
 
@@ -116,7 +112,7 @@ def test_cart_set_discount_component(return_cart):
 
     assert cart.get_cart()['discount']['code'] == coupon.code
     assert cart.get_cart()['discount']['percent'] == coupon.discount
-    assert cart.get_cart()['discount']['purchased'] == False
+    assert cart.get_cart()['discount']['purchased'] == True
 
 def test_cart_get_total_price(return_cart):
     """Test get_total_price cart method"""
