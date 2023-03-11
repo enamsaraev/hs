@@ -38,15 +38,9 @@ class Order(models.Model):
         verbose_name=_("Дата создания"),
         help_text=_("Определяется автоматически, возможно редактирование")
     )
-    is_active = models.BooleanField(
-        default=True,
-        verbose_name=_('Выбрать, если товар используется в каталоге'),
-        help_text=_('Формат: обязательный')
-    )
     is_deleted = models.BooleanField(
         default=False,
-        verbose_name=_('Выбрать, если товар должен быть удалена'),
-        help_text=_('Формат: обязательный')
+        verbose_name=_('Выбрать, если заказ должен быть удален'),
     )
     coupon = models.ForeignKey(
         Coupon,
@@ -76,6 +70,13 @@ class Order(models.Model):
         default=False
     )
 
+    class Meta:
+        verbose_name = 'Заказ'
+        verbose_name_plural = 'Заказы'
+
+    def __str__(self):
+        return self.name
+    
     def set_is_paid(self):
         """Set a paid order"""
 
@@ -127,11 +128,14 @@ class OrderItems(models.Model):
         help_text=_('Формат: обязательный'),
     )
 
+    class Meta:
+        verbose_name = 'Товар в заказе'
+        verbose_name_plural = 'Товары в заказе'
+
     def get_total_cost(self):
         """Return total item cost"""
 
         return str(self.price * self.qunatity)
-
 
     def __str__(self) -> str:
         return self.order.name

@@ -10,6 +10,7 @@ class EmailEntryAdmin(admin.ModelAdmin):
 
     list_display = ('email',)
     search_fields = ('email',)
+    list_filter = ('is_deleted',)
 
     def get_form(self, request, obj=None, **kwargs):
         form = super(EmailEntryAdmin, self).get_form(request, obj, **kwargs)
@@ -23,6 +24,7 @@ class EmailSendAutomaticlyAdmin(admin.ModelAdmin):
 
     list_display = ('recipient', 'subject', 'created_at')
     search_fields = ('recipient', 'subject', 'created_at')
+    list_filter = ('is_deleted',)
 
     def save_model(self, request, obj, form, change) -> None:
         if not obj.recipient:
@@ -47,3 +49,4 @@ class EmailSendTemplateAdmin(admin.ModelAdmin):
 
     list_display = ('name',)
     search_fields = ('name',)
+    list_filter = ('is_deleted',)

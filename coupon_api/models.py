@@ -49,6 +49,10 @@ class Coupon(models.Model):
         help_text=_('Формат: обязательный')
     )
 
+    class Meta:
+        verbose_name = 'Купон'
+        verbose_name_plural = 'Купоны'
+
     def get_count(self):
         return self.count
 

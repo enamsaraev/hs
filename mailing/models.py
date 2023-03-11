@@ -16,7 +16,11 @@ class EmailSendTemplate(models.Model):
         verbose_name=_('HTML код сообщения'),
         help_text=_('Обязательный, принимает html code'),
     )
-
+    is_deleted = models.BooleanField(
+        default=False,
+        verbose_name=_('Выбрать, если запись должна быть удалена'),
+    )
+    
     class Meta:
         verbose_name = 'Шаблоны кастомных имейлов'
 
@@ -67,6 +71,10 @@ class EmailEntry(models.Model):
         verbose_name=_('Текущий заказ клиента'),
         help_text=_('Формат: обязательный'),
     )
+    is_deleted = models.BooleanField(
+        default=False,
+        verbose_name=_('Выбрать, если запись должна быть удалена'),
+    )
 
     class Meta:
         verbose_name = 'Отправленный имейл при оформлении заказа'
@@ -104,7 +112,7 @@ class EmailSendAutomaticly(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     is_deleted = models.BooleanField(
         default=False,
-        verbose_name=_("Нажать, если нужно удалить шаблон"),
+        verbose_name=_("Выбрать, если запись должна быть удалена"),
         help_text=_("Формат: обязательный"),
     )
     deliered = models.BooleanField(
