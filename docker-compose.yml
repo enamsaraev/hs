@@ -6,8 +6,10 @@ services:
       - PYTHONUNBUFFERED=1
     build: .
     restart: always
-    command:
-            python3 manage.py runserver 0.0.0.0:8000
+    command: >
+      sh -c "python manage.py collectstatic --noinput &&
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
     # volumes:
     #   - ./ecommerce/:/Users/kkk_kkkkkkk/Documents/hs/ecommerce
     ports:
