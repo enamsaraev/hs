@@ -9,11 +9,11 @@ services:
     command: >
       sh -c "python manage.py collectstatic --noinput &&
              python manage.py migrate &&
-             python manage.py runserver 194.58.111.67:8000"
+             python manage.py runserver 194.58.111.67:8080"
     # volumes:
     #   - ./ecommerce/:/Users/kkk_kkkkkkk/Documents/hs/ecommerce
     ports:
-      - 8000:8000
+      - 8080:8000
     env_file:
       - .env
     depends_on:
