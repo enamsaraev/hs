@@ -7,13 +7,12 @@ services:
     build: .
     restart: always
     command: >
-      sh -c "python manage.py collectstatic --noinput &&
-             python manage.py migrate &&
-             python manage.py runserver 194.58.111.67:8080"
-    # volumes:
-    #   - ./ecommerce/:/Users/kkk_kkkkkkk/Documents/hs/ecommerce
-    ports:
-      - 8080:8000
+      sh -c "gunicorn --bind 194.58.111.67:8080 app.wsgi"
+    volumes:
+      - ./ecommerce:/ecommerce
+      - static_data:/ecommerce/static
+    expose:
+      - "8080"
     env_file:
       - .env
     depends_on:
@@ -22,12 +21,21 @@ services:
   pgdb:
     image: postgres
     volumes:
-      - postgres_volume:/var/lib/mysql/data/
+      - postgres_volume:/var/lib/postgres/data/
     environment:
-      # - POSTGRES_HOST_AUTH_METHOD=trust
       - POSTGRES_DATABASE=ecommerce_db
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+
+  nginx:
+    image: nginx:1.19.8-alpine
+    depends_on:
+      - web
+    ports:
+      - "8080:8080"
+    volumes:
+      - static_data:/var/www/html/static
+      - ./nginx-conf.d:/etc/nginx/conf.d
 
   redis:
     image: redis:alpine
@@ -51,3 +59,4 @@ services:
 
 volumes:
   postgres_volume:
+  static_data:
