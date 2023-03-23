@@ -12,7 +12,7 @@ services:
       - ./ecommerce:/ecommerce
       - static_data:/ecommerce/static
     expose:
-      - "8000"
+      - "80"
     env_file:
       - .env
     depends_on:
@@ -32,7 +32,7 @@ services:
     depends_on:
       - web
     ports:
-      - "8080:8000"
+      - "80:80"
     volumes:
       - static_data:/var/www/html/static
       - ./nginx-conf.d:/etc/nginx/conf.d
