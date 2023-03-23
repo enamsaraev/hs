@@ -28,7 +28,7 @@ services:
       - POSTGRES_PASSWORD=postgres
 
   nginx:
-    image: nginx:1.19.8-alpine
+    image: nginx:1.22.0-alpine
     depends_on:
       - django
     ports:
