@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  web:
+  eve:
     environment:
       - PYTHONUNBUFFERED=1
     build: .
@@ -30,9 +30,9 @@ services:
   nginx:
     image: nginx:1.19.8-alpine
     depends_on:
-      - web
+      - eve
     ports:
-      - "80:80"
+      - "1337:80"
     volumes:
       - static_data:/var/www/html/static
       - ./nginx-conf.d:/etc/nginx/conf.d
@@ -55,7 +55,7 @@ services:
     depends_on:
       - pgdb
       - redis
-      - web
+      - eve
 
 volumes:
   postgres_volume:
