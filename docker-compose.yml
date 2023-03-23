@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  eve:
+  django:
     environment:
       - PYTHONUNBUFFERED=1
     build: .
@@ -30,7 +30,7 @@ services:
   nginx:
     image: nginx:1.19.8-alpine
     depends_on:
-      - eve
+      - django
     ports:
       - "1337:80"
     volumes:
@@ -55,7 +55,7 @@ services:
     depends_on:
       - pgdb
       - redis
-      - eve
+      - django
 
 volumes:
   postgres_volume:
