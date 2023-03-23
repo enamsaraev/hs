@@ -32,7 +32,7 @@ services:
     depends_on:
       - django
     ports:
-      - "80:80"
+      - "8080:8080"
     volumes:
       - static_data:/home/site/server/hs
       - ./nginx-conf.d:/etc/nginx/conf.d
