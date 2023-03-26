@@ -7,7 +7,7 @@ services:
     build: .
     restart: always
     command: >
-      sh -c "gunicorn --bind 194.58.111.67:8000 app.wsgi"
+      sh -c "python manage.py runserver 194.58.111.67:8000"
     volumes:
       - ./ecommerce:/ecommerce
       - static_data:/ecommerce/static
