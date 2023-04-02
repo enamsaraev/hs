@@ -144,3 +144,6 @@ dmypy.json
 /app/java_school_crm/auth/credentials.json
 
 media
+
+.DS_store
+.swp
