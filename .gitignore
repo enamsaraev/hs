@@ -147,3 +147,5 @@ media
 
 .DS_store
 .swp
+
+static_data
