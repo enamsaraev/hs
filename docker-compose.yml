@@ -2,19 +2,16 @@ version: '3.8'
 
 services:
   django:
-    environment:
-      - PYTHONUNBUFFERED=1
-    build: .
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     restart: always
-    command: >
-      sh -c "python manage.py runserver 194.58.111.67:8000"
     volumes:
-      - ./ecommerce:/ecommerce
-      - static_data:/ecommerce/static
+      - static_data:/app/static
     ports:
       - "8000:8000"
     env_file:
-      - .env
+      - backend/.env
     depends_on:
       - pgdb
 
@@ -27,16 +24,6 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
 
-  nginx:
-    image: nginx:1.22.0-alpine
-    depends_on:
-      - django
-    ports:
-      - "8080:8080"
-    volumes:
-      - static_data:/home/site/server/hs
-      - ./nginx-conf.d:/etc/nginx/conf.d
-
   redis:
     image: redis:alpine
     ports:
@@ -46,16 +33,29 @@ services:
   celery:
     restart: always
     build:
-      context: .
+      context: ./backend
+      dockerfile: Dockerfile
     command: celery -A ecommerce_celery worker -l info
-    # volumes:
-    #   - ./app:/app
     env_file:
-      - .env
+      - backend/.env
     depends_on:
       - pgdb
       - redis
       - django
+  front:
+    restart: always
+    build:
+      context: ./frontend
+      dockerfile: frontend.Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - static_data:/app/static
+    depends_on:
+      - pgdb
+      - redis
+      - django
+      - celery
 
 volumes:
   postgres_volume:
