@@ -1,4 +1,4 @@
-const BASEURL = 'http://faceprog.ru/reactcourseapi/cart/';
+/*const BASEURL = 'http://faceprog.ru/reactcourseapi/cart/';*/
 
 export default {
 	namespaced: true,
