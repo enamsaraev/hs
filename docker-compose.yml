@@ -45,6 +45,7 @@ services:
       - "80:80"
     volumes:
       - static_data:/app/static
+      - /etc/ssl:/etc/ssl/
     depends_on:
       - pgdb
       - redis
