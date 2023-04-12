@@ -13,7 +13,7 @@ services:
       - pgdb
 
   pgdb:
-    image: postgres
+    image: postgres:15-alpine
     volumes:
       - postgres_volume:/var/lib/postgres/data/
     environment:
@@ -22,7 +22,7 @@ services:
       - POSTGRES_PASSWORD=postgres
 
   redis:
-    image: redis:alpine
+    image: 7.2-rc1-alpine
     ports:
       - 3306:3306
     entrypoint: redis-server --appendonly yes
