@@ -69,7 +69,6 @@
 				<app-e-404 v-else />
 			</div>
 		</div>
-		<app-e-404 v-else />
 	</div>
   
   
@@ -143,8 +142,9 @@ export default {
 					}
 				}
 			}
-
-			let headers = {"Content-Type": "application/json;charset=utf-8"};
+			/*Headers */
+			let csrf = document.cookie.split('=');
+			let headers = {"Content-Type": "application/json;charset=utf-8","X-CSRFToken": `${csrf[1]}`};
 			if (localStorage.getItem("HTTP_TOKEN") !== "") {
 				headers["TOKEN"] = localStorage.getItem("HTTP_TOKEN");
 			}
