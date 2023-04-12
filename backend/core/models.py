@@ -3,9 +3,7 @@ from uuid import uuid1
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from django.utils.text import slugify 
-
-from mptt.models import MPTTModel, TreeForeignKey, TreeManyToManyField
+from mptt.models import MPTTModel, TreeForeignKey
 
 
 def _set_directory_to_ipload_images(instance: object, filename: str) -> str:
@@ -142,7 +140,6 @@ class Media(models.Model):
         verbose_name=_('Выбрать, если фото товара должно быть удалено'),
         help_text=_('Формат: обязательный')
     )
-
 
     class Meta:
         verbose_name = 'Медиа'

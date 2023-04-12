@@ -1,6 +1,5 @@
-from rest_framework import serializers
-
 from core import models
+from rest_framework import serializers
 
 
 class CatalogSerializer(serializers.ModelSerializer):
@@ -13,6 +12,8 @@ class CatalogSerializer(serializers.ModelSerializer):
 
 class MediaSerializer(serializers.ModelSerializer):
     """Media serializer"""
+
+    img = serializers.StringRelatedField(source='img.url')
 
     class Meta:
         model = models.Media
