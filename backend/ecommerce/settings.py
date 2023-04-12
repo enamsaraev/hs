@@ -70,15 +70,12 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
-
-CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'ecommerce.urls'
 
@@ -102,8 +99,6 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 
 
 if env.bool("SWITCH_DB"):
-    print(env.bool("SWITCH_DB"))
-    print(os.environ.get("SWITCH_DB"))
     DATABASES = {
         'default': {
             "ENGINE": os.environ.get("SQL_ENGINE_TEST"),
