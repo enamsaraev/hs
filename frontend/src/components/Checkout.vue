@@ -16,9 +16,7 @@
 					<input placeholder="Email" v-model="purch_info.email" class="col-lg-10" />
 				</div>
 				<div class="col-lg-7 txt"><p class="subtitle">Доставка</p></div>
-				<div class="col-lg-6">1</div>
-				<div class="col-lg-6">2</div>
-				<div class="col-lg-6">3</div>
+				<div class="col-lg-6">После оплаты с вам свяжется менеджер и согласует доставку. Спасибо за покупку!</div>
 			</div>
 			<div class="col-lg-12 body_footer">
 				<router-link :to="{path: 'cart'}"><button class="col-lg-1 btn_brdr btn-p w-100" ><p>Назад</p></button></router-link>
@@ -45,9 +43,9 @@ export default {
 	data() {
 		return {
 			purch_info: {
-				name: "Георгий",
-				email: "andr.gosh@yandex.ru",
-				phone: "89219236113",
+				name: "",
+				email: "",
+				phone: "",
 				total_price: "0"
 			},
 		};
@@ -64,7 +62,8 @@ export default {
 	methods:{
 		order() {
 			this.purch_info.total_price = (parseInt(this.getAllCart.data.total * 100)) / 100;
-			let headers = {"Content-Type": "application/json;charset=utf-8"};
+			let csrf = document.cookie.split('=');
+			let headers = {"Content-Type": "application/json;charset=utf-8","X-CSRFToken": `${csrf[1]}`};
 			if (localStorage.getItem("HTTP_TOKEN") !== "") {
 				headers["TOKEN"] = localStorage.getItem("HTTP_TOKEN");
 			}

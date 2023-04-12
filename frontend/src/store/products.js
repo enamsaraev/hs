@@ -1,4 +1,4 @@
-const BASEURL = 'http://127.0.0.1:8000/api/shop/';
+/*const BASEURL = 'http://127.0.0.1:8000/api/shop/';*/
 
 export default {
 	namespaced: true,
@@ -38,11 +38,11 @@ export default {
 		async load({
 			commit
 		}) {
-			let response = await fetch('http://127.0.0.1:8000/api/shop/clothes/');
+			let response = await fetch(`${window.location.origin}/api/shop/clothes/`);
 			let products = await response.json();
 			commit('setItems', products);
 
-			let res = await fetch('http://127.0.0.1:8000/api/shop/catalog/');
+			let res = await fetch(`${window.location.origin}/api/shop/catalog/`);
 			let prod = await res.json();
 			commit('setCategories', prod);
 		},

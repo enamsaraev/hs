@@ -84,7 +84,8 @@ export default {
 		del(slug, size, color) {
 			let st = `${slug}/${size}/${color}`;
 
-			let headers = {"Content-Type": "application/json;charset=utf-8"};
+			let csrf = document.cookie.split('=');
+			let headers = {"Content-Type": "application/json;charset=utf-8","X-CSRFToken": `${csrf[1]}`};
 			if (localStorage.getItem("HTTP_TOKEN") !== "") {
 				headers["TOKEN"] = localStorage.getItem("HTTP_TOKEN");
 			}
@@ -100,7 +101,8 @@ export default {
 				.catch((error) => console.log(error));
 		},
 		test() {
-			let headers = {"Content-Type": "application/json;charset=utf-8"};
+			let csrf = document.cookie.split('=');
+			let headers = {"Content-Type": "application/json;charset=utf-8","X-CSRFToken": `${csrf[1]}`};
 			if (localStorage.getItem("HTTP_TOKEN") !== "") {
 				headers["TOKEN"] = localStorage.getItem("HTTP_TOKEN");
 			}

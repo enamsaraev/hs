@@ -1,4 +1,4 @@
-const BASEURL = 'http://faceprog.ru/reactcourseapi/cart/';
+/*const BASEURL = 'http://faceprog.ru/reactcourseapi/cart/';*/
 
 export default {
 	namespaced: true,
@@ -34,15 +34,17 @@ export default {
 		}
 	},
 	actions: {
-		async load({ commit }){
+		async load({
+			commit
+		}) {
 			let oldToken = localStorage.getItem('HTTP_TOKEN');
-			let response = await fetch(`${BASEURL}load.php?token=${oldToken}`);
-			let { cart, token, needUpdate } = await response.json();
-			
-			if(needUpdate){
+			let token = '';
+			if (!oldToken) {
+				let tokenstr = document.cookie.split('=');
+				token = 'eve' + tokenstr[1];
 				localStorage.setItem('HTTP_TOKEN', token);
 			}
-			commit('load', { cart, token });
+			/*commit('load', { cart, token });*/
 		},
 		async add({ commit, getters, state }, id){
 			if(!getters.inCart(id)){

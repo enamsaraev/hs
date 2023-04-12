@@ -34,6 +34,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 DEBUG = env.bool("DEBUG", default=False)
 
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS")
+CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS")
 
 INTERNAL_IPS = [
     os.environ.get("INTERNAL_IPS")
@@ -100,7 +101,9 @@ TEMPLATES = [
 WSGI_APPLICATION = 'ecommerce.wsgi.application'
 
 
-if os.environ.get("SWITCH_DB"):
+if env.bool("SWITCH_DB"):
+    print(env.bool("SWITCH_DB"))
+    print(os.environ.get("SWITCH_DB"))
     DATABASES = {
         'default': {
             "ENGINE": os.environ.get("SQL_ENGINE_TEST"),
@@ -196,6 +199,7 @@ REST_FRAMEWORK = {
     # 'DEFAULT_PARSER_CLASSES': (
     #     'rest_framework.parsers.JSONParser',
     # ),
+    'UPLOADED_FILES_USE_URL': False,
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
     ),
