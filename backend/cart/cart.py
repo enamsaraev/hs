@@ -1,8 +1,9 @@
 from decimal import Decimal
-
 from rest_framework.exceptions import ParseError
 
+from core.models import Media
 
+# {"product_slug": "hyi", "quantity": "1", "size": "S", "color": "Black", "update": "False"}
 class Cart:
     def __init__(self, request):
 
@@ -30,11 +31,13 @@ class Cart:
         slug = product.slug
         product_name = product.name
         product_price = product.retail_price
+        product_img = Media.objects.get(product__slug=slug, is_default=True)
 
         if update and product_slug in self.cart:
             
             self.cart['items'][product_slug]['name'] = product_name
             self.cart['items'][product_slug]['slug'] = slug
+            self.cart['items'][product_slug]['img'] = product_img.img.url
             self.cart['items'][product_slug]['quantity'] = quantity
             self.cart['items'][product_slug]['size'] = size
             self.cart['items'][product_slug]['color'] = color
@@ -43,6 +46,7 @@ class Cart:
             self.cart['items'][product_slug] = {
                 'name': product_name,
                 'slug': slug,
+                'img': product_img.img.url,
                 'size': size,
                 'color': color,
                 'quantity': quantity,
