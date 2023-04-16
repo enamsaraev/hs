@@ -18,10 +18,9 @@
 				<div class="col-lg-7 txt"><p class="subtitle">Доставка</p></div>
 				<div class="col-lg-6">
 					<input placeholder="Email" v-model.lazy="" class="col-lg-10" />
-					<div class="custom-select" >
-
+					<div class="" >
 						<select>
-							<option value="0">Select car:</option>
+							<option value="0"></option>
 						</select>
 					</div>
 				</div>
@@ -52,6 +51,8 @@ export default {
 				name: "",
 				email: "",
 				phone: "",
+				address: "",/* Тут должен быть город и адресс пункта выдачи */
+				delivery_price: "",/* Цена от сдека */
 				total_price: "0"
 			},
 		};
@@ -59,7 +60,7 @@ export default {
 	computed: {
 		...mapGetters(["getAllCart"]),
 		activeBtn() {
-			if (this.purch_info.name == "" || this.purch_info.email == "" || this.purch_info.phone == "") {
+			if (this.purch_info.name == "" || this.purch_info.email == "" || this.purch_info.phone == "" || this.purch_info.delivery_price == "") {
 				return true
 			}
 			return false
@@ -68,11 +69,15 @@ export default {
 	methods:{
 		order() {
 			this.purch_info.total_price = (parseInt(this.getAllCart.data.total * 100)) / 100;
+
+			/* headers */
 			let csrf = document.cookie.split('=');
 			let headers = {"Content-Type": "application/json;charset=utf-8","X-CSRFToken": `${csrf[1]}`};
 			if (localStorage.getItem("HTTP_TOKEN") !== "") {
 				headers["TOKEN"] = localStorage.getItem("HTTP_TOKEN");
 			}
+
+
 			if (this.getAllCart.data.discount.code != null) {
 				this.purch_info.code=`${this.getAllCart.data.discount.code}`
 			}
