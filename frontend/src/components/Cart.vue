@@ -16,7 +16,7 @@
 				></button>
 				<h3 class="title mt">{{ prod.name }} ({{ prod.quantity }})</h3>
 				<div class="size mt">{{ prod.size }}/{{ prod.color }}</div>
-				<div class="mt"> 
+				<div class="mt btnsforq"> 
 					<button @click="plusOne(prod.slug,prod.quantity, prod.size, prod.color)" class="btnsq">+</button>
 					<button @click="minusOne(prod.slug,prod.quantity, prod.size, prod.color)" class="btnsq">-</button>
 				</div>
@@ -65,6 +65,7 @@ export default {
 			promo: {
 				code: "",
 			},
+
 		};
 	},
 	computed: {
@@ -123,7 +124,7 @@ export default {
 				"quantity": newquantity,
 				"size": size,
 				"color": color,
-				"update": True,
+				"update": "True",
 			};
 
 			/*Headers */
@@ -145,7 +146,7 @@ export default {
 					"quantity": newquantity,
 					"size": size,
 					"color": color,
-					"update": True,
+					"update": "True",
 				};
 
 				/*Headers */
@@ -220,26 +221,23 @@ export default {
 }
 .btnsq{
   --c:  #000000; /* the color*/
-  
-  box-shadow: 0 0 0 .1em inset var(--c); 
-  --_g: linear-gradient(var(--c) 0 0) no-repeat;
   background: 
     var(--_g) calc(var(--_p,0%) - 100%) 0%,
     var(--_g) calc(200% - var(--_p,0%)) 0%,
     var(--_g) calc(var(--_p,0%) - 100%) 100%,
     var(--_g) calc(200% - var(--_p,0%)) 100%;
   background-size: 50.5% calc(var(--_p,0%)/2 + .5%);
-  outline-offset: .1em;
-  transition: background-size .4s, background-position 0s .4s;
 }
-.btnsq:hover {
-  --_p: 100%;
-  transition: background-position .4s, background-size 0s;
-}
+
 .btnsq:active {
-  box-shadow: 0 0 9e9q inset #0009; 
   background-color: var(--c);
   color: #fff;
+}
+
+.btnsforq{
+	display: flex;
+	width: 40%;
+	justify-content: space-around;
 }
 
 
