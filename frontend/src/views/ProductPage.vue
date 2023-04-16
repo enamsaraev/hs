@@ -7,8 +7,10 @@
 						<div class="row">
 							<div class="col-lg-3 mt">
 								<h3>{{ prs.name }}</h3>
-								<p>Описание товара:</p>
-								<p>{{ prs.description }}</p>
+								<div class="dscr_pc">
+									<p>Описание товара:</p>
+									<p>{{ prs.description }}</p>
+								</div>
 							</div>
 							<div class="col-lg-6">
 								<Carousel class="carousel_photo">
@@ -29,6 +31,10 @@
 								</Carousel>
 							</div>
 							<div class="col-lg-3 mt">
+								<div class="dscr_mob">
+									<p>Описание товара:</p>
+									<p>{{ prs.description }}</p>
+								</div>
 								<div class="variations">
 									<p class="price">{{ parseInt(prs.retail_price) }} ₽</p>
 									<div class="btns">
@@ -250,6 +256,25 @@ export default {
 	display: flex;
 	align-items: center;
 	flex-direction: column;
+}
+
+@media screen and (max-width: 980px) {
+	.dscr_pc{
+		display: none;
+	}
+	.dscr_mob{
+		display: block;
+	}
+
+}
+@media screen and (min-width: 980px) {
+	.dscr_pc{
+		display: block;
+	}
+	.dscr_mob{
+		display: none;
+	}
+
 }
 
 </style>

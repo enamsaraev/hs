@@ -49,4 +49,10 @@ export default {
 .fade-enter, .fade-leave-to {
 	opacity: 0;
 }
+@media (max-width: 600px) {
+	.loader_img {
+	height: 75vh;
+}
+}
+
 </style>

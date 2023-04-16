@@ -9,13 +9,17 @@
 				v-for="prod in getAllCart.data.items"
 				:key="prod.id"
 			>
-				<img src="/media/img/hoody.png" alt="" class="cart_img" />
+				<img :src=prod.img alt="" class="cart_img" />
 				<button
 					class="btn_del btn"
 					@click="del(prod.slug, prod.size, prod.color)"
 				></button>
-				<h3 class="title mt">{{ prod.name }}</h3>
+				<h3 class="title mt">{{ prod.name }} ({{ prod.quantity }})</h3>
 				<div class="size mt">{{ prod.size }}/{{ prod.color }}</div>
+				<div class="mt"> 
+					<button @click="plusOne(prod.slug,prod.quantity, prod.size, prod.color)" class="btnsq">+</button>
+					<button @click="minusOne(prod.slug,prod.quantity, prod.size, prod.color)" class="btnsq">-</button>
+				</div>
 				<div v-if="prod.total_item_price_with_dsc != null" class="price mt">
 					{{ parseInt(prod.total_item_price_with_dsc * 100) / 100 }} ₽
 				</div>
@@ -54,7 +58,6 @@
 import {mapGetters, mapActions} from "vuex";
 import axios from "axios";
 
-/**<div id="shiptor_widget_pvz" class="_shiptor_widget"></div> */
 
 export default {
 	data() {
@@ -113,11 +116,57 @@ export default {
 				.then((response) => this.$store.dispatch("loadCart"))
 				.catch((error) => alert("Промокод не действителен"));
 		},
+		plusOne(slug, quantity, size, color) {
+			let newquantity = quantity + 1;
+			let addDate = {
+				"product_slug": slug,
+				"quantity": newquantity,
+				"size": size,
+				"color": color,
+				"update": True,
+			};
+
+			/*Headers */
+			let csrf = document.cookie.split('=');
+			let headers = {"Content-Type": "application/json;charset=utf-8","X-CSRFToken": `${csrf[1]}`};
+			if (localStorage.getItem("HTTP_TOKEN") !== "") {
+				headers["TOKEN"] = localStorage.getItem("HTTP_TOKEN");
+			}
+			axios
+				.post(`${this.$store.state.BaseUrl}api/cart/add/`, addDate, {headers})
+				.then((response) => this.$store.commit("load", response))
+				.catch((error) => console.log(error));
+		},
+		minusOne(slug, quantity, size, color) {
+			let newquantity = quantity - 1;
+			if (newquantity > 1) {
+				let addDate = {
+					"product_slug": slug,
+					"quantity": newquantity,
+					"size": size,
+					"color": color,
+					"update": True,
+				};
+
+				/*Headers */
+				let csrf = document.cookie.split('=');
+				let headers = { "Content-Type": "application/json;charset=utf-8", "X-CSRFToken": `${csrf[1]}` };
+				if (localStorage.getItem("HTTP_TOKEN") !== "") {
+					headers["TOKEN"] = localStorage.getItem("HTTP_TOKEN");
+				}
+				axios
+					.post(`${this.$store.state.BaseUrl}api/cart/add/`, addDate, { headers })
+					.then((response) => this.$store.commit("load", response))
+					.catch((error) => console.log(error));
+			}
+		}
 	},
 };
 </script>
 
 <style scoped>
+
+
 .page_title {
 	height: 80px;
 }
@@ -169,6 +218,30 @@ export default {
 .btn-offer {
 	margin: 10px 0 40px 0;
 }
+.btnsq{
+  --c:  #000000; /* the color*/
+  
+  box-shadow: 0 0 0 .1em inset var(--c); 
+  --_g: linear-gradient(var(--c) 0 0) no-repeat;
+  background: 
+    var(--_g) calc(var(--_p,0%) - 100%) 0%,
+    var(--_g) calc(200% - var(--_p,0%)) 0%,
+    var(--_g) calc(var(--_p,0%) - 100%) 100%,
+    var(--_g) calc(200% - var(--_p,0%)) 100%;
+  background-size: 50.5% calc(var(--_p,0%)/2 + .5%);
+  outline-offset: .1em;
+  transition: background-size .4s, background-position 0s .4s;
+}
+.btnsq:hover {
+  --_p: 100%;
+  transition: background-position .4s, background-size 0s;
+}
+.btnsq:active {
+  box-shadow: 0 0 9e9q inset #0009; 
+  background-color: var(--c);
+  color: #fff;
+}
+
 
 @media (min-width: 1400px) {
 	.container,

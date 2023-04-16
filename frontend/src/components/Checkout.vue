@@ -28,8 +28,6 @@
 				><p>Подтвердить заказ</p></button>
 			</div>
 		</div>
-		{{ purch_info }}
-		{{  }}
 	</div>
 </template>
 

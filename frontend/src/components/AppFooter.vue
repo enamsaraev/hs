@@ -1,10 +1,9 @@
 <template>
   <div class="footer_container container">
     <div class="footer_block">
-      <a href="">About &nbsp;</a>
-      <a href="">Privacy Policy&nbsp;</a>
-      <a href="">Terms of Service&nbsp;</a>
-      <a href="">Return & Refund Policy&nbsp;</a>
+      <a href="@/assets/media/About.pdf">About &nbsp;</a>
+      <a href="@/assets/media/Privacy_Policy.pdf">Privacy Policy&nbsp;</a>
+      <a href="@/assets/media/Dock_of.pdf">Terms of Service&nbsp;</a>
     </div>
   </div>
 </template>

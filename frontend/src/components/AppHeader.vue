@@ -4,12 +4,12 @@
 		<div class="header__body">
 			<div class="row cntr">
 					<app-burger></app-burger>
-				<div class="col-lg-6 col-md-6 col-sm-6 col-4 logo">
+				<div class="col-lg-6 col-md-6 col-sm-6 logo">
 					<p class="text-center w-100 logo_txt">
 						<router-link to="/"> EVE </router-link>
 					</p>
 				</div>
-				<div class="col-lg-3 col-md-3 col-sm-3 col-4">
+				<div class="col-lg-3 col-md-3 col-sm-3 ">
 					<div class="cart">
 						<router-link to="/cart" @click="loadCart()"
 							>CART ({{ getCartLenght }})</router-link
@@ -25,8 +25,7 @@
 	align-items: center;
 	justify-content: end;
 }
-.burger {
-}
+
 
 header {
 	position: sticky;

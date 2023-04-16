@@ -1,5 +1,5 @@
 <template>
-	<div class="hamburger-menu col-lg-3 col-md-3 col-sm-3 col-4 ">
+	<div class="hamburger-menu col-lg-3 col-md-3 col-sm-3 ">
 		<input id="menu__toggle" type="checkbox" />
 		<label class="menu__btn" for="menu__toggle">
 			<span></span>
@@ -18,12 +18,12 @@
 					</li>
 				</ul>	
 				<div class="icon_container">
-					<div class="icon">
+					<a class="icon" href="https://t.me/itbabyeve">
 						<img src="@/assets/icons/tgpng.png" alt="" />
-					</div>
-					<div class="icon">
+					</a>
+					<a class="icon" href="https://vk.com/eve.clothes">
 						<img src="@/assets/icons/vk.png" alt="" />
-					</div>
+					</a>
 				</div>
 			</div>
 		</div>

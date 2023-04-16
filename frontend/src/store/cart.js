@@ -39,7 +39,7 @@ export default {
 		}) {
 			let oldToken = localStorage.getItem('HTTP_TOKEN');
 			let token = '';
-			if (!oldToken) {
+			if (!oldToken || oldToken=="eveundefined") {
 				let tokenstr = document.cookie.split('=');
 				token = 'eve' + tokenstr[1];
 				localStorage.setItem('HTTP_TOKEN', token);

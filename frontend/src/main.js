@@ -12,12 +12,13 @@ store.dispatch('loadCart').then(() => {
 			.use(store)
 			.use(router)
 			.mount('#app');
+		store.dispatch('cart/load');
 	});
 });
 
 
 
-store.dispatch('cart/load');
+
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'vue3-carousel/dist/carousel.css'
