@@ -119,6 +119,13 @@ class EmailSendAutomaticly(models.Model):
         default=False,
         verbose_name=_("Галочка стоит, если имейл доставлен"),
     )
+    email_order = models.ForeignKey(
+        Order,
+        related_name='order_emails',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
     class Meta:
         verbose_name = 'Отправить имейл рассылку'
         verbose_name_plural = 'Отправить имейл рассылку'

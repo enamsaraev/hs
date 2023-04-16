@@ -45,7 +45,7 @@ def send_mail(payment_id: str, to: List[str], message: str, subject: str, order_
 
 
 @shared_task
-def send_mail_wia_admin_automaticly(email_id: int, to: List[str], message: str, subject: str, template: str):
+def send_mail_wia_admin_automaticly(email_id: int, to: List[str], message: str, subject: str, template: str = None):
     """Async email sending wia admin panel"""
        
     PigeonAutomaticly(

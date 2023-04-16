@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from orders.models import Order, OrderItems
+from mailing.models import EmailSendAutomaticly
 
 
 class ProductItemsInline(admin.TabularInline):
@@ -8,6 +9,12 @@ class ProductItemsInline(admin.TabularInline):
 
     model = OrderItems
     extra = 0
+
+
+class EmailSendAutomaticlyItemsInline(admin.TabularInline):
+    model = EmailSendAutomaticly
+    extra = 1
+    
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
@@ -17,5 +24,6 @@ class OrderAdmin(admin.ModelAdmin):
     list_filter = ('is_deleted',)
     search_fields = ('email',)
     inlines = [
-        ProductItemsInline
+        ProductItemsInline,
+        EmailSendAutomaticlyItemsInline
     ]

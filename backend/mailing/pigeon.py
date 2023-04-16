@@ -34,6 +34,9 @@ class PigeonFather:
     def call_pigeon(self) -> None:
         """Send email when initialize"""
         pass
+    
+    def mark_mail_as_sent():
+        pass
 
     def send_mail(self) -> None:
         """Sending email msg to list of users"""
@@ -148,6 +151,7 @@ class PigeonAutomaticly(PigeonFather):
         """Send email when initialize"""
 
         em = self.prepare_email()
+
         self.send(em)
 
         return True

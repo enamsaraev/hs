@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from core.models import ProductInventory, Variation, Size, Color
+from core.models import Variation
 from coupon_api.models import Coupon
 
 
@@ -31,6 +31,13 @@ class Order(models.Model):
         blank=False, 
         verbose_name=_('Номер покупателя'),
         help_text=_('Формат: обязательный, максимальная длина - 255'),
+    )
+    address = models.TextField(
+        verbose_name=_('Адрес пункта выдачи'),
+    )
+    delivery_price = models.CharField(
+        max_length=30,
+        verbose_name=_("Стоимость доставки"),
     )
     created_at = models.DateTimeField(
         auto_now_add=True, 
@@ -75,7 +82,7 @@ class Order(models.Model):
         verbose_name_plural = 'Заказы'
 
     def __str__(self):
-        return self.name
+        return f'{self.id} - {self.email}'
     
     def set_is_paid(self):
         """Set a paid order"""

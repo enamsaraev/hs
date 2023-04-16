@@ -17,7 +17,7 @@ def create_payment(price: str, description: str) -> dict:
         },
         "confirmation": {
             "type": "redirect",
-            "return_url": "https://www.example.com/return_url"
+            "return_url": "https://eveclothes.ru"
         },
         "capture": True,
         "description": description

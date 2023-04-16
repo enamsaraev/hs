@@ -311,7 +311,6 @@ class Variation(models.Model):
         help_text=_('Формат: обязательный')
     )
     count = models.PositiveIntegerField(
-        default=0,
         unique=False,
         null=False,
         blank=False,
