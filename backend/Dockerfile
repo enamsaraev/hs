@@ -14,5 +14,4 @@ ENV PYTHONUNBUFFERED 1
 EXPOSE 8080
 ARG CACHEBUST=0
 RUN python manage.py collectstatic
-RUN python manage.py migrate
 CMD ["python", "-m", "gunicorn", "--preload", "-c", "/app/config/gunicorn.py", "ecommerce.asgi:application", "-k", "uvicorn.workers.UvicornWorker"]
