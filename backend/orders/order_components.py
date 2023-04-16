@@ -31,6 +31,8 @@ class OrderComponent:
             name=data['name'],
             email=data['email'],
             phone=data['phone'],
+            address=data['address'],
+            delivery_price=data['delivery_price'],
             coupon=coupon,
             coupon_discount=discount,
             total_price=data['total_price']

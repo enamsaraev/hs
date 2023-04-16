@@ -31,7 +31,7 @@ class Cart:
         slug = product.slug
         product_name = product.name
         product_price = product.retail_price
-        product_img = Media.objects.get(product__slug=slug, is_default=True)
+        product_img = Media.objects.filter(product__slug=slug).first()
 
         if update and product_slug in self.cart:
             
@@ -130,4 +130,6 @@ class Cart:
         for item in self.cart['items']:
             yield item
 
-# {"product_slug": "hoodie-black", "quantity": "2", "update": "True"}
+
+{"product_slug": "h", "quantity": "2", "size": "S", "color": "Black", "update": "False"}
+{"name": "aa", "email": "enamsaraev@bk.ru", "phone": "111", "total_price": "888", "address": "azaza", "delivery_price": "111"} 

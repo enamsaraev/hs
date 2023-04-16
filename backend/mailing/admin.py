@@ -39,7 +39,6 @@ class EmailSendAutomaticlyAdmin(admin.ModelAdmin):
             to=[obj.recipient],
             message=obj.text,
             subject=obj.subject,
-            template=obj.template.name,
         )
 
 

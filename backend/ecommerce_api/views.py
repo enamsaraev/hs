@@ -7,6 +7,7 @@ from rest_framework.permissions import AllowAny
 
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
+from django.db.models import Count
 
 from core import models
 from ecommerce_api import serializers
@@ -34,9 +35,11 @@ class ProductInventoryViewSet(ModelViewSet):
 
     def retrieve(self, request, *args, **kwargs):
 
-        queryset = models.Variation.objects.filter(
-            product__id=kwargs['pk'], is_deleted=False
-        ).select_related('product').prefetch_related('color', 'size',)
+        queryset = models.Variation.objects.select_related('product').prefetch_related(
+            'color', 'size',
+        ).annotate(len_size=Count('size'), len_color=Count('color')).filter(
+            product__id=kwargs['pk'], is_deleted=False, count__gt=0, len_size=1, len_color=1,
+        )
         serializer = serializers.VariationDetailSerializer(queryset, many=True)
 
         return Response(serializer.data)

@@ -69,6 +69,7 @@ class CDEKHelper:
             "type": 1,
             "date": "2020-11-03T11:49:32+0700",
             "currency": 1,
+            "tariff_code": 136,
             "lang": "rus",
             "from_location": {
                 "code": 137,
@@ -76,18 +77,24 @@ class CDEKHelper:
             "to_location": {
                 "code": city_code,
             },
+            "services": [
+                {
+                    "code": "CARTON_BOX_M",
+                    "parameter": "2"
+                }
+            ],
             "packages": [
                 {
-                    "height": 10,
-                    "length": 10,
-                    "weight": 4000,
-                    "width": 10
+                    "height": 15,
+                    "length": 33,
+                    "weight": 3000,
+                    "width": 25
                 }
             ]
         }
 
         amount = requests.post(
-            'https://api.edu.cdek.ru/v2/calculator/tarifflist', 
+            'https://api.edu.cdek.ru/v2/calculator/tariff', 
             headers={'Authorization': f'Bearer {self.token}'}, 
             json=response_data
         )
