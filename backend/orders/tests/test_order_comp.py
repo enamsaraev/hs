@@ -100,13 +100,12 @@ def test_dataclass_order_set_count_data(set_cart_session_data, set_var):
     
     cart = Cart(set_cart_session_data)
 
-    order = OrderComponent(cart)
     current_order_model = mixer.blend(Order)
 
     var_before = Variation.objects.last()
     assert var_before.count == var_before.count
 
-    OrderSetCount(cart.get_cart(), current_order_model.id)
+    OrderSetCount(cart.get_cart(), current_order_model.id)()
 
     res = OrderItems.objects.all()[0:2]
 

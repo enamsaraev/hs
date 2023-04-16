@@ -67,6 +67,3 @@ class OrderSetCount:
                 price=var.product.retail_price,
                 qunatity=int(self.cart['items'][item]['quantity'])
             )
-
-
-#{"name": "name", "email": "mail@mail.com", "phone": "89001009988", "coupon_discount": "0", "total_price": "194.00"}
