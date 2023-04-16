@@ -16,7 +16,15 @@
 					<input placeholder="Email" v-model="purch_info.email" class="col-lg-10" />
 				</div>
 				<div class="col-lg-7 txt"><p class="subtitle">Доставка</p></div>
-				<div class="col-lg-6">После оплаты с вам свяжется менеджер и согласует доставку. Спасибо за покупку!</div>
+				<div class="col-lg-6">
+					<input placeholder="Email" v-model.lazy="" class="col-lg-10" />
+					<div class="custom-select" >
+
+						<select>
+							<option value="0">Select car:</option>
+						</select>
+					</div>
+				</div>
 			</div>
 			<div class="col-lg-12 body_footer">
 				<router-link :to="{path: 'cart'}"><button class="col-lg-1 btn_brdr btn-p w-100" ><p>Назад</p></button></router-link>

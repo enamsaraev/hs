@@ -1,5 +1,5 @@
 <template>
-	<div class="hamburger-menu col-lg-3 col-md-3 col-sm-3 ">
+	<div class="hamburger-menu col-lg-3 col-md-3 col-sm-3 col-4">
 		<input id="menu__toggle" type="checkbox" />
 		<label class="menu__btn" for="menu__toggle">
 			<span></span>
@@ -64,8 +64,6 @@ export default {
 .menu__btn {
 	display: flex;
 	align-items: center;
-	position: fixed;
-	left: 40px;
 
 	width: 26px;
 	height: 26px;
@@ -80,7 +78,7 @@ export default {
 	display: block;
 	position: absolute;
 
-	width: 100%;
+	width: 26px;
 	height: 3px;
 
 	background-color: #000;
@@ -174,7 +172,7 @@ export default {
 	position: relative;
 	display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
 }
 @media screen and (max-width: 360px) {
 	.cart {
@@ -187,7 +185,7 @@ export default {
 }
 @media screen and (max-width: 600px) {
 	.menu__btn {
-	left: calc(var(--bs-gutter-x) * 1);
+	left: 15px;
 }
 }
 </style>
