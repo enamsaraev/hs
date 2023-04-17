@@ -35,7 +35,9 @@
 						@change="chekSity()"
 						class="col-lg-10"
 					/>
-					{{ cdekreq.result["addresses"] }}
+					<div class="" v-for="res in cdekreq.result" :key="res">
+					{{ res }}
+					</div>
 					<!--<div class="">
 						<select v-model="addressName">
 							<option disabled value="">Выберите один из пунктов выдачи</option>
