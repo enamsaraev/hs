@@ -129,10 +129,10 @@ export default {
 				.catch((error) => console.log(error));
 
 			if (this.cdekreq.result == "Такого города нет") {
-				this.cdeknocity = cdekreq.result;
+				this.cdeknocity = this.cdekreq.result;
 				}
 			else {
-				this.adderssesfromcdek = cdekreq.result.addresses
+				this.adderssesfromcdek = this.cdekreq.result.addresses
 			}
 		},
 
