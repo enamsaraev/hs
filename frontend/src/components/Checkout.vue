@@ -128,7 +128,7 @@ export default {
 				.then((response) => ( this.cdekreq = response.data))
 				.catch((error) => console.log(error));
 
-			if (cdekreq.result == "Такого города нет") {
+			if (this.cdekreq.result == "Такого города нет") {
 				this.cdeknocity = cdekreq.result;
 				}
 			else {
