@@ -31,10 +31,7 @@
 								</Carousel>
 							</div>
 							<div class="col-lg-3 mt">
-								<div class="dscr_mob">
-									<p>Описание товара:</p>
-									<p>{{ prs.description }}</p>
-								</div>
+								
 								<div class="variations">
 									<p class="price">{{ parseInt(prs.retail_price) }} ₽</p>
 									<div class="btns">
@@ -67,6 +64,11 @@
 									>
 										Добавить в корзину
 									</button>
+								</div>
+								
+								<div class="dscr_mob">
+									<p>Описание товара:</p>
+									<p>{{ prs.description }}</p>
 								</div>
 							</div>
 						</div>
