@@ -35,14 +35,15 @@
 						@change="chekSity()"
 						class="col-lg-10"
 					/>
-					<div class="">
+					{{ cdekreq }}
+					<!--<div class="">
 						<select v-model="addressName">
 							<option disabled value="">Выберите один из пунктов выдачи</option>
 							<option v-for="adderssesincity in adderssesfromcdek" v-bind:value="adderssesincity" :key="adderssesincity">
 								{{ adderssesincity }}
 							</option>
 						</select>
-					</div>
+					</div>-->
 					<div class="">
 						{{ cdeknocity }}
 					</div>
@@ -127,13 +128,13 @@ export default {
 				)
 				.then((response) => ( this.cdekreq = response.data))
 				.catch((error) => console.log(error));
-
+			/*
 			if (this.cdekreq.result == "Такого города нет") {
 				this.cdeknocity = this.cdekreq.result;
 				}
 			else {
 				this.adderssesfromcdek = this.cdekreq.result['addresses']
-			}
+			}*/
 		},
 
 		order() {
