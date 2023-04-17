@@ -132,7 +132,7 @@ export default {
 				this.cdeknocity = this.cdekreq.result;
 				}
 			else {
-				this.adderssesfromcdek = this.cdekreq.result.addresses
+				this.adderssesfromcdek = this.cdekreq.result['addresses']
 			}
 		},
 
