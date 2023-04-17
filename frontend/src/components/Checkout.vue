@@ -35,7 +35,7 @@
 						@change="chekSity()"
 						class="col-lg-10"
 					/>
-					<div v-if="adderssesfromcdek" class="">
+					<div class="">
 						<select v-modal="addressName">
 							<option disabled value="">Выберите один из пунктов выдачи</option>
 							<option v-for="adderssesincity in adderssesfromcdek" v-bind:value="adderssesincity" :key="adderssesincity">
@@ -43,7 +43,7 @@
 							</option>
 						</select>
 					</div>
-					<div class="" v-else>
+					<div class="">
 						{{ cdeknocity }}
 					</div>
 				</div>
