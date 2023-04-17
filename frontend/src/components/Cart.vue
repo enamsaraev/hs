@@ -140,7 +140,7 @@ export default {
 		},
 		minusOne(slug, quantity, size, color) {
 			let newquantity = quantity - 1;
-			if (newquantity > 1) {
+			if (newquantity >= 1) {
 				let addDate = {
 					"product_slug": slug,
 					"quantity": newquantity,

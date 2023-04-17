@@ -36,7 +36,7 @@
 						class="col-lg-10"
 					/>
 					<div class="">
-						<select v-modal="addressName">
+						<select v-model="addressName">
 							<option disabled value="">Выберите один из пунктов выдачи</option>
 							<option v-for="adderssesincity in adderssesfromcdek" v-bind:value="adderssesincity" :key="adderssesincity">
 								{{ adderssesincity }}
