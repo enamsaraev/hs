@@ -63,6 +63,18 @@ const store = {
 		async loadCart({
 			commit, state
 		}) {
+			/*TOKEN */
+
+
+			let oldToken = localStorage.getItem('HTTP_TOKEN');
+			let token = '';
+			if (!oldToken || oldToken == "eveundefined") {
+				let tokenstr = document.cookie.split('=');
+				token = 'eve' + tokenstr[1];
+				localStorage.setItem('HTTP_TOKEN', token);
+			}
+
+			
 			let headers = {
 				"Content-Type": "application/json;charset=utf-8"
 			};

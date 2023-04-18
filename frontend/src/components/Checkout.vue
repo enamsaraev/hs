@@ -27,27 +27,34 @@
 						class="col-lg-10"
 					/>
 				</div>
-				<div class="col-lg-7 txt"><p class="subtitle">Доставка</p></div>
+				<div class="col-lg-7 txt"><p class="subtitle">Доставка (CDEK)</p></div>
 				<div class="col-lg-6">
-					<input
-						placeholder="Введите Ваш город"
-						v-model.lazy="city.to_location"
-						@change="chekSity()"
-						class="col-lg-10"
-					/>
-					<div class="" v-for="res in cdekreq.result" :key="res">
-					{{ res }}
+					<div class="col-lg-12">
+						<input
+							placeholder="Введите Ваш город"
+							v-model="city.to_location"
+							class="col-lg-5"
+						/>
+						<button @click="chekSity()" class="btn btn-dark col-lg-3">Применить</button>
 					</div>
-					<!--<div class="">
+					<div class="" v-if="adderssesfromcdek.length == 0">
 						<select v-model="addressName">
 							<option disabled value="">Выберите один из пунктов выдачи</option>
-							<option v-for="adderssesincity in adderssesfromcdek" v-bind:value="adderssesincity" :key="adderssesincity">
+							<option
+								v-for="adderssesincity in adderssesfromcdek"
+								v-bind:value="adderssesincity"
+								:key="adderssesincity"
+							>
 								{{ adderssesincity }}
 							</option>
 						</select>
-					</div>-->
-					<div class="">
+					</div>
+					<div class="" v-else>
 						{{ cdeknocity }}
+					</div>
+					<div class="">
+						<p class="font-weight-bold" v-if="cdekprice > 0">DELIVERY: {{ cdekprice }} ₽</p>
+						<p class="font-weight-bold">TOTAL: {{ getAllCart.data.total}} ₽</p>
 					</div>
 				</div>
 			</div>
@@ -87,12 +94,13 @@ export default {
 				total_price: "0",
 			},
 			city: {
-				to_location: ""
+				to_location: "",
 			},
 			addressName: "",
-			adderssesfromcdek: {},
+			adderssesfromcdek: [],
 			cdekreq: {},
-			cdeknocity:"",
+			cdeknocity: "",
+			cdekprice: 0,
 		};
 	},
 	computed: {
@@ -102,7 +110,6 @@ export default {
 				this.purch_info.name == "" ||
 				this.purch_info.email == "" ||
 				this.purch_info.phone == "" ||
-				this.purch_info.delivery_price == "" ||
 				this.addressName == ""
 			) {
 				return true;
@@ -111,7 +118,7 @@ export default {
 		},
 	},
 	methods: {
-		chekSity() {
+		async chekSity() {
 			/* headers */
 			let csrf = document.cookie.split("=");
 			let headers = {
@@ -121,22 +128,27 @@ export default {
 			if (localStorage.getItem("HTTP_TOKEN") !== "") {
 				headers["TOKEN"] = localStorage.getItem("HTTP_TOKEN");
 			}
-			
-			axios
-				.post(
-					`${this.$store.state.BaseUrl}api/cdek/prices/`,
-					this.city,
-					{headers},
-				)
-				.then((response) => ( this.cdekreq = response.data))
+
+			await axios
+				.post(`${this.$store.state.BaseUrl}api/cdek/prices/`, this.city, {
+					headers,
+				})
+				.then((response) => (this.cdekreq = response.data))
 				.catch((error) => console.log(error));
-			/*
+
 			if (this.cdekreq.result == "Такого города нет") {
 				this.cdeknocity = this.cdekreq.result;
+				this.adderssesfromcdek = [];
+				this.cdekprice = 0;
+			} else {
+				for (let adress in this.cdekreq.result) {
+					if (adress == "addresses") {
+						this.adderssesfromcdek = this.cdekreq.result[adress];
+					} else if (adress == "amount") {
+						this.cdekprice = this.cdekreq.result[adress].total_sum;
+					}
 				}
-			else {
-				this.adderssesfromcdek = this.cdekreq.result['addresses']
-			}*/
+			}
 		},
 
 		order() {
@@ -156,10 +168,13 @@ export default {
 			if (this.getAllCart.data.discount.code != null) {
 				this.purch_info.code = `${this.getAllCart.data.discount.code}`;
 			}
+
 			if (this.addressName != null) {
 				this.purch_info.address = `${this.addressName}, ${this.city.to_location}`;
-				this.purch_info.delivery_price = this.cdekreq.result.amount.total_sum;
-				this.purch_info.total_price = parseInt((this.getAllCart.data.total + this.cdekreq.result.amount.total_sum)  * 100) / 100;
+				this.purch_info.delivery_price = this.cdekprice;
+				this.purch_info.total_price =
+					parseInt(this.getAllCart.data.total * 100) / 100 +
+					parseInt(this.cdekprice * 100) / 100;
 			}
 			axios
 				.post(

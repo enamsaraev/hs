@@ -12,7 +12,7 @@
 				<img :src=prod.img alt="" class="cart_img" />
 				<button
 					class="btn_del btn"
-					@click="del(prod.slug, prod.size, prod.color)"
+					@click="delt(prod.slug, prod.size, prod.color)"
 				></button>
 				<h3 class="title mt">{{ prod.name }} ({{ prod.quantity }})</h3>
 				<div class="size mt">{{ prod.size }}/{{ prod.color }}</div>
@@ -85,21 +85,28 @@ export default {
 	},
 	methods: {
 		...mapActions("cart", ["setCnt"]),
-		del(slug, size, color) {
+		delt(slug, size, color) {
 			let st = `${slug}/${size}/${color}`;
 
-			let csrf = document.cookie.split('=');
-			let headers = {"Content-Type": "application/json;charset=utf-8","X-CSRFToken": `${csrf[1]}`};
+			let csrf = document.cookie.split("=");
+
+			let header = {
+				"Content-Type": "application/json;charset=utf-8",
+				"X-CSRFToken": `${csrf[1]}`,
+			};
+
 			if (localStorage.getItem("HTTP_TOKEN") !== "") {
-				headers["TOKEN"] = localStorage.getItem("HTTP_TOKEN");
+				header["TOKEN"] = localStorage.getItem("HTTP_TOKEN");
 			}
+			console.log(header);
 			axios
 				.delete(
-					`${this.$store.state.BaseUrl}api/cart/delete/`,
+					`${this.$store.state.BaseUrl}api/cart/delete/`, {
+					headers: { header }
+				},
 					{
-						data: {product_slug: st},
-					},
-					{headers},
+					data: {product_slug: st}
+					}
 				)
 				.then((response) => this.$store.commit("load", response))
 				.catch((error) => console.log(error));
@@ -171,6 +178,10 @@ export default {
 .page_title {
 	height: 80px;
 }
+
+.title{
+	font-weight: 700;
+}
 .product {
 	display: flex;
 	flex-direction: column;
@@ -220,23 +231,24 @@ export default {
 	margin: 10px 0 40px 0;
 }
 .btnsq{
-  --c:  #000000; /* the color*/
-  background: 
+	color: #000000;
+	--c:  #000000; /* the color*/
+	background: 
     var(--_g) calc(var(--_p,0%) - 100%) 0%,
     var(--_g) calc(200% - var(--_p,0%)) 0%,
     var(--_g) calc(var(--_p,0%) - 100%) 100%,
     var(--_g) calc(200% - var(--_p,0%)) 100%;
-  background-size: 50.5% calc(var(--_p,0%)/2 + .5%);
+	background-size: 50.5% calc(var(--_p,0%)/2 + .5%);
 }
 
 .btnsq:active {
-  background-color: var(--c);
-  color: #fff;
+	background-color: var(--c);
+	color: #fff;
 }
 
 .btnsforq{
 	display: flex;
-	width: 40%;
+	width: 35%;
 	justify-content: space-around;
 }
 

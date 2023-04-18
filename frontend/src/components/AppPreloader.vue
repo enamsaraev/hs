@@ -52,6 +52,7 @@ export default {
 @media (max-width: 600px) {
 	.loader_img {
 	max-width: 100vw;
+	height: auto;
 }
 }
 
