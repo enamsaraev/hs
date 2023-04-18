@@ -52,4 +52,5 @@ class CartApiView(APIView):
         cart = self.get_session_cart(request)
         cart.delete(kwargs['slug'])
 
+
         return Response(cart.get_cart(), status=status.HTTP_200_OK)
