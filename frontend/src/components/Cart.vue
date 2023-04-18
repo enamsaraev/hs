@@ -9,16 +9,26 @@
 				v-for="prod in getAllCart.data.items"
 				:key="prod.id"
 			>
-				<img :src=prod.img alt="" class="cart_img" />
+				<img :src="prod.img" alt="" class="cart_img" />
 				<button
 					class="btn_del btn"
 					@click="delt(prod.slug, prod.size, prod.color)"
 				></button>
 				<h3 class="title mt">{{ prod.name }} ({{ prod.quantity }})</h3>
 				<div class="size mt">{{ prod.size }}/{{ prod.color }}</div>
-				<div class="mt btnsforq"> 
-					<button @click="plusOne(prod.slug,prod.quantity, prod.size, prod.color)" class="btnsq">+</button>
-					<button @click="minusOne(prod.slug,prod.quantity, prod.size, prod.color)" class="btnsq">-</button>
+				<div class="mt btnsforq">
+					<button
+						@click="plusOne(prod.slug, prod.quantity, prod.size, prod.color)"
+						class="btnsq"
+					>
+						+
+					</button>
+					<button
+						@click="minusOne(prod.slug, prod.quantity, prod.size, prod.color)"
+						class="btnsq"
+					>
+						-
+					</button>
 				</div>
 				<div v-if="prod.total_item_price_with_dsc != null" class="price mt">
 					{{ parseInt(prod.total_item_price_with_dsc * 100) / 100 }} ₽
@@ -58,14 +68,12 @@
 import {mapGetters, mapActions} from "vuex";
 import axios from "axios";
 
-
 export default {
 	data() {
 		return {
 			promo: {
 				code: "",
 			},
-
 		};
 	},
 	computed: {
@@ -78,9 +86,9 @@ export default {
 		},
 		promoIsRightCeck() {
 			if (this.getAllCart.data.discount.code == null) {
-				return true
+				return true;
 			}
-			return false
+			return false;
 		},
 	},
 	methods: {
@@ -100,20 +108,21 @@ export default {
 			}
 			console.log(header);
 			axios
-				.delete(
-					`${this.$store.state.BaseUrl}api/cart/delete/`, {
-					headers: { header }
-				},
-					{
-					data: {product_slug: st}
-					}
-				)
+				.delete(`${this.$store.state.BaseUrl}api/cart/delete/${st}/`, {
+					headers: {header},
+					data: {
+						product_slug: st,
+					},
+				})
 				.then((response) => this.$store.commit("load", response))
 				.catch((error) => console.log(error));
 		},
 		test() {
-			let csrf = document.cookie.split('=');
-			let headers = {"Content-Type": "application/json;charset=utf-8","X-CSRFToken": `${csrf[1]}`};
+			let csrf = document.cookie.split("=");
+			let headers = {
+				"Content-Type": "application/json;charset=utf-8",
+				"X-CSRFToken": `${csrf[1]}`,
+			};
 			if (localStorage.getItem("HTTP_TOKEN") !== "") {
 				headers["TOKEN"] = localStorage.getItem("HTTP_TOKEN");
 			}
@@ -127,16 +136,19 @@ export default {
 		plusOne(slug, quantity, size, color) {
 			let newquantity = quantity + 1;
 			let addDate = {
-				"product_slug": slug,
-				"quantity": newquantity,
-				"size": size,
-				"color": color,
-				"update": "True",
+				product_slug: slug,
+				quantity: newquantity,
+				size: size,
+				color: color,
+				update: "True",
 			};
 
 			/*Headers */
-			let csrf = document.cookie.split('=');
-			let headers = {"Content-Type": "application/json;charset=utf-8","X-CSRFToken": `${csrf[1]}`};
+			let csrf = document.cookie.split("=");
+			let headers = {
+				"Content-Type": "application/json;charset=utf-8",
+				"X-CSRFToken": `${csrf[1]}`,
+			};
 			if (localStorage.getItem("HTTP_TOKEN") !== "") {
 				headers["TOKEN"] = localStorage.getItem("HTTP_TOKEN");
 			}
@@ -149,37 +161,38 @@ export default {
 			let newquantity = quantity - 1;
 			if (newquantity >= 1) {
 				let addDate = {
-					"product_slug": slug,
-					"quantity": newquantity,
-					"size": size,
-					"color": color,
-					"update": "True",
+					product_slug: slug,
+					quantity: newquantity,
+					size: size,
+					color: color,
+					update: "True",
 				};
 
 				/*Headers */
-				let csrf = document.cookie.split('=');
-				let headers = { "Content-Type": "application/json;charset=utf-8", "X-CSRFToken": `${csrf[1]}` };
+				let csrf = document.cookie.split("=");
+				let headers = {
+					"Content-Type": "application/json;charset=utf-8",
+					"X-CSRFToken": `${csrf[1]}`,
+				};
 				if (localStorage.getItem("HTTP_TOKEN") !== "") {
 					headers["TOKEN"] = localStorage.getItem("HTTP_TOKEN");
 				}
 				axios
-					.post(`${this.$store.state.BaseUrl}api/cart/add/`, addDate, { headers })
+					.post(`${this.$store.state.BaseUrl}api/cart/add/`, addDate, {headers})
 					.then((response) => this.$store.commit("load", response))
 					.catch((error) => console.log(error));
 			}
-		}
+		},
 	},
 };
 </script>
 
 <style scoped>
-
-
 .page_title {
 	height: 80px;
 }
 
-.title{
+.title {
 	font-weight: 700;
 }
 .product {
@@ -230,15 +243,14 @@ export default {
 .btn-offer {
 	margin: 10px 0 40px 0;
 }
-.btnsq{
+.btnsq {
 	color: #000000;
-	--c:  #000000; /* the color*/
-	background: 
-    var(--_g) calc(var(--_p,0%) - 100%) 0%,
-    var(--_g) calc(200% - var(--_p,0%)) 0%,
-    var(--_g) calc(var(--_p,0%) - 100%) 100%,
-    var(--_g) calc(200% - var(--_p,0%)) 100%;
-	background-size: 50.5% calc(var(--_p,0%)/2 + .5%);
+	--c: #000000; /* the color*/
+	background: var(--_g) calc(var(--_p, 0%) - 100%) 0%,
+		var(--_g) calc(200% - var(--_p, 0%)) 0%,
+		var(--_g) calc(var(--_p, 0%) - 100%) 100%,
+		var(--_g) calc(200% - var(--_p, 0%)) 100%;
+	background-size: 50.5% calc(var(--_p, 0%) / 2 + 0.5%);
 }
 
 .btnsq:active {
@@ -246,12 +258,11 @@ export default {
 	color: #fff;
 }
 
-.btnsforq{
+.btnsforq {
 	display: flex;
 	width: 35%;
 	justify-content: space-around;
 }
-
 
 @media (min-width: 1400px) {
 	.container,

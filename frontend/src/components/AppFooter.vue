@@ -10,6 +10,7 @@
 					<a href="@/assets/media/docks/Dock_of.pdf">Terms of Service</a>
 				</div>
 			</div>
+			<div class="col-lg-3 col-md-3 col-sm-3 col-4"></div>
 		</div>
 	</div>
 </template>
@@ -22,7 +23,7 @@ export default {};
 
 .cntr{
 	align-items: center;
-	justify-content: center;
+	justify-content: end;
 }
 .footer_container {
 	display: flex;
