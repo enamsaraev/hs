@@ -94,7 +94,7 @@ export default {
 	methods: {
 		...mapActions("cart", ["setCnt"]),
 		delt(slug, size, color) {
-			let st = `${slug}/${size}/${color}`;
+			let st = `${slug}-${size}-${color}`;
 
 			let csrf = document.cookie.split("=");
 
@@ -109,11 +109,9 @@ export default {
 			console.log(header);
 			axios
 				.delete(`${this.$store.state.BaseUrl}api/cart/delete/${st}/`, {
-					headers: {header},
-					data: {
-						product_slug: st,
-					},
-				})
+					headers:{header}
+				}
+				)
 				.then((response) => this.$store.commit("load", response))
 				.catch((error) => console.log(error));
 		},
