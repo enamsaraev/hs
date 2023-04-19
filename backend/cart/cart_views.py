@@ -1,3 +1,6 @@
+import string
+import random
+
 from django.shortcuts import get_object_or_404
 
 from rest_framework import status
@@ -64,3 +67,11 @@ class DeleteCartData(APIView):
 
 
         return Response(cart.get_cart(), status=status.HTTP_200_OK)
+    
+
+class TknGen(APIView):
+    def get(self, request, *args, **kwargs):
+        tkn_letters_and_digits = string.ascii_letters + string.digits
+        tkn = ''.join(random.sample(tkn_letters_and_digits, 30))
+
+        return Response({'token': tkn}, status=status.HTTP_200_OK)
