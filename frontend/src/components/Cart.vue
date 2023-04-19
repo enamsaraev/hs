@@ -94,23 +94,25 @@ export default {
 	methods: {
 		...mapActions("cart", ["setCnt"]),
 		delt(slug, size, color) {
-			let st = `${slug}-${size}-${color}`;
-
+			let st = `${slug}/${size}/${color}`;
+			let prodslugid = {
+				"product_slug":st
+			}
 			let csrf = document.cookie.split("=");
 
-			let header = {
+			let headers = {
 				"Content-Type": "application/json;charset=utf-8",
 				"X-CSRFToken": `${csrf[1]}`,
 			};
 
 			if (localStorage.getItem("HTTP_TOKEN") !== "") {
-				header["TOKEN"] = localStorage.getItem("HTTP_TOKEN");
+				headers["TOKEN"] = localStorage.getItem("HTTP_TOKEN");
 			}
-			console.log(header);
 			axios
-				.delete(`${this.$store.state.BaseUrl}api/cart/delete/${st}/`, {
-					headers:{header}
-				}
+				.post(
+					`${this.$store.state.BaseUrl}api/cart/delete/`,
+						prodslugid,
+					{headers},
 				)
 				.then((response) => this.$store.commit("load", response))
 				.catch((error) => console.log(error));

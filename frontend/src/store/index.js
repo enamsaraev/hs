@@ -53,30 +53,33 @@ const store = {
 	},
 	actions: {
 		async categorieItems({
-			commit, state
-		},) {
+			commit,
+			state
+		}, ) {
 			console.log(`${state.BaseUrl}api/shop/clothes/`)
 			let res = await fetch(`${state.BaseUrl}api/shop/clothes/`);
 			let prod = await res.json();
 			commit('setCategorieItems', prod);
 		},
 		async loadCart({
-			commit, state
+			commit,
+			state
 		}) {
 			/*TOKEN */
 
 
 			let oldToken = localStorage.getItem('HTTP_TOKEN');
-			let token = '';
+			let tokencart = '';
 			if (!oldToken || oldToken == "eveundefined") {
-				let tokenstr = document.cookie.split('=');
-				token = 'eve' + tokenstr[1];
-				localStorage.setItem('HTTP_TOKEN', token);
+				let tkn = await axios.get(`${state.BaseUrl}api/cart/tkn/`,);
+				tokencart = tkn.token;
+				localStorage.setItem('HTTP_TOKEN', tokencart);
 			}
 
-			
+
 			let headers = {
-				"Content-Type": "application/json;charset=utf-8"
+				"Content-Type": "application/json;charset=utf-8",
+
 			};
 			if (localStorage.getItem("HTTP_TOKEN") !== "") {
 				headers["TOKEN"] = localStorage.getItem("HTTP_TOKEN");

@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import AppProductsList from '@/views/HomeView.vue';
 import ProductPage from '@/views/ProductPage.vue';
 import CategoriePage from '@/views/CategoriePage.vue';
+import AboutPage from '@/views/AboutPage';
 
 import AppCart from '@/components/Cart';
 import AppCheckout from '@/components/Checkout';
@@ -36,9 +37,15 @@ const routes = [
 		component: CategoriePage
 	},
 	{
+		name: 'about',
+		path: '/about',
+		component: AboutPage
+	},
+	{
 		path: '/:any(.*)', // .*
 		component: AppE404
 	}
+	
 ];
 
 export default createRouter({

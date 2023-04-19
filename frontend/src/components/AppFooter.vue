@@ -1,9 +1,9 @@
 <template>
 	<div class="footer_container container">
 		<div class="row w-100 cntr">
-			<div class="col-lg-6 col-md-6 col-sm-6 col-4">
+			<div class="col-lg-6 col-md-6 col-sm-6 col-12">
 				<div class="footer_block">
-					<a href="@/assets/media/docks/About.pdf">About</a>
+					<router-link to='about'>About</router-link>
 					<a href="@/assets/media/docks/Privacy_Policy.pdf"
 						>Privacy Policy</a
 					>
