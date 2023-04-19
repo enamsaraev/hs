@@ -58,7 +58,7 @@ class Cart:
 
     def delete(self, product_slug: str) -> None:
         """Removing a single product from the cart"""
-        product_slug = str(product_slug).replace('-','/')
+
         if product_slug in self.cart['items']:
             del self.cart['items'][product_slug]
 
