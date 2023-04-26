@@ -117,7 +117,7 @@ export default {
 			return false;
 		},
 		totalorderprice() {
-			return this.getAllCart.data.total + this.cdekprice
+			return this.getAllCart.data.total + (parseInt(this.cdekprice * 100) / 100);
 		}
 	},
 	methods: {
