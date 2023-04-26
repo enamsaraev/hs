@@ -16,11 +16,9 @@ from payment.models import PaymentData
 def check_payments_status(payment_id: str, order_id: int, cart: dict):
     """Checking a paymnet status"""
 
-    payment = Payment.find_one(payment_id)
+    time.sleep(30)
 
-    while payment['status'] == 'pending' and payment['status'] != 'canceled':
-        payment = Payment.find_one(payment_id)
-        time.sleep(3)
+    payment = json.loads((Payment.find_one(payment_id)).json())
 
     if payment['status']=='succeeded':
         order = Order.objects.get(id=order_id)

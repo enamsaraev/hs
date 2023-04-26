@@ -15,12 +15,9 @@ from mailing.models import EmailSendAutomaticly, EmailSendTemplate
 def check_succed_payment_retr(payment_id: str):
     """Checking if order is paid"""
 
-    payment = Payment.find_one(payment_id)
+    time.sleep(30)
 
-    while payment['status'] == 'pending' and payment['status'] != 'canceled':
-        payment = Payment.find_one(payment_id)
-        time.sleep(3)
-
+    payment = json.loads((Payment.find_one(payment_id)).json())
     if payment['status']=='succeeded':
         return True
 
@@ -31,7 +28,9 @@ def check_succed_payment_retr(payment_id: str):
 def send_mail(payment_id: str, to: List[str], message: str, subject: str, order_id: int):
     """Async email sending"""
     
-    if check_succed_payment_retr(payment_id):
+    pay_res = check_succed_payment_retr(payment_id)
+    
+    if pay_res:
         
         Pigeon(
             to=to,
