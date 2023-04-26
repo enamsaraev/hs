@@ -60,7 +60,8 @@ class EmailEntry(models.Model):
         help_text=_('Название шаблона'),
     )
     is_sent = models.BooleanField(
-        default=True
+        default=True,
+        verbose_name=_("Галочка стоит, если имейл доставлен")
     )
     order = models.ForeignKey(
         Order,
