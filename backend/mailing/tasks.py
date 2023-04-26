@@ -12,7 +12,6 @@ from mailing.pigeon import Pigeon, PigeonAutomaticly
 from mailing.models import EmailSendAutomaticly, EmailSendTemplate
 
 
-@shared_task
 def check_succed_payment_retr(payment_id: str):
     """Checking if order is paid"""
 
@@ -32,7 +31,7 @@ def check_succed_payment_retr(payment_id: str):
 def send_mail(payment_id: str, to: List[str], message: str, subject: str, order_id: int):
     """Async email sending"""
     
-    if check_succed_payment_retr.delay(payment_id):
+    if check_succed_payment_retr(payment_id):
         
         Pigeon(
             to=to,
