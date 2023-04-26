@@ -1,11 +1,15 @@
+import os
 import json
 import uuid
 
+from dotenv import load_dotenv
 from yookassa import Configuration, Payment
 
-Configuration.account_id = 967176
-Configuration.secret_key = 'test_wE6Q6Zb5FGPWrfJRlg1ynZaj66RKdeYf52CyOzyJ_KE'
+load_dotenv()
 
+
+Configuration.account_id = os.environ.get("Y_ID")
+Configuration.secret_key = os.environ.get("Y_KEY")
 
 def create_payment(price: str, description: str) -> dict:
     """Create a payment"""
