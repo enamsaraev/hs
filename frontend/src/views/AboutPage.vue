@@ -2,11 +2,11 @@
     <div class="container">
   <h1>О нас</h1> 
     <p></p>
-    <h2> Контакты: </h2>
+    <h3> Контакты: </h3>
     <p>Белякова Ева Сергеевна</p>
     <p>ИНН: 860225037472</p>
 <p></p>
-<p>Email: <a href="mailto:eve.clothes.info@gmail.ru"></a></p>
+<p>Email: <a href="mailto:eve.clothes.info@gmail.ru">eve.clothes.info@gmail.ru</a></p>
 <p></p>
 <p></p>
 <p>Доставка СДЕК:</p>

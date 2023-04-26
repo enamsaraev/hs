@@ -251,6 +251,7 @@ export default {
 		var(--_g) calc(var(--_p, 0%) - 100%) 100%,
 		var(--_g) calc(200% - var(--_p, 0%)) 100%;
 	background-size: 50.5% calc(var(--_p, 0%) / 2 + 0.5%);
+	border: none;
 }
 
 .btnsq:active {

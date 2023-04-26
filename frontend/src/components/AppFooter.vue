@@ -1,13 +1,13 @@
 <template>
 	<div class="footer_container container">
 		<div class="row w-100 cntr">
-			<div class="col-lg-6 col-md-6 col-sm-6 col-12">
+			<div class="col-lg-6 col-md-5 col-sm-5 col-10 pdg">
 				<div class="footer_block">
 					<router-link to='about'>About</router-link>
-					<a href="@/assets/media/docks/Privacy_Policy.pdf"
+					<a :href="`${this.$store.state.BaseUrl}/docks/Privacy_Policy.pdf`"
 						>Privacy Policy</a
 					>
-					<a href="@/assets/media/docks/Dock_of.pdf">Terms of Service</a>
+					<a :href="`${this.$store.state.BaseUrl}/docks/Dock_of.pdf`">Terms of Service</a>
 				</div>
 			</div>
 			<div class="col-lg-3 col-md-3 col-sm-3 col-4"></div>
@@ -16,7 +16,9 @@
 </template>
 
 <script>
-export default {};
+export default {
+
+};
 </script>
 
 <style scoped>
@@ -25,6 +27,12 @@ export default {};
 	align-items: center;
 	justify-content: end;
 }
+@media (min-width: 1200px) {
+	.pdg{
+		padding-right: 55px;
+		}
+}
+
 .footer_container {
 	display: flex;
 	align-items: center;

@@ -28,7 +28,7 @@
 					/>
 				</div>
 				<div class="col-lg-7 txt"><p class="subtitle">Доставка (CDEK)</p></div>
-				<div class="col-lg-6">
+				<div class="col-lg-7">
 					<div class="col-lg-12">
 						<input
 							placeholder="Введите Ваш город"
@@ -37,7 +37,7 @@
 						/>
 						<button @click="chekSity()" class="btn btn-dark col-lg-3">Применить</button>
 					</div>
-					<div class="" v-if="adderssesfromcdek.length == 0">
+					<div class="" v-if="adderssesfromcdek.length != 0">
 						<select v-model="addressName">
 							<option disabled value="">Выберите один из пунктов выдачи</option>
 							<option
@@ -54,7 +54,7 @@
 					</div>
 					<div class="">
 						<p class="font-weight-bold" v-if="cdekprice > 0">DELIVERY: {{ cdekprice }} ₽</p>
-						<p class="font-weight-bold">TOTAL: {{ getAllCart.data.total}} ₽</p>
+						<p class="font-weight-bold">TOTAL: {{ totalorderprice }} ₽</p>
 					</div>
 				</div>
 			</div>
@@ -116,6 +116,9 @@ export default {
 			}
 			return false;
 		},
+		totalorderprice() {
+			return this.getAllCart.data.total + this.cdekprice
+		}
 	},
 	methods: {
 		async chekSity() {

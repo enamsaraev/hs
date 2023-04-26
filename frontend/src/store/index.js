@@ -69,10 +69,9 @@ const store = {
 
 
 			let oldToken = localStorage.getItem('HTTP_TOKEN');
-			let tokencart = '';
-			if (!oldToken || oldToken == "eveundefined") {
-				let tkn = await axios.get(`${state.BaseUrl}api/cart/tkn/`,);
-				tokencart = tkn.token;
+			if (oldToken === null || oldToken == "undefined") {
+				let tkn = await axios.get(`${state.BaseUrl}api/cart/tnk/`,);
+				let tokencart = tkn.data.token;
 				localStorage.setItem('HTTP_TOKEN', tokencart);
 			}
 
