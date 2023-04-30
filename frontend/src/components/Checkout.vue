@@ -29,16 +29,16 @@
 				</div>
 				<div class="col-lg-7 txt"><p class="subtitle">Доставка (CDEK)</p></div>
 				<div class="col-lg-7">
-					<div class="col-lg-12">
+					<div class="col-lg-10 sbtw">
 						<input
 							placeholder="Введите Ваш город"
 							v-model="city.to_location"
-							class="col-lg-5"
+							class="col-lg-6"
 						/>
 						<button @click="chekSity()" class="btn btn-dark col-lg-3">Применить</button>
 					</div>
-					<div class="" v-if="adderssesfromcdek.length != 0">
-						<select v-model="addressName">
+					<div class="col-lg-10" v-if="adderssesfromcdek.length != 0">
+						<select v-model="addressName" class="col-lg-12">
 							<option disabled value="">Выберите один из пунктов выдачи</option>
 							<option
 								v-for="adderssesincity in adderssesfromcdek"
@@ -282,6 +282,11 @@ button p {
 .btn:hover {
 	background-color: #000;
 	color: #fff;
+}
+
+.sbtw{
+	display: flex;
+    justify-content: space-between;
 }
 
 @media (min-width: 1400px) {
