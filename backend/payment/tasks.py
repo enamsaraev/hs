@@ -33,8 +33,4 @@ def check_payments_status(payment_id: str, order_id: int, cart: dict):
             payment_id=payment_id,
             order=order
         )
-        print('Done')
         
-
-    elif payment['status'] == 'canceled':
-        print('Canceled')
