@@ -90,7 +90,7 @@ export default {
 				email: "",
 				phone: "",
 				address: "" /* Тут должен быть город и адресс пункта выдачи */,
-				delivery_price: "" /* Цена от сдека */,
+				delivery_price: "1" /* Цена от сдека */,
 				total_price: "0",
 			},
 			city: {
@@ -100,7 +100,7 @@ export default {
 			adderssesfromcdek: [],
 			cdekreq: {},
 			cdeknocity: "",
-			cdekprice: 0,
+			cdekprice: 1,
 		};
 	},
 	computed: {
@@ -117,7 +117,7 @@ export default {
 			return false;
 		},
 		totalorderprice() {
-			return this.getAllCart.data.total + (parseInt(this.cdekprice * 100) / 100);
+			return parseInt(this.getAllCart.data.total * 100) / 100 + parseInt(this.cdekprice * 100) / 100;
 		}
 	},
 	methods: {
@@ -148,7 +148,8 @@ export default {
 					if (adress == "addresses") {
 						this.adderssesfromcdek = this.cdekreq.result[adress];
 					} else if (adress == "amount") {
-						this.cdekprice = this.cdekreq.result[adress].total_sum;
+						/*this.cdekprice = this.cdekreq.result[adress].total_sum;*/
+						console.log(13);
 					}
 				}
 			}
@@ -174,10 +175,10 @@ export default {
 
 			if (this.addressName != null) {
 				this.purch_info.address = `${this.addressName}, ${this.city.to_location}`;
-				this.purch_info.delivery_price = this.cdekprice;
-				this.purch_info.total_price =
+				/*this.purch_info.delivery_price = this.cdekprice;*/
+				this.purch_info.total_price = String(
 					parseInt(this.getAllCart.data.total * 100) / 100 +
-					parseInt(this.cdekprice * 100) / 100;
+					parseInt(this.cdekprice * 100) / 100);
 			}
 			axios
 				.post(
