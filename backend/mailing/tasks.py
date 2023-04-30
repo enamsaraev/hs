@@ -15,7 +15,7 @@ from mailing.models import EmailSendAutomaticly, EmailSendTemplate
 def check_succed_payment_retr(payment_id: str):
     """Checking if order is paid"""
 
-    time.sleep(30)
+    time.sleep(300)
 
     payment = json.loads((Payment.find_one(payment_id)).json())
     if payment['status']=='succeeded':

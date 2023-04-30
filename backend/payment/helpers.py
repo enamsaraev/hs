@@ -13,7 +13,7 @@ def get_create_payment(
         description=description,
     )
 
-    check_payments_status(
+    check_payments_status.delay(
         payment_id=payment_data['id'],
         order_id=order_id,
         cart=cart
