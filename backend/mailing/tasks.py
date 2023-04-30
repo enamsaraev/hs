@@ -31,7 +31,6 @@ def send_mail(payment_id: str, to: List[str], message: str, subject: str, order_
     pay_res = check_succed_payment_retr(payment_id)
     
     if pay_res:
-        
         Pigeon(
             to=to,
             text=message,
@@ -39,8 +38,6 @@ def send_mail(payment_id: str, to: List[str], message: str, subject: str, order_
             order_id=order_id,
         ).call_pigeon()
 
-    else:
-        print('Mail fucked')
 
 
 @shared_task
