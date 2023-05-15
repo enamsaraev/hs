@@ -8,20 +8,25 @@
 				</div>
 				<div class="col-lg-7 in">
 					<input
+						type="text"
 						placeholder="ФИО"
 						v-model="purch_info.name"
-						class="col-lg-10"
+						class="col-lg-10 cptl"
 					/>
 				</div>
 				<div class="col-lg-7 in">
 					<input
+						type="tel"
 						placeholder="Контактный телефон"
+						oninput="this.value = this.value.replace(/[^0-9+]/g, '')"
 						v-model.number="purch_info.phone"
 						class="col-lg-10"
 					/>
 				</div>
 				<div class="col-lg-7 in">
 					<input
+						type="email"
+						oninput="this.value = this.value.replace(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)"
 						placeholder="Email"
 						v-model="purch_info.email"
 						class="col-lg-10"
@@ -53,7 +58,7 @@
 						{{ cdeknocity }}
 					</div>
 					<div class="">
-						<p class="font-weight-bold" v-if="cdekprice > 0">DELIVERY: {{ cdekprice }} ₽</p>
+						<p class="font-weight-bold" v-if="cdekprice">DELIVERY: {{ cdekprice }} ₽</p>
 						<p class="font-weight-bold">TOTAL: {{ totalorderprice }} ₽</p>
 					</div>
 				</div>
@@ -90,7 +95,7 @@ export default {
 				email: "",
 				phone: "",
 				address: "" /* Тут должен быть город и адресс пункта выдачи */,
-				delivery_price: "1" /* Цена от сдека */,
+				delivery_price: "0" /* Цена от сдека */,
 				total_price: "0",
 			},
 			city: {
@@ -100,7 +105,7 @@ export default {
 			adderssesfromcdek: [],
 			cdekreq: {},
 			cdeknocity: "",
-			cdekprice: 1,
+			cdekprice: "",
 		};
 	},
 	computed: {
@@ -108,7 +113,7 @@ export default {
 		activeBtn() {
 			if (
 				this.purch_info.name == "" ||
-				this.purch_info.email == "" ||
+				this.purch_info.email ||
 				this.purch_info.phone == "" ||
 				this.addressName == ""
 			) {
@@ -118,6 +123,7 @@ export default {
 		},
 		totalorderprice() {
 			return parseInt(this.getAllCart.data.total * 100) / 100 + parseInt(this.cdekprice * 100) / 100;
+			
 		}
 	},
 	methods: {
@@ -142,14 +148,15 @@ export default {
 			if (this.cdekreq.result == "Такого города нет") {
 				this.cdeknocity = this.cdekreq.result;
 				this.adderssesfromcdek = [];
-				this.cdekprice = 0;
+				this.cdekprice = "";
 			} else {
 				for (let adress in this.cdekreq.result) {
 					if (adress == "addresses") {
 						this.adderssesfromcdek = this.cdekreq.result[adress];
 					} else if (adress == "amount") {
-						/*this.cdekprice = this.cdekreq.result[adress].total_sum;*/
-						console.log(13);
+						console.log(this.cdekreq.result[adress]);
+						this.cdekprice = this.cdekreq.result[adress].total_sum;
+						console.log(this.cdekprice);
 					}
 				}
 			}
@@ -175,7 +182,7 @@ export default {
 
 			if (this.addressName != null) {
 				this.purch_info.address = `${this.addressName}, ${this.city.to_location}`;
-				/*this.purch_info.delivery_price = this.cdekprice;*/
+				this.purch_info.delivery_price = this.cdekprice;
 				this.purch_info.total_price = String(
 					parseInt(this.getAllCart.data.total * 100) / 100 +
 					parseInt(this.cdekprice * 100) / 100);
@@ -287,6 +294,10 @@ button p {
 .sbtw{
 	display: flex;
     justify-content: space-between;
+}
+
+.cptl{
+  text-transform: capitalize;
 }
 
 @media (min-width: 1400px) {
