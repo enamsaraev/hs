@@ -2,8 +2,6 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from django.http import HttpResponseRedirect
-
 from mailing.helpers import MsgHelper
 from cart.cart import Cart
 from payment.helpers import get_create_payment, send_a_mail_wia_created_payment
@@ -42,7 +40,6 @@ class OrderApiView(APIView):
                 {
                     'url': payment_data['confirmation']['confirmation_url'],
                 },
-
             )
         
         return Response(status=status.HTTP_400_BAD_REQUEST)

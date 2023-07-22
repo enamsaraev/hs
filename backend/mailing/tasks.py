@@ -12,28 +12,23 @@ from mailing.pigeon import Pigeon, PigeonAutomaticly
 from mailing.models import EmailSendAutomaticly, EmailSendTemplate
 
 
-def check_succed_payment_retr(payment_id: str):
-    """Checking if order is paid"""
-
-    time.sleep(300)
-
-    payment = json.loads((Payment.find_one(payment_id)).json())
-    if payment['status']=='succeeded':
-        return True
-
-    return False
-
-
 @shared_task
 def send_mail(payment_id: str, to: List[str], message: str, subject: str, order_id: int):
     """Async email sending"""
+
+    payment = json.loads((Payment.find_one(payment_id)).json())
     
-    pay_res = check_succed_payment_retr(payment_id)
-    
-    if pay_res:
+    if payment['status'] == 'succeeded':
         Pigeon(
             to=to,
             text=message,
+            subject=subject,
+            order_id=order_id,
+        ).call_pigeon()
+    else:
+        Pigeon(
+            to=to,
+            text='None',
             subject=subject,
             order_id=order_id,
         ).call_pigeon()

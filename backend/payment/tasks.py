@@ -13,17 +13,20 @@ from payment.models import PaymentData
 
 
 @shared_task
-def check_payments_status(payment_id: str, order_id: int, cart: dict):
+def check_payments_status(payment_id: str, order_id: int, cart: dict, *args, **kwargs):
     """Checking a paymnet status"""
 
-    time.sleep(300)
-
+    starttime = time.time()
     payment = json.loads((Payment.find_one(payment_id)).json())
+
+    while payment['status'] == 'pending':
+        payment = json.loads((Payment.find_one(payment_id)).json())
+        time.sleep(10.0 - ((time.time() - starttime) % 10.0))
 
     if payment['status']=='succeeded':
         order = Order.objects.get(id=order_id)
         order.set_is_paid()
-
+        
         OrderSetCount(
             cart=cart,
             order_id=order_id

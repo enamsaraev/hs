@@ -85,6 +85,8 @@ def test_class_order_set_order_component(set_cart_session_data):
         'email': 'ffffff@mail.com',
         'phone': '88000000000',
         'coupon_discount': 20,
+        'address': 'SOme test address',
+        'delivery_price': 20,
         'total_price': 5678.09
     }
 
