@@ -29,6 +29,7 @@ def get_hoodie_black_product():
         slug='hoodie-black',
         retail_price=Decimal('97.00') 
     )
+    mixer.blend('core.Media', product=product)
 
     return product
 

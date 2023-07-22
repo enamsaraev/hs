@@ -1,21 +1,21 @@
-import requests, json
+import requests
+import os
 from typing import List
-
-from rest_framework.exceptions import ParseError
 
 
 class CDEKHelper:
-    def __init__(self) -> None:
+    def __init__(self) -> None or int:
         auth = requests.post(
-            'https://api.edu.cdek.ru/v2/oauth/token?parameters/', 
+            'https://api.cdek.ru/v2/oauth/token?parameters', 
             data={
                 "grant_type": "client_credentials",
-                "client_id": "EMscd6r9JnFiQ3bLoyjJY6eM78JrJceI",
-                "client_secret": "PjLZkKBHEiLK3YsjtNrt3TGNG0ahs3kG"
+                "client_id": os.environ.get("CDEK_ACC"),
+                "client_secret": os.environ.get("CDEK_PASS")
             },
         )
         if auth.status_code == 200:
             self.token = auth.json().get('access_token')
+            print(self.token)
         else:
             return auth.status_code
         
@@ -37,7 +37,7 @@ class CDEKHelper:
 
     def _get_city_code(self, city) -> str:
         resp = requests.get(
-            f'https://api.edu.cdek.ru/v2/location/cities/?city={city}&size=1&page=0', 
+            f'https://api.cdek.ru/v2/location/cities/?city={city}&size=1&page=0', 
             headers={'Authorization': f'Bearer {self.token}'}
         )
         if len(resp.json()) > 0:
@@ -49,7 +49,7 @@ class CDEKHelper:
     def _get_list_of_offices_in_current_city(self, city_code: int) -> List:
 
         offices = requests.get(
-            f'https://api.edu.cdek.ru/v2/deliverypoints?city_code={city_code}', 
+            f'https://api.cdek.ru/v2/deliverypoints?city_code={city_code}', 
             headers={'Authorization': f'Bearer {self.token}'}, 
             )
 
@@ -65,11 +65,10 @@ class CDEKHelper:
     
     def _get_calculate_total_amount(self, city_code: str) -> List[dict]:
 
-        response_data = {
+        request_data = {
             "type": 1,
-            "date": "2020-11-03T11:49:32+0700",
             "currency": 1,
-            "tariff_code": 136,
+            "tariff_code": 368,
             "lang": "rus",
             "from_location": {
                 "code": 137,
@@ -80,22 +79,22 @@ class CDEKHelper:
             "services": [
                 {
                     "code": "CARTON_BOX_M",
-                    "parameter": "2"
+                    "parameter": "1"
                 }
             ],
             "packages": [
                 {
                     "height": 15,
                     "length": 33,
-                    "weight": 3000,
+                    "weight": 5000,
                     "width": 25
                 }
             ]
         }
-
+        
         amount = requests.post(
-            'https://api.edu.cdek.ru/v2/calculator/tariff', 
+            'https://api.cdek.ru/v2/calculator/tariff', 
             headers={'Authorization': f'Bearer {self.token}'}, 
-            json=response_data
+            json=request_data
         )
         return amount.json()
