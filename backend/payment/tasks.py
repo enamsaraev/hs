@@ -17,23 +17,25 @@ def check_payments_status(payment_id: str, order_id: int, cart: dict, *args, **k
     """Checking a paymnet status"""
 
     starttime = time.time()
+
+    order = Order.objects.get(id=order_id)
+    pd = PaymentData.objects.create(
+        payment_id=payment_id,
+        order=order
+    )
+
     payment = json.loads((Payment.find_one(payment_id)).json())
 
     while payment['status'] == 'pending':
         payment = json.loads((Payment.find_one(payment_id)).json())
         time.sleep(10.0 - ((time.time() - starttime) % 10.0))
 
-    if payment['status']=='succeeded':
-        order = Order.objects.get(id=order_id)
+    if payment['status'] == 'succeeded':
         order.set_is_paid()
-        
+        pd.set_is_paid()
+
         OrderSetCount(
             cart=cart,
             order_id=order_id
         )()
-
-        PaymentData.objects.create(
-            payment_id=payment_id,
-            order=order
-        )
         

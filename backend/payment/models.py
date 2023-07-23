@@ -18,11 +18,16 @@ class PaymentData(models.Model):
         blank=True,
         null=True,
         on_delete=models.SET_NULL,
-        verbose_name=_("Оплаченный заказ"),
+        verbose_name=_("Заказ"),
         help_text=_("Создается автоматически"),
     )
+    is_paid = models.BooleanField(
+        default=False,
+        verbose_name=_("Галочка стоит, если заказ оплачен"),
+    )
     is_deleted = models.BooleanField(
-        default=False
+        default=False,
+        verbose_name=_("Выбрать, если нужно удалить"),
     )
 
     class Meta:
@@ -31,3 +36,9 @@ class PaymentData(models.Model):
 
     def __str__(self) -> str:
         return self.payment_id
+    
+    def set_is_paid(self):
+        """Set a paid order"""
+
+        self.is_paid = True
+        self.save(update_fields=['is_paid'])

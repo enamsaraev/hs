@@ -70,7 +70,6 @@ class EmailEntry(models.Model):
         null=True,
         blank=True,
         verbose_name=_('Текущий заказ клиента'),
-        help_text=_('Формат: обязательный'),
     )
     is_deleted = models.BooleanField(
         default=False,
@@ -88,10 +87,6 @@ class EmailEntry(models.Model):
 class EmailSendAutomaticly(models.Model):
     """Text templates for an email"""
 
-    recipient = models.EmailField(
-        verbose_name=_("Почта для отправки смс покупателю"),
-        help_text=_("Формат: обязательный"),
-    )
     subject = models.CharField(
         max_length=255,
         verbose_name=_("Шапка смс для отправки почты покупателю"),
@@ -125,11 +120,12 @@ class EmailSendAutomaticly(models.Model):
         related_name='order_emails',
         on_delete=models.SET_NULL,
         null=True,
-        blank=True
+        blank=True,
+        verbose_name=_("Номер заказа"),
     )
     class Meta:
         verbose_name = 'Отправить имейл рассылку'
         verbose_name_plural = 'Отправить имейл рассылку'
 
     def __str__(self) -> str:
-        return self.recipient
+        return f'Сообщение к заказу - {self.email_order}'

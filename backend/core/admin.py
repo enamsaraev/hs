@@ -24,6 +24,9 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ('is_deleted',)
     search_fields = ('name',)
     prepopulated_fields = {'slug': ('name',)}
+    
+    def has_delete_permission(self, request, obj=None):
+        return False
 
 
 @admin.register(ProductInventory)
@@ -35,6 +38,9 @@ class ProductInventoryAdmin(admin.ModelAdmin):
 
     inlines = [MediaInline, VariationInline]
 
+    def has_delete_permission(self, request, obj=None):
+        return False
+
 
 @admin.register(Size)
 class SizeAdmin(admin.ModelAdmin):
@@ -42,12 +48,18 @@ class SizeAdmin(admin.ModelAdmin):
     list_filter = ('is_deleted',)
     search_fields = ('value',)
 
+    def has_delete_permission(self, request, obj=None):
+        return False
+
 
 @admin.register(Color)
 class ColorAdmin(admin.ModelAdmin):
     list_display = ('value',)
     list_filter = ('is_deleted',)
     search_fields = ('value',)
+
+    def has_delete_permission(self, request, obj=None):
+        return False
 
 
 @admin.register(Variation)
@@ -63,6 +75,9 @@ class VariationAdmin(admin.ModelAdmin):
 
     def get_product_name(self, obj):
         return obj.product.name
+    
+    def has_delete_permission(self, request, obj=None):
+        return False
     
 
 

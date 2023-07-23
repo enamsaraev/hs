@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'payment',
     'mailing',
     'cdek',
-    'usersinfo',
 ]
 
 MIDDLEWARE = [
