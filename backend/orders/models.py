@@ -74,7 +74,8 @@ class Order(models.Model):
         help_text=_("Сформирована автоматически")
     )
     is_paid = models.BooleanField(
-        default=False
+        default=False,
+        verbose_name=_("Галочка стоит, если заказ оплачен"),
     )
 
     class Meta:

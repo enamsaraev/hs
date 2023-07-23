@@ -1,5 +1,3 @@
-from datetime import datetime, timedelta
-
 from payment.yk import create_payment
 from payment.tasks import check_payments_status
 from mailing.tasks import send_mail

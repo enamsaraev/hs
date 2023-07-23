@@ -5,12 +5,8 @@ from payment.models import PaymentData
 
 @admin.register(PaymentData)
 class PaymentDataAdmin(admin.ModelAdmin):
-    list_display = ('get_order_name',)
+    list_display = ('order', 'is_paid')
+    readonly_fields = ('payment_id', 'order', 'is_paid')
 
-    def get_form(self, request, obj=None, **kwargs):
-        form = super(PaymentDataAdmin, self).get_form(request, obj, **kwargs)
-        form.base_fields['order'].label_from_instance = lambda inst: "{}".format(inst.name)
-        return form
-
-    def get_order_name(self, obj):
-        return obj.order.name
+    def has_delete_permission(self, request, obj=None):
+        return False
