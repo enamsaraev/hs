@@ -62,6 +62,7 @@ class EmailSendTemplateAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
     list_filter = ('is_deleted',)
+    readonly_fields = ('html_template',)
 
     def has_delete_permission(self, request, obj=None):
         return False
