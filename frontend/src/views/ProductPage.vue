@@ -8,7 +8,6 @@
 							<div class="col-lg-3 mt">
 								<h3>{{ prs.name }}</h3>
 								<div class="dscr_pc">
-									<p>Описание товара:</p>
 									<p>{{ prs.description }}</p>
 								</div>
 							</div>
@@ -67,7 +66,6 @@
 								</div>
 								
 								<div class="dscr_mob">
-									<p>Описание товара:</p>
 									<p>{{ prs.description }}</p>
 								</div>
 							</div>
@@ -174,6 +172,9 @@ export default {
 </script>
 
 <style scoped>
+.dscr_pc {
+	font-size: 0.9rem !important;
+}
 .prod_cont {
 	margin-bottom: 2em;
 }
@@ -239,6 +240,7 @@ export default {
 .btn-dark {
 	width: 100%;
 	margin-top: 1em;
+	border-color: white #212529;
 	border-radius: unset;
 	font-weight: 700;
 	font-size: 15px;
