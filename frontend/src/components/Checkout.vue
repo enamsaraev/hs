@@ -3,8 +3,10 @@
 		<div class="row">
 			<div class="col-lg-12 title"><p>SHIPPING INFO</p></div>
 			<div class="col-lg-12 body_form">
-				<div class="col-lg-7 txt">
-					<p class="subtitle">Контактные данные</p>
+				<div class="col-lg-7 in">
+					<div class="col-lg-10 txt">
+						<p class="subtitle">Контактные данные</p>
+					</div>
 				</div>
 				<div class="col-lg-7 in">
 					<input
@@ -32,18 +34,22 @@
 						class="col-lg-10"
 					/>
 				</div>
-				<div class="col-lg-7 txt"><p class="subtitle">Доставка (CDEK)</p></div>
-				<div class="col-lg-7">
+				<div class="col-lg-7 in">
+					<div class="col-lg-10 txt">
+						<p class="subtitle">Доставка (CDEK)</p>
+					</div>
+				</div>
+				<div class="col-lg-7 cdek_body">
 					<div class="col-lg-10 sbtw">
 						<input
 							placeholder="Введите Ваш город"
 							v-model="city.to_location"
-							class="col-lg-6"
+							class="col-lg-6 cptl"
 						/>
 						<button @click="chekSity()" class="btn btn-dark col-lg-3">Применить</button>
 					</div>
 					<div class="col-lg-10" v-if="adderssesfromcdek.length != 0">
-						<select v-model="addressName" class="col-lg-12">
+						<select v-model="addressName" class="cdek_select">
 							<option disabled value="">Выберите один из пунктов выдачи</option>
 							<option
 								v-for="adderssesincity in adderssesfromcdek"
@@ -57,7 +63,7 @@
 					<div class="" v-else>
 						{{ cdeknocity }}
 					</div>
-					<div class="">
+					<div class="cdek_price">
 						<p class="font-weight-bold" v-if="cdekprice">DELIVERY: {{ cdekprice }} ₽</p>
 						<p class="font-weight-bold">TOTAL: {{ totalorderprice }} ₽</p>
 					</div>
@@ -155,8 +161,7 @@ export default {
 						this.adderssesfromcdek = this.cdekreq.result[adress];
 					} else if (adress == "amount") {
 						console.log(this.cdekreq.result[adress]);
-						this.cdekprice = this.cdekreq.result[adress].total_sum;
-						console.log(this.cdekprice);
+						this.cdekprice = parseInt(this.cdekreq.result[adress].total_sum * 100) / 100  + 200;
 					}
 				}
 			}
@@ -244,7 +249,19 @@ p {
 .title p {
 	margin: 10px;
 }
-
+.cdek_body {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+}
+.cdek_price {
+    align-self: end;
+	font-weight: 700;
+}
+.cdek_select {
+	width: 100%;
+	margin-top: 20px;
+}
 .body_form {
 	display: flex;
 	flex-direction: column;
@@ -269,7 +286,7 @@ p {
 .in {
 	display: flex;
 	align-items: flex-start;
-	justify-content: flex-start;
+	justify-content: center;
 	margin-bottom: 15px;
 }
 

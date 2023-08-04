@@ -240,7 +240,7 @@ export default {
 .btn-dark {
 	width: 100%;
 	margin-top: 1em;
-	border-color: white #212529;
+	border-right-color: white;
 	border-radius: unset;
 	font-weight: 700;
 	font-size: 15px;
