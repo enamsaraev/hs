@@ -28,7 +28,6 @@
 				<div class="col-lg-7 in">
 					<input
 						type="email"
-						oninput="this.value = this.value.replace(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)"
 						placeholder="Email"
 						v-model="purch_info.email"
 						class="col-lg-10"
@@ -119,7 +118,7 @@ export default {
 		activeBtn() {
 			if (
 				this.purch_info.name == "" ||
-				this.purch_info.email ||
+				this.validEmail ||
 				this.purch_info.phone == "" ||
 				this.addressName == ""
 			) {
@@ -130,6 +129,9 @@ export default {
 		totalorderprice() {
 			return parseInt(this.getAllCart.data.total * 100) / 100 + parseInt(this.cdekprice * 100) / 100;
 			
+		},
+		validEmail(){
+			return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.purch_info.email)
 		}
 	},
 	methods: {
