@@ -118,7 +118,7 @@ export default {
 		activeBtn() {
 			if (
 				this.purch_info.name == "" ||
-				this.validEmail ||
+				!this.validEmail ||
 				this.purch_info.phone == "" ||
 				this.addressName == ""
 			) {
